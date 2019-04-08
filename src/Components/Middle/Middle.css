@@ -1,0 +1,51 @@
+/*all block*/
+.midleMain{
+  display:flex;
+  height: 50%;
+}
+/*Left bar*/
+.leftbarNav{
+  width: 40%;
+  margin-left:30px;
+}
+
+.leftbarNav p{
+  text-transform: uppercase;
+}
+
+.leftbarNav .item {
+  display: flex;
+  margin-bottom: 5px;
+  width: 90%;
+  border: 1px solid #737373;
+  background: #FDFCFC;
+  align-items:center;
+}
+
+.leftbarNav .color {
+  border-radius: 50%;
+  margin:15px;
+  width: 10px;
+  height: 10px;
+}
+/*different colors*/
+.color.red {
+  background: maroon;
+}
+
+.color.blue {
+  background: Navy;
+}
+
+.color.green {
+  background: darkgreen;
+}
+
+.targetImg p {
+  text-transform: uppercase;
+}
+
+.item:hover {
+  background: whitesmoke;
+  cursor: pointer;
+}

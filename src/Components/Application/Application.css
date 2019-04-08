@@ -6,6 +6,10 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  background-color: whitesmoke;
+  font-family: 'Rufina', serif;
+  color: #737373;
+  /* overflow: hidden; */
 }
 
 code {

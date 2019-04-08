@@ -1,0 +1,12 @@
+.slide{
+  color:white;
+}
+
+.slide img {
+  height: 100px;
+  width: 100px;
+}
+
+.slide img:hover{
+  cursor: pointer;
+}
