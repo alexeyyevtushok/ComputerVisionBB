@@ -83,13 +83,35 @@ const data = {
     {
         "_id": "193e92973d4415eedb429aee",
         "index": 16,
-        "picture": "https://ihatetomatoes.net/demos/_rw/01-real-estate/tn_property04.jpg",
+        "picture": "https://ihatetomatoes.net/demos/_rw/01-real-estate/tn_property02.jpg",
     },
     {
-        "_id": "523e92973d4415eedb429aee",
+        "_id": "793e92273d4415eedb429aee",
         "index": 17,
         "picture": "https://ihatetomatoes.net/demos/_rw/01-real-estate/tn_property04.jpg",
     },
+    ],
+    "entities" : [
+    {
+        "index": 0,
+        "color": "maroon",
+        "label": "car",
+    },
+    {
+        "index": 1,
+        "color": "navy",
+        "label": "plane",
+    },
+    {
+        "index": 2,
+        "color": "darkgreen",
+        "label": "person",
+    },
+    {
+        "index":3,
+        "color":"black",
+        "label":"testcase",
+    }
     ]
 }
 

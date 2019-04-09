@@ -8,12 +8,24 @@ import './Application.css';
 
 
 class Application extends Component {
+  constructor(props){
+    super(props)
+    this.state = {
+      currentImg: "https://ak3.picdn.net/shutterstock/videos/33521563/thumb/10.jpg?i10c=img.resize(height:160)"
+    }
+  }
+  
+  getUrl = (url) => {
+    this.setState({
+      currentImg : url
+    });
+  }
   render() {
     return (
       <div className="main">
         <Header />
-        <Middle />
-        <Slider />
+        <Middle currentImg={this.state.currentImg}/>
+        <Slider onGetUrl={this.getUrl}/>
       </div>
     );
   }

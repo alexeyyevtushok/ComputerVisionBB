@@ -2,11 +2,14 @@
   color:white;
 }
 
-.slide img {
-  height: 100px;
-  width: 100px;
+.picture {
+  height: 11vh;
+  width: 11vh;
+  user-select: none;
 }
 
-.slide img:hover{
+.picture:hover {
+  transform: scale(0.9);
   cursor: pointer;
+  box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.75);
 }

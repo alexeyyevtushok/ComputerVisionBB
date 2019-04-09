@@ -3,14 +3,15 @@
   display:flex;
   height: 50%;
 }
-/*Left bar*/
-.leftbarNav{
-  width: 40%;
-  margin-left:30px;
+
+.midleMain p {
+  text-transform: uppercase;
 }
 
-.leftbarNav p{
-  text-transform: uppercase;
+/*Left bar*/
+.leftbarNav{
+  width: 20vw;
+  margin-left:30px;
 }
 
 .leftbarNav .item {
@@ -28,24 +29,8 @@
   width: 10px;
   height: 10px;
 }
-/*different colors*/
-.color.red {
-  background: maroon;
-}
 
-.color.blue {
-  background: Navy;
-}
-
-.color.green {
-  background: darkgreen;
-}
-
-.targetImg p {
-  text-transform: uppercase;
-}
-
-.item:hover {
+.leftbarNav .item:hover {
   background: whitesmoke;
   cursor: pointer;
 }

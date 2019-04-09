@@ -24,13 +24,18 @@
 /*toolbar*/
 .tools{
   color: #737373;
-  width:500px;
+  width:710px;
+}
+
+.tools span {
+  margin-left:5px;
+  font-weight: 400;
 }
 
 .tools ul li{
   font-size:20px;
   padding: 10px;
-  margin:0 20px;
+  margin:0 8px;
 	border-radius: 50%;
   transition: background-color 0.25s ease-in-out;
 	cursor: pointer;
