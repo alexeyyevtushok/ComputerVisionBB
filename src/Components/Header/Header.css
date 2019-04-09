@@ -46,5 +46,102 @@ li:hover {
     background-color: rgba(33, 33, 33, 0.125);
 }
 
+/*modalEntity*/
+.contact h1{
+  text-align: center;
+  font-weight: 400;
+  margin-bottom: 40px;
+}
+
+.contact i {
+  margin-right: 5px;
+}
+
+*{
+	box-sizing: border-box;
+}
+.contact{
+	margin: 0;
+	padding: 0;
+	background-size: cover;
+	font-size: 1rem;
+	color: #333;
+  overflow-x: hidden;
+  text-align: center;
+}
+a{
+	color: black;
+	font-style: none;
+	text-decoration: none;
+}
+h3{
+	font-size: 1rem;
+	text-decoration: none;
+}
+img{
+	padding: 0;
+	left: 0;
+	top: 0;
+	margin: none;
+	align-items: center;
+	width:240px;
+	height:100px;
+}
+.form{
+	position: absolute;
+	top: 50%;
+	left:50%;
+	transform: translate(-50%,-50%);
+	width: 400px;
+	padding: 40px;
+}
+.form .inputbox{
+	position: relative;
+}
+.form .inputbox input{
+	width: 100%;
+	padding:0;
+	font-size: 1.5rem;
+	color: #000;
+	margin-bottom: 30px;
+	border: none;
+	border-bottom: 1px solid #000;
+	outline: none;
+	background: transparent;
+}
+.form .inputbox label{
+	position: absolute;
+	top: 0;
+	left: 0;
+	padding: 0.5rem 0;
+	font-size: 1.1rem;
+	color: #000;
+	pointer-events: none;
+	transition: .5s;
+}
+.form .inputbox input:focus ~ label,
+.form .inputbox input:valid ~ label{
+	top: -30px;
+	left: 0;
+  color: maroon;
+}
+
+.btn{
+	background: none;
+	color: #000;
+	font-size: 1rem;
+	padding: 0.5rem 1rem;
+	text-decoration: none;
+	border-radius: 10px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+.btn:hover{
+	background: whitesmoke;
+	outline: grey;
+}
+
+
+
 
 
