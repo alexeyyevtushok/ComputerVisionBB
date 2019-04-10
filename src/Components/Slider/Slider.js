@@ -1,13 +1,13 @@
 import React, {Component} from 'react';
 import './Slider.css'
 import Slide from '../Slide/Slide';
-import data from '../../data/data';
+import propertiesData from '../../data/properties.json';
 
 class Slider extends Component{
   constructor(props){
     super(props)
     this.state = {
-      properties: data.properties,
+      properties: propertiesData,
       mainslide: "https://ak3.picdn.net/shutterstock/videos/33521563/thumb/10.jpg?i10c=img.resize(height:160)",
       left: 0,
     }

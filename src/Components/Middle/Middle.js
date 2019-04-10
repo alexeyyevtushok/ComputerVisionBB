@@ -2,13 +2,13 @@ import React, { Component } from 'react';
 import Image from '../Image/Image';
 import './Middle.css';
 import Entity from '../Entity/Entity';
-import data from '../../data/data';
+import entitiesData from '../../data/entities.json';
 
 class Middle extends Component{
   constructor(props){
     super(props)
     this.state = {
-      entities: data.entities,
+      entities: entitiesData,
     }
   }
   render(){
