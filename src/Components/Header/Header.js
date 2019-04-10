@@ -12,7 +12,6 @@ class Header extends Component {
           </div>
           <nav className="tools">
             <ul>
-              <li title="Add entity" className="fas fa-user-plus"><span>Add entity</span></li>
               <li title="Upload" className="fas fa-upload"><span>Upload</span></li>
               <li title="Download" className="fa fa-download"><span>Download</span></li>
               <li title="Prev" className="fas fa-arrow-circle-left"></li>

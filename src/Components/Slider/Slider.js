@@ -8,21 +8,16 @@ class Slider extends Component{
     super(props)
     this.state = {
       properties: propertiesData,
-      mainslide: "https://ak3.picdn.net/shutterstock/videos/33521563/thumb/10.jpg?i10c=img.resize(height:160)",
       left: 0,
     }
   }
-
-  componentDidMount() {
-    this.slider = document.getElementsByClassName('slider')[0]
-}
+  /*data to Parent component*/
   handleUrl = (i) => {
     this.props.onGetUrl(i);
   }
 
-  rightClick = (value) =>  { 
+  rightArrow = (value) =>  { 
     const outOfRange = -11 * (this.state.properties.length-14)
-    console.log(outOfRange)
     if(this.state.left < outOfRange) this.setState({left:0});
       this.setState(prevState => {
         return {
@@ -30,7 +25,7 @@ class Slider extends Component{
         }
     });
   }
-  leftClick = (value) =>  { 
+  leftArrow = (value) =>  { 
     if(this.state.left<=-11){
       this.setState(prevState => {
         return {
@@ -41,14 +36,14 @@ class Slider extends Component{
   }
   
   render(){
+    /*move slide*/
     const styleChange = {
       left:  this.state.left  + 'vh',
     };
-    console.log(styleChange.left)
     const {properties} = this.state;
     return(
       <div className="fullSlider">
-      <div className="arrows prev" onClick={() => this.leftClick(styleChange)}></div>
+      <div className="arrows prev" onClick={() => this.leftArrow(styleChange)}></div>
       <div className="slideList">
       <div className="slider" style={styleChange}>
       {/*list of slides*/}
@@ -57,7 +52,7 @@ class Slider extends Component{
           />)}
         </div>
       </div>
-      <div className="arrows next" onClick={() => this.rightClick(styleChange)}></div>     
+      <div className="arrows next" onClick={() => this.rightArrow(styleChange)}></div>     
       </div>
     );
   }
