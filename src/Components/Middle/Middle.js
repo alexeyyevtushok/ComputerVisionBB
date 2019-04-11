@@ -9,7 +9,8 @@ class Middle extends Component{
     super(props)
     this.state = {
       entities: entitiesData,
-      addInput:false
+      addInput:false,
+      currentColor: null,
     }
   }
 
@@ -19,9 +20,15 @@ class Middle extends Component{
     })
   }
 
+  currentEntity = (color) => {
+    this.setState({
+      currentColor : color
+    })
+  }
+
   render(){
     const {currentImg} = this.props;
-    const {entities,addInput} = this.state;
+    const {entities,addInput,currentColor} = this.state;
     console.log(entities);
     return (
       <div className="midleMain">
@@ -41,9 +48,10 @@ class Middle extends Component{
               <label>Label: </label>
               <input type="text"></input>
             </div>
-            <button title="Add entity" type="submit"><i class="fas fa-user-check"></i></button>  
+            <button title="Add entity" type="submit"><i className="fas fa-user-check"></i></button>  
           </form>
-          {entities.map(item => <Entity key={item.index} item={item}/>)}
+          <div className="currColor">Current: <div style={{background: currentColor}}></div></div>
+          {entities.map(item => <Entity key={item.index} item={item} onClick={() => this.currentEntity(item.color)}/>)}
         </div>
         <div className="targetImg">
           <p>Image</p>
