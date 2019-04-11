@@ -31,7 +31,7 @@ class Slider extends Component{
         return {
             left: prevState.left + 11
         }
-    })
+    });
     }
   }
   
@@ -52,7 +52,7 @@ class Slider extends Component{
           />)}
         </div>
       </div>
-      <div className="arrows next" onClick={() => this.rightArrow(styleChange)}></div>     
+      <div className="arrows next" onClick={() => this.rightArrow(styleChange)}></div>   
       </div>
     );
   }
