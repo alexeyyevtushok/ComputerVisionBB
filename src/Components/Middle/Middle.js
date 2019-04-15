@@ -1,35 +1,34 @@
-import React, { Component } from 'react';
-import axios from 'axios';
-import PropTypes from 'prop-types';
-import Image from '../Image/Image';
-import './Middle.css';
-import Entity from '../Entity/Entity';
+import React, { Component } from "react";
+import axios from "axios";
+import Image from "../Image/Image";
+import "./Middle.css";
+import Entity from "../Entity/Entity";
 
 class Middle extends Component {
   constructor(props) {
     super(props);
     this.state = {
       entities: [],
-      addInput: false,
+      addInput: false
     };
   }
 
   componentDidMount() {
-    axios.get('/api/entities/').then((res) => {
+    axios.get("/api/entities/").then(res => {
       this.setState({
-        entities: res.data,
+        entities: res.data
       });
     });
   }
 
-  addEntity = (e) => {
+  addEntity = e => {
     e.preventDefault();
     const entity = {
       color: e.target.color.value,
-      label: e.target.label.value,
+      label: e.target.label.value
     };
-    axios.post('/api/entities/', entity).then((res) => {
-      this.setState((state) => {
+    axios.post("/api/entities/", entity).then(res => {
+      this.setState(state => {
         const entities = state.entities.push(res.data);
         return entities;
       });
@@ -38,13 +37,13 @@ class Middle extends Component {
 
   changeInput = () => {
     this.setState({
-      addInput: !this.state.addInput,
+      addInput: !this.state.addInput
     });
   };
 
-  currentEntity = (color) => {
+  currentEntity = color => {
     this.setState({
-      currentColor: color,
+      currentColor: color
     });
   };
 
@@ -59,23 +58,29 @@ class Middle extends Component {
           <div
             title="Add entity"
             onClick={() => this.changeInput()}
-            className={addInput ? 'addBtn fas fa-user-slash' : 'addBtn fas fa-user-plus'}
+            className={
+              addInput ? "addBtn fas fa-user-slash" : "addBtn fas fa-user-plus"
+            }
           >
-            <span>{addInput ? 'Close' : 'Add entity'}</span>
+            <span>{addInput ? "Close" : "Add entity"}</span>
           </div>
           <form
-            style={addInput ? { visibility: 'visible', opacity: '1', height: '50px' } : {}}
+            style={
+              addInput
+                ? { visibility: "visible", opacity: "1", height: "50px" }
+                : {}
+            }
             onSubmit={this.addEntity}
           >
             <div className="inputBox">
               <label htmlFor="color">
-                {'Color: '}
+                {"Color: "}
                 <input type="text" id="color" />
               </label>
             </div>
             <div className="inputBox">
               <label htmlFor="label">
-                {'Label: '}
+                {"Label: "}
                 <input type="text" id="label" />
               </label>
             </div>
@@ -84,12 +89,15 @@ class Middle extends Component {
             </button>
           </form>
           <div className="currColor">
-
             Current:
             <div style={{ background: currentColor }} />
           </div>
           {entities.map(item => (
-            <Entity key={item.index} item={item} onClick={() => this.currentEntity(item.color)} />
+            <Entity
+              key={item.index}
+              item={item}
+              onClick={() => this.currentEntity(item.color)}
+            />
           ))}
         </div>
         <div className="targetImg">
