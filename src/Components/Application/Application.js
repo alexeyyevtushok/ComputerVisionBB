@@ -39,11 +39,7 @@ class Application extends Component {
       const data = new FormData();
       data.append("targetImage", event.target.files[i]);
       axios.post("api/images/", data, {}).then(res => {
-        console.log(res);
-        // this.getRequest();
-        // this.setState({
-        //   currentImg: res.data.picture
-        // });
+        this.getRequest();
       });
     }
   };

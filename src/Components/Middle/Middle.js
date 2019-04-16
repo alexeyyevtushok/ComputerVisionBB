@@ -3,6 +3,7 @@ import axios from "axios";
 import Image from "../Image/Image";
 import "./Middle.css";
 import Entity from "../Entity/Entity";
+import Konva from "konva";
 
 class Middle extends Component {
   constructor(props) {
@@ -14,8 +15,7 @@ class Middle extends Component {
     };
   }
 
-  generateRandomColor = () =>
-    "#" + Math.floor(Math.random() * 16777215).toString(16);
+  generateRandomColor = () => Konva.Util.getRandomColor();
 
   componentDidMount() {
     axios.get("/api/entities/").then(res => {
