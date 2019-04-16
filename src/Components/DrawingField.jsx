@@ -13,16 +13,34 @@ class DrawingField extends React.Component {
     this.state = {
       shapes: [],
       isDrawing: false,
-      isDrawingMode: true,
+      width: this.calculateWidth(),
+      height: this.calculateHeight(),
     };
   }
 
+  // componentDidMount = () => {
+  //   window.addEventListener('resize', this.updateDimensions);
+  // };
+
+  // componentWillUnmount = () => {
+  //   window.removeEventListener('resize', this.updateDimensions);
+  // };
+
+  // updateDimensions = () => {
+  //   console.log('updating dimensions');
+  //   this.setState({
+  //     width: this.calculateWidth(),
+  //     height: this.calculateHeight(),
+  //   });
+  // };
+
+  calculateHeight = () => document.documentElement.clientHeight * 0.7;
+
+  calculateWidth = () => document.documentElement.clientWidth * 0.555;
+
   handleClick = (e) => {
-    const { isDrawingMode, isDrawing, shapes } = this.state;
+    const { isDrawing, shapes } = this.state;
     const { currentColor } = this.props;
-    if (!isDrawingMode) {
-      return;
-    }
     if (isDrawing) {
       this.setState({
         isDrawing: !isDrawing,
@@ -30,8 +48,6 @@ class DrawingField extends React.Component {
       return;
     }
 
-    // otherwise, add a new rectangle at the mouse position with 0 width and height,
-    // and set isDrawing to true
     const newShapes = shapes.slice();
     newShapes.push({
       x: e.evt.layerX,
@@ -48,16 +64,13 @@ class DrawingField extends React.Component {
   };
 
   handleMouseMove = (e) => {
-    const { isDrawingMode, isDrawing, shapes } = this.state;
+    const { isDrawing, shapes } = this.state;
     const { currentColor } = this.props;
-    if (!isDrawingMode) return;
 
     const mouseX = e.evt.layerX;
     const mouseY = e.evt.layerY;
 
-    // update the current rectangle's width and height based on the mouse position
     if (isDrawing) {
-      // get the current shape (the last shape in this.state.shapes)
       const currShapeIndex = shapes.length - 1;
       const currShape = shapes[currShapeIndex];
       const newWidth = mouseX - currShape.x;
@@ -78,25 +91,18 @@ class DrawingField extends React.Component {
     }
   };
 
-  handleCheckboxChange = () => {
-    // toggle drawing mode
-    this.setState({
-      isDrawingMode: !this.state.isDrawingMode,
-    });
-  };
-
   render() {
-    const { isDrawingMode, shapes } = this.state;
-    const { currentColor } = this.props;
+    const { shapes, width, height } = this.state;
     return (
-      <div style={style}>
+      <div>
         <Stage
-          width={window.innerWidth}
-          height={window.innerHeight}
+          style={style}
+          width={width}
+          height={height}
           onContentClick={this.handleClick}
           onContentMouseMove={this.handleMouseMove}
         >
-          <Layer ref="layer">
+          <Layer>
             {/*
                 render the shapes array - each element in 'shapes' renders a ColoredRect component
                 with that element's dimensions. Any time these dimensions change (in the handle
