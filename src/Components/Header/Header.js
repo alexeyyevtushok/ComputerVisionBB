@@ -1,19 +1,11 @@
 import React, { Component } from "react";
 import "./Header.css";
-import axios from "axios";
 
 class Header extends Component {
   uploadFile = () => this.fileInput.click();
 
-  fileHandler = event => {
-    const data = new FormData();
-    data.append("targetImage", event.target.files[0]);
-    axios.post("api/images/", data, {}).then(res => {
-      console.log(res.statusText);
-    });
-  };
-
   render() {
+    const { fileHandler } = this.props;
     return (
       <div>
         <div className="navigation">
@@ -41,7 +33,8 @@ class Header extends Component {
                 id="targetImage"
                 ref={fileInput => (this.fileInput = fileInput)}
                 accept="image/*"
-                onChange={this.fileHandler}
+                onChange={fileHandler}
+                multiple="multiple"
               />
             </ul>
           </nav>

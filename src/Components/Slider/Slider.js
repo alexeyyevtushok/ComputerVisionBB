@@ -12,13 +12,22 @@ class Slider extends Component {
     };
   }
 
+  componentWillReceiveProps() {
+    this.getReq();
+  }
+
   componentDidMount() {
+    this.getReq();
+  }
+
+  getReq = () => {
     axios.get("/api/images/").then(res => {
       this.setState({
         properties: res.data
       });
     });
-  }
+  };
+
   /*data to Parent component*/
   handleUrl = i => {
     this.props.onGetUrl(i);

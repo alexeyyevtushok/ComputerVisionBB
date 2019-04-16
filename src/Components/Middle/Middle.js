@@ -9,9 +9,13 @@ class Middle extends Component {
     super(props);
     this.state = {
       entities: [],
-      addInput: false
+      addInput: false,
+      valueInput: this.generateRandomColor()
     };
   }
+
+  generateRandomColor = () =>
+    "#" + Math.floor(Math.random() * 16777215).toString(16);
 
   componentDidMount() {
     axios.get("/api/entities/").then(res => {
@@ -33,24 +37,27 @@ class Middle extends Component {
         return entities;
       });
     });
+    this.setState({
+      valueInput: this.generateRandomColor()
+    });
   };
 
   changeInput = () => {
     this.setState({
-      addInput: !this.state.addInput
+      addInput: !this.state.addInput,
+      valueInput: this.generateRandomColor()
     });
   };
 
-  currentEntity = color => {
+  inputValueHandler = event => {
     this.setState({
-      currentColor: color
+      valueInput: event.target.value
     });
   };
 
   render() {
     const { currentImg } = this.props;
-    const { entities, addInput, currentColor } = this.state;
-    console.log(entities);
+    const { entities, addInput, valueInput } = this.state;
     return (
       <div className="midleMain">
         <div className="leftbarNav">
@@ -73,31 +80,28 @@ class Middle extends Component {
             onSubmit={this.addEntity}
           >
             <div className="inputBox">
-              <label htmlFor="color">
-                {"Color: "}
-                <input type="text" id="color" />
-              </label>
-            </div>
-            <div className="inputBox">
               <label htmlFor="label">
                 {"Label: "}
                 <input type="text" id="label" />
+              </label>
+            </div>
+            <div className="inputBox">
+              <label htmlFor="color">
+                {"Color: "}
+                <input
+                  type="text"
+                  id="color"
+                  value={valueInput}
+                  onChange={this.inputValueHandler}
+                />
               </label>
             </div>
             <button title="Add entity" type="submit">
               <i className="fas fa-user-check" />
             </button>
           </form>
-          <div className="currColor">
-            Current:
-            <div style={{ background: currentColor }} />
-          </div>
           {entities.map(item => (
-            <Entity
-              key={item.index}
-              item={item}
-              onClick={() => this.currentEntity(item.color)}
-            />
+            <Entity key={item.index} item={item} />
           ))}
         </div>
         <div className="targetImg">
