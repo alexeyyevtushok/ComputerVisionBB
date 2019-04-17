@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { Layer, Stage } from 'react-konva';
+import Konva from 'konva';
 import ColoredRect from './ColoredRect';
 
 const style = {
@@ -38,6 +39,11 @@ class DrawingField extends React.Component {
 
   calculateWidth = () => document.documentElement.clientWidth * 0.555;
 
+  transformColor = (color) => {
+    const rgb = Konva.Util.getRGB(color);
+    return `rgba(${rgb.r},${rgb.g},${rgb.b},0.5)`;
+  };
+
   handleClick = (e) => {
     const { isDrawing, shapes } = this.state;
     const { currentColor } = this.props;
@@ -54,7 +60,7 @@ class DrawingField extends React.Component {
       y: e.evt.layerY,
       width: 0,
       height: 0,
-      color: currentColor,
+      color: this.transformColor(currentColor),
     });
 
     this.setState({
@@ -65,7 +71,6 @@ class DrawingField extends React.Component {
 
   handleMouseMove = (e) => {
     const { isDrawing, shapes } = this.state;
-    const { currentColor } = this.props;
 
     const mouseX = e.evt.layerX;
     const mouseY = e.evt.layerY;
@@ -82,7 +87,7 @@ class DrawingField extends React.Component {
         y: currShape.y,
         width: newWidth, // new width and height
         height: newHeight,
-        color: currentColor,
+        color: currShape.color,
       };
 
       this.setState({
@@ -103,11 +108,6 @@ class DrawingField extends React.Component {
           onContentMouseMove={this.handleMouseMove}
         >
           <Layer>
-            {/*
-                render the shapes array - each element in 'shapes' renders a ColoredRect component
-                with that element's dimensions. Any time these dimensions change (in the handle
-                functions), the ColoredRect rerenders to reflect those changes.
-              */}
             {shapes.map(shape => (
               <ColoredRect
                 x={shape.x}
