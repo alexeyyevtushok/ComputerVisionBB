@@ -1,17 +1,24 @@
-import React from 'react';
-import { Rect, Group } from 'react-konva';
-import PropTypes from 'prop-types';
+import React from "react";
+import { Rect, Group } from "react-konva";
+import PropTypes from "prop-types";
 
-const ColoredRect = (props) => {
-  const {
-    x, y, width, height, color,
-  } = props;
-  return (
-    <Group>
-      <Rect x={x} y={y} width={width} height={height} fill={color} />
-    </Group>
-  );
-};
+class ColoredRect extends React.Component {
+  render() {
+    const { x, y, width, height, color } = this.props;
+    return (
+      <Group>
+        <Rect
+          x={x}
+          y={y}
+          width={width}
+          height={height}
+          fill={color}
+          onDblClick={event => this.props.handleRectClick(event)}
+        />
+      </Group>
+    );
+  }
+}
 
 ColoredRect.propTypes = {
   x: PropTypes.number.isRequired,

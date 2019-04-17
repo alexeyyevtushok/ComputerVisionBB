@@ -93,6 +93,12 @@ class DrawingField extends React.Component {
     }
   };
 
+  handleRectClick = e => {
+    //e.evt.bubble = false;
+    e.evt.stopPropagation();
+    console.log("rect click");
+  };
+
   render() {
     const { shapes, width, height } = this.state;
     return (
@@ -112,6 +118,7 @@ class DrawingField extends React.Component {
                 width={shape.width}
                 height={shape.height}
                 color={shape.color}
+                handleRectClick={this.handleRectClick}
               />
             ))}
           </Layer>
