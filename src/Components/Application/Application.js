@@ -1,5 +1,3 @@
-/* eslint-disable react/jsx-one-expression-per-line */
-/* eslint-disable react/prefer-stateless-function */
 import React, { Component } from "react";
 import Header from "../Header/Header";
 import Middle from "../Middle/Middle";
@@ -17,14 +15,18 @@ class Application extends Component {
   }
 
   componentDidMount() {
+    this.getRequest();
+  }
+
+  getRequest = () => {
     axios.get("/api/images/").then(res => {
       if (res.data.length > 0) {
         this.setState({
-          currentImg: res.data[res.data.length - 1].picture
+          currentImg: res.data[0].picture
         });
       }
     });
-  }
+  };
 
   getUrl = url => {
     this.setState({
@@ -32,11 +34,21 @@ class Application extends Component {
     });
   };
 
+  fileHandler = event => {
+    for (let i = 0; i < event.target.files.length; i++) {
+      const data = new FormData();
+      data.append("targetImage", event.target.files[i]);
+      axios.post("api/images/", data, {}).then(res => {
+        this.getRequest();
+      });
+    }
+  };
+
   render() {
     const { currentImg } = this.state;
     return (
       <div className="main">
-        <Header />
+        <Header fileHandler={this.fileHandler} />
         <Middle currentImg={currentImg} />
         <Slider onGetUrl={this.getUrl} />
       </div>

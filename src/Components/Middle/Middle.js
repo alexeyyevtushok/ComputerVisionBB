@@ -5,6 +5,8 @@ import Image from '../Image/Image';
 import './Middle.css';
 import Entity from '../Entity/Entity';
 import DrawingField from '../DrawingField';
+import Konva from "konva";
+
 
 class Middle extends Component {
   constructor(props) {
@@ -12,8 +14,14 @@ class Middle extends Component {
     this.state = {
       entities: [],
       addInput: false,
+      colorInput: this.generateRandomColor(),
+      labelInput: "",
+      error: false,
+      currEntity: -1
     };
   }
+
+  generateRandomColor = () => Konva.Util.getRandomColor();
 
   componentDidMount() {
     axios.get('/api/entities/').then((res) => {
@@ -25,34 +33,65 @@ class Middle extends Component {
 
   addEntity = (e) => {
     e.preventDefault();
-    const entity = {
-      color: e.target.color.value,
-      label: e.target.label.value,
-    };
-    axios.post('/api/entities/', entity).then((res) => {
-      this.setState((state) => {
-        const entities = state.entities.push(res.data);
-        return entities;
+    if (e.target.label.value === "") {
+      this.setState({ error: true });
+    } else {
+      const entity = {
+        color: e.target.color.value,
+        label: e.target.label.value
+      };
+      axios.post("/api/entities/", entity).then(res => {
+        this.setState(state => {
+          const entities = state.entities.push(res.data);
+          return entities;
+        });
       });
-    });
+      this.setState({
+        colorInput: this.generateRandomColor(),
+        labelInput: "",
+        error: false
+      });
+    }
   };
 
   changeInput = () => {
     this.setState({
       addInput: !this.state.addInput,
+      colorInput: this.generateRandomColor(),
+      error: false
     });
   };
 
-  currentEntity = (color) => {
+  inputColorValueHandler = event => {
     this.setState({
-      currentColor: color,
+      colorInput: event.target.value
     });
+  };
+
+  inputLabelValueHandler = event => {
+    this.setState({
+      labelInput: event.target.value
+    });
+  };
+
+  entityClick = index => {
+    if (this.state.currEntity === index) {
+      this.setState({ currEntity: -1 });
+    } else {
+      this.setState({ currEntity: index });
+    }
   };
 
   render() {
     const { currentImg } = this.props;
-    const { entities, addInput, currentColor } = this.state;
-    console.log(entities);
+    const {
+      entities,
+      addInput,
+      colorInput,
+      labelInput,
+      error,
+      currEntity
+    } = this.state;
     return (
       <div className="midleMain">
         <div className="leftbarNav">
@@ -65,36 +104,69 @@ class Middle extends Component {
             <span>{addInput ? 'Close' : 'Add entity'}</span>
           </div>
           <form
-            style={addInput ? { visibility: 'visible', opacity: '1', height: '50px' } : {}}
+            style={
+              addInput
+                ? { visibility: "visible", opacity: "1", height: "57px" }
+                : {}
+            }
             onSubmit={this.addEntity}
           >
-            <div className="inputBox">
-              <label htmlFor="color">
-                {'Color: '}
-                <input type="text" id="color" />
-              </label>
+            <div
+              className="errorField"
+              style={
+                error
+                  ? { visibility: "visible", opacity: "1", height: "20px" }
+                  : {}
+              }
+            >
+              Incorrect input
             </div>
             <div className="inputBox">
               <label htmlFor="label">
-                {'Label: '}
-                <input type="text" id="label" />
+                {"Label: "}
+                <input
+                  style={error ? { border: "1px solid maroon" } : {}}
+                  type="text"
+                  id="label"
+                  value={labelInput}
+                  onChange={this.inputLabelValueHandler}
+                />
+              </label>
+            </div>
+            <div className="inputBox">
+              <label htmlFor="color">
+                {"Color: "}
+                <input
+                  type="text"
+                  id="color"
+                  value={colorInput}
+                  onChange={this.inputColorValueHandler}
+                />
               </label>
             </div>
             <button title="Add entity" type="submit">
               <i className="fas fa-user-check" />
             </button>
           </form>
-          <div className="currColor">
-            {'Current:'}
-            <div style={{ background: currentColor }} />
+          <div className="items">
+            {entities.map(item => (
+              <Entity
+                key={item.index}
+                item={item}
+                onClick={() => this.entityClick(item.index)}
+              />
+            ))}
+            <style jsx>{`
+              .item:nth-child(${currEntity + 1}) {
+                background: whitesmoke;
+                border: 2px solid #737373;
+              }
+            `}</style>
           </div>
-          {entities.map(item => (
-            <Entity key={item.index} item={item} onClick={() => this.currentEntity(item.color)} />
-          ))}
         </div>
         <div className="targetImg">
           <p>Image</p>
-          {currentColor ? <DrawingField currentColor={currentColor} /> : null}
+          {currEntity >= 0 ? <DrawingField currentColor={entities[currEntity].color} /> : null}
           <Image currentImg={currentImg} />
         </div>
       </div>

@@ -1,7 +1,8 @@
-import React from 'react';
-import './Entity.css';
+import React from "react";
+import "./Entity.css";
 
-const Entity = ({ item, onClick }) => {
+const Entity = props => {
+  const { item, onClick } = props;
   const { color, label } = item;
   return (
     <div className="item" onClick={onClick}>
