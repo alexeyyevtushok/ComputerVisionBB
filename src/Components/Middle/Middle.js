@@ -1,9 +1,12 @@
-import React, { Component } from "react";
-import axios from "axios";
-import Image from "../Image/Image";
-import "./Middle.css";
-import Entity from "../Entity/Entity";
+import React, { Component } from 'react';
+import axios from 'axios';
+import PropTypes from 'prop-types';
+import Image from '../Image/Image';
+import './Middle.css';
+import Entity from '../Entity/Entity';
+import DrawingField from '../DrawingField';
 import Konva from "konva";
+
 
 class Middle extends Component {
   constructor(props) {
@@ -21,14 +24,14 @@ class Middle extends Component {
   generateRandomColor = () => Konva.Util.getRandomColor();
 
   componentDidMount() {
-    axios.get("/api/entities/").then(res => {
+    axios.get('/api/entities/').then((res) => {
       this.setState({
-        entities: res.data
+        entities: res.data,
       });
     });
   }
 
-  addEntity = e => {
+  addEntity = (e) => {
     e.preventDefault();
     if (e.target.label.value === "") {
       this.setState({ error: true });
@@ -96,11 +99,9 @@ class Middle extends Component {
           <div
             title="Add entity"
             onClick={() => this.changeInput()}
-            className={
-              addInput ? "addBtn fas fa-user-slash" : "addBtn fas fa-user-plus"
-            }
+            className={addInput ? 'addBtn fas fa-user-slash' : 'addBtn fas fa-user-plus'}
           >
-            <span>{addInput ? "Close" : "Add entity"}</span>
+            <span>{addInput ? 'Close' : 'Add entity'}</span>
           </div>
           <form
             style={
@@ -165,11 +166,16 @@ class Middle extends Component {
         </div>
         <div className="targetImg">
           <p>Image</p>
+          {currEntity >= 0 ? <DrawingField currentColor={entities[currEntity].color} /> : null}
           <Image currentImg={currentImg} />
         </div>
       </div>
     );
   }
 }
+
+Middle.propTypes = {
+  currentImg: PropTypes.string.isRequired,
+};
 
 export default Middle;
