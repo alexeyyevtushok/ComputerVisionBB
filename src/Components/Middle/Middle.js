@@ -13,7 +13,8 @@ class Middle extends Component {
       addInput: false,
       colorInput: this.generateRandomColor(),
       labelInput: "",
-      error: false
+      error: false,
+      currEntity: -1
     };
   }
 
@@ -70,9 +71,24 @@ class Middle extends Component {
     });
   };
 
+  entityClick = index => {
+    if (this.state.currEntity === index) {
+      this.setState({ currEntity: -1 });
+    } else {
+      this.setState({ currEntity: index });
+    }
+  };
+
   render() {
     const { currentImg } = this.props;
-    const { entities, addInput, colorInput, labelInput, error } = this.state;
+    const {
+      entities,
+      addInput,
+      colorInput,
+      labelInput,
+      error,
+      currEntity
+    } = this.state;
     return (
       <div className="midleMain">
         <div className="leftbarNav">
@@ -131,9 +147,21 @@ class Middle extends Component {
               <i className="fas fa-user-check" />
             </button>
           </form>
-          {entities.map(item => (
-            <Entity key={item.index} item={item} />
-          ))}
+          <div className="items">
+            {entities.map(item => (
+              <Entity
+                key={item.index}
+                item={item}
+                onClick={() => this.entityClick(item.index)}
+              />
+            ))}
+            <style jsx>{`
+              .item:nth-child(${currEntity + 1}) {
+                background: whitesmoke;
+                border: 2px solid #737373;
+              }
+            `}</style>
+          </div>
         </div>
         <div className="targetImg">
           <p>Image</p>
