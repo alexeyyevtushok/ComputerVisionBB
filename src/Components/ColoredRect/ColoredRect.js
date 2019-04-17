@@ -7,14 +7,7 @@ class ColoredRect extends React.Component {
     const { x, y, width, height, color } = this.props;
     return (
       <Group>
-        <Rect
-          x={x}
-          y={y}
-          width={width}
-          height={height}
-          fill={color}
-          onDblClick={event => this.props.handleRectClick(event)}
-        />
+        <Rect x={x} y={y} width={width} height={height} fill={color} />
       </Group>
     );
   }

@@ -16,7 +16,8 @@ class Middle extends Component {
       colorInput: this.generateRandomColor(),
       labelInput: "",
       error: false,
-      currEntity: -1
+      currEntity: -1,
+      drawingMode: false,
     };
   }
 
@@ -33,7 +34,7 @@ class Middle extends Component {
   getReq = () => {
     axios.get("/api/entities/").then(res => {
       this.setState({
-        entities: res.data
+        entities: res.data,
       });
     });
   };
@@ -45,7 +46,7 @@ class Middle extends Component {
     } else {
       const entity = {
         color: e.target.color.value,
-        label: e.target.label.value
+        label: e.target.label.value,
       };
       axios.post("/api/entities/", entity).then(res => {
         this.setState(state => {
@@ -56,7 +57,7 @@ class Middle extends Component {
       this.setState({
         colorInput: this.generateRandomColor(),
         labelInput: "",
-        error: false
+        error: false,
       });
     }
   };
@@ -65,27 +66,27 @@ class Middle extends Component {
     this.setState({
       addInput: !this.state.addInput,
       colorInput: this.generateRandomColor(),
-      error: false
+      error: false,
     });
   };
 
   inputColorValueHandler = event => {
     this.setState({
-      colorInput: event.target.value
+      colorInput: event.target.value,
     });
   };
 
   inputLabelValueHandler = event => {
     this.setState({
-      labelInput: event.target.value
+      labelInput: event.target.value,
     });
   };
 
   entityClick = index => {
     if (this.state.currEntity === index) {
-      this.setState({ currEntity: -1 });
+      this.setState({ currEntity: -1, drawingMode: false });
     } else {
-      this.setState({ currEntity: index });
+      this.setState({ currEntity: index, drawingMode: true });
     }
   };
 
@@ -97,8 +98,22 @@ class Middle extends Component {
       colorInput,
       labelInput,
       error,
-      currEntity
+      currEntity,
+      drawingMode,
     } = this.state;
+    let drawingField = null;
+    if (drawingMode) {
+      drawingField = (
+        <DrawingField
+          drawingMode={drawingMode}
+          currentColor={entities[currEntity].color}
+        />
+      );
+    } else {
+      drawingField = (
+        <DrawingField drawingMode={drawingMode} currentColor={"none"} />
+      );
+    }
     return (
       <div className="midleMain">
         <div className="leftbarNav">
@@ -175,9 +190,7 @@ class Middle extends Component {
         </div>
         <div className="targetImg">
           <p>Image</p>
-          {currEntity >= 0 ? (
-            <DrawingField currentColor={entities[currEntity].color} />
-          ) : null}
+          {drawingField}
           <Image currentImg={currentImg} />
         </div>
       </div>
@@ -186,7 +199,7 @@ class Middle extends Component {
 }
 
 Middle.propTypes = {
-  currentImg: PropTypes.string.isRequired
+  currentImg: PropTypes.string.isRequired,
 };
 
 export default Middle;

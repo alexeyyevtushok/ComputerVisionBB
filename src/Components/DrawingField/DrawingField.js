@@ -43,7 +43,10 @@ class DrawingField extends React.Component {
 
   handleClick = e => {
     const { isDrawing, shapes } = this.state;
-    const { currentColor } = this.props;
+    const { currentColor, drawingMode } = this.props;
+
+    if (!drawingMode) return;
+
     if (isDrawing) {
       this.setState({
         isDrawing: !isDrawing,
@@ -68,6 +71,9 @@ class DrawingField extends React.Component {
 
   handleMouseMove = e => {
     const { isDrawing, shapes } = this.state;
+    const { drawingMode } = this.props;
+
+    if (!drawingMode) return;
 
     const mouseX = e.evt.layerX;
     const mouseY = e.evt.layerY;
@@ -93,12 +99,6 @@ class DrawingField extends React.Component {
     }
   };
 
-  handleRectClick = e => {
-    //e.evt.bubble = false;
-    e.evt.stopPropagation();
-    console.log("rect click");
-  };
-
   render() {
     const { shapes, width, height } = this.state;
     return (
@@ -107,7 +107,7 @@ class DrawingField extends React.Component {
           className="drawingField"
           width={width}
           height={height}
-          onContentClick={this.handleClick}
+          onClick={this.handleClick}
           onContentMouseMove={this.handleMouseMove}
         >
           <Layer>
@@ -118,7 +118,6 @@ class DrawingField extends React.Component {
                 width={shape.width}
                 height={shape.height}
                 color={shape.color}
-                handleRectClick={this.handleRectClick}
               />
             ))}
           </Layer>
@@ -129,6 +128,7 @@ class DrawingField extends React.Component {
 }
 
 DrawingField.propTypes = {
+  drawingMode: PropTypes.bool.isRequired,
   currentColor: PropTypes.string.isRequired,
 };
 
