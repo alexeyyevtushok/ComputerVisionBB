@@ -1,12 +1,9 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Layer, Stage } from 'react-konva';
-import Konva from 'konva';
-import ColoredRect from './ColoredRect';
-
-const style = {
-  position: 'absolute',
-};
+import React from "react";
+import PropTypes from "prop-types";
+import { Layer, Stage } from "react-konva";
+import Konva from "konva";
+import ColoredRect from "../ColoredRect/ColoredRect";
+import "./DrawingField.css";
 
 class DrawingField extends React.Component {
   constructor(props) {
@@ -39,12 +36,12 @@ class DrawingField extends React.Component {
 
   calculateWidth = () => document.documentElement.clientWidth * 0.555;
 
-  transformColor = (color) => {
+  transformColor = color => {
     const rgb = Konva.Util.getRGB(color);
     return `rgba(${rgb.r},${rgb.g},${rgb.b},0.5)`;
   };
 
-  handleClick = (e) => {
+  handleClick = e => {
     const { isDrawing, shapes } = this.state;
     const { currentColor } = this.props;
     if (isDrawing) {
@@ -69,7 +66,7 @@ class DrawingField extends React.Component {
     });
   };
 
-  handleMouseMove = (e) => {
+  handleMouseMove = e => {
     const { isDrawing, shapes } = this.state;
 
     const mouseX = e.evt.layerX;
@@ -101,7 +98,7 @@ class DrawingField extends React.Component {
     return (
       <div>
         <Stage
-          style={style}
+          className="drawingField"
           width={width}
           height={height}
           onContentClick={this.handleClick}

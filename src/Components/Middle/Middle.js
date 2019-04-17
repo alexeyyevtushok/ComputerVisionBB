@@ -1,12 +1,11 @@
-import React, { Component } from 'react';
-import axios from 'axios';
-import PropTypes from 'prop-types';
-import Image from '../Image/Image';
-import './Middle.css';
-import Entity from '../Entity/Entity';
-import DrawingField from '../DrawingField';
+import React, { Component } from "react";
+import axios from "axios";
+import PropTypes from "prop-types";
+import Image from "../Image/Image";
+import "./Middle.css";
+import Entity from "../Entity/Entity";
+import DrawingField from "../DrawingField/DrawingField";
 import Konva from "konva";
-
 
 class Middle extends Component {
   constructor(props) {
@@ -17,28 +16,28 @@ class Middle extends Component {
       colorInput: this.generateRandomColor(),
       labelInput: "",
       error: false,
-      currEntity: -1
+      currEntity: -1,
     };
   }
 
   generateRandomColor = () => Konva.Util.getRandomColor();
 
   componentDidMount() {
-    axios.get('/api/entities/').then((res) => {
+    axios.get("/api/entities/").then(res => {
       this.setState({
         entities: res.data,
       });
     });
   }
 
-  addEntity = (e) => {
+  addEntity = e => {
     e.preventDefault();
     if (e.target.label.value === "") {
       this.setState({ error: true });
     } else {
       const entity = {
         color: e.target.color.value,
-        label: e.target.label.value
+        label: e.target.label.value,
       };
       axios.post("/api/entities/", entity).then(res => {
         this.setState(state => {
@@ -49,7 +48,7 @@ class Middle extends Component {
       this.setState({
         colorInput: this.generateRandomColor(),
         labelInput: "",
-        error: false
+        error: false,
       });
     }
   };
@@ -58,19 +57,19 @@ class Middle extends Component {
     this.setState({
       addInput: !this.state.addInput,
       colorInput: this.generateRandomColor(),
-      error: false
+      error: false,
     });
   };
 
   inputColorValueHandler = event => {
     this.setState({
-      colorInput: event.target.value
+      colorInput: event.target.value,
     });
   };
 
   inputLabelValueHandler = event => {
     this.setState({
-      labelInput: event.target.value
+      labelInput: event.target.value,
     });
   };
 
@@ -90,7 +89,7 @@ class Middle extends Component {
       colorInput,
       labelInput,
       error,
-      currEntity
+      currEntity,
     } = this.state;
     return (
       <div className="midleMain">
@@ -99,9 +98,11 @@ class Middle extends Component {
           <div
             title="Add entity"
             onClick={() => this.changeInput()}
-            className={addInput ? 'addBtn fas fa-user-slash' : 'addBtn fas fa-user-plus'}
+            className={
+              addInput ? "addBtn fas fa-user-slash" : "addBtn fas fa-user-plus"
+            }
           >
-            <span>{addInput ? 'Close' : 'Add entity'}</span>
+            <span>{addInput ? "Close" : "Add entity"}</span>
           </div>
           <form
             style={
@@ -166,7 +167,9 @@ class Middle extends Component {
         </div>
         <div className="targetImg">
           <p>Image</p>
-          {currEntity >= 0 ? <DrawingField currentColor={entities[currEntity].color} /> : null}
+          {currEntity >= 0 ? (
+            <DrawingField currentColor={entities[currEntity].color} />
+          ) : null}
           <Image currentImg={currentImg} />
         </div>
       </div>
