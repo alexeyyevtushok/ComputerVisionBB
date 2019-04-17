@@ -21,12 +21,20 @@ class Middle extends Component {
   generateRandomColor = () => Konva.Util.getRandomColor();
 
   componentDidMount() {
+    this.getReq();
+  }
+
+  componentDidUpdate() {
+    this.getReq();
+  }
+
+  getReq = () => {
     axios.get("/api/entities/").then(res => {
       this.setState({
         entities: res.data
       });
     });
-  }
+  };
 
   addEntity = e => {
     e.preventDefault();
