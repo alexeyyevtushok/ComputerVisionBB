@@ -53,7 +53,8 @@ class Middle extends Component {
   changeInput = () => {
     this.setState({
       addInput: !this.state.addInput,
-      colorInput: this.generateRandomColor()
+      colorInput: this.generateRandomColor(),
+      error: false
     });
   };
 
