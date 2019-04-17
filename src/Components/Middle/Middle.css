@@ -1,7 +1,7 @@
 /*all block*/
 .midleMain {
   display: flex;
-  height:50%;
+  height: 50%;
 }
 
 .midleMain p {
@@ -44,6 +44,8 @@
   cursor: pointer;
 }
 
+
+
 .leftbarNav .addBtn:hover,
 form button:hover {
   cursor: pointer;
@@ -85,7 +87,9 @@ form button {
   margin-left: 12px;
   border-radius: 50%;
   padding: 5px;
+  outline: none;
 }
+
 
 form {
   margin-top: 10px;
@@ -94,17 +98,30 @@ form {
   opacity: 0;
   visibility: hidden;
 }
+
 /*current color*/
-.currColor{
+.currColor {
   display: inline-block;
   margin-bottom: 5px;
 }
 
-.currColor div{
+.currColor div {
   transition: all 0.5s ease;
-  margin-left:5px;
+  margin-left: 5px;
   display: inline-block;
   height: 10px;
   width: 30px;
-  border-radius: 10px; 
+  border-radius: 10px;
+}
+
+.errorField {
+  opacity: 0;
+  visibility: hidden;
+  height: 0;
+  transition: all 1s ease;
+  text-align: center;
+  color: maroon;
+  background: #dbdbdb;
+  border-radius: 20px;
+  width: 90%;
 }

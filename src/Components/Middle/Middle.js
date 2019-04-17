@@ -11,7 +11,9 @@ class Middle extends Component {
     this.state = {
       entities: [],
       addInput: false,
-      valueInput: this.generateRandomColor()
+      colorInput: this.generateRandomColor(),
+      labelInput: "",
+      error: false
     };
   }
 
@@ -27,37 +29,49 @@ class Middle extends Component {
 
   addEntity = e => {
     e.preventDefault();
-    const entity = {
-      color: e.target.color.value,
-      label: e.target.label.value
-    };
-    axios.post("/api/entities/", entity).then(res => {
-      this.setState(state => {
-        const entities = state.entities.push(res.data);
-        return entities;
+    if (e.target.label.value === "") {
+      this.setState({ error: true });
+    } else {
+      const entity = {
+        color: e.target.color.value,
+        label: e.target.label.value
+      };
+      axios.post("/api/entities/", entity).then(res => {
+        this.setState(state => {
+          const entities = state.entities.push(res.data);
+          return entities;
+        });
       });
-    });
-    this.setState({
-      valueInput: this.generateRandomColor()
-    });
+      this.setState({
+        colorInput: this.generateRandomColor(),
+        labelInput: "",
+        error: false
+      });
+    }
   };
 
   changeInput = () => {
     this.setState({
       addInput: !this.state.addInput,
-      valueInput: this.generateRandomColor()
+      colorInput: this.generateRandomColor()
     });
   };
 
-  inputValueHandler = event => {
+  inputColorValueHandler = event => {
     this.setState({
-      valueInput: event.target.value
+      colorInput: event.target.value
+    });
+  };
+
+  inputLabelValueHandler = event => {
+    this.setState({
+      labelInput: event.target.value
     });
   };
 
   render() {
     const { currentImg } = this.props;
-    const { entities, addInput, valueInput } = this.state;
+    const { entities, addInput, colorInput, labelInput, error } = this.state;
     return (
       <div className="midleMain">
         <div className="leftbarNav">
@@ -74,15 +88,31 @@ class Middle extends Component {
           <form
             style={
               addInput
-                ? { visibility: "visible", opacity: "1", height: "50px" }
+                ? { visibility: "visible", opacity: "1", height: "57px" }
                 : {}
             }
             onSubmit={this.addEntity}
           >
+            <div
+              className="errorField"
+              style={
+                error
+                  ? { visibility: "visible", opacity: "1", height: "20px" }
+                  : {}
+              }
+            >
+              Incorrect input
+            </div>
             <div className="inputBox">
               <label htmlFor="label">
                 {"Label: "}
-                <input type="text" id="label" />
+                <input
+                  style={error ? { border: "1px solid maroon" } : {}}
+                  type="text"
+                  id="label"
+                  value={labelInput}
+                  onChange={this.inputLabelValueHandler}
+                />
               </label>
             </div>
             <div className="inputBox">
@@ -91,8 +121,8 @@ class Middle extends Component {
                 <input
                   type="text"
                   id="color"
-                  value={valueInput}
-                  onChange={this.inputValueHandler}
+                  value={colorInput}
+                  onChange={this.inputColorValueHandler}
                 />
               </label>
             </div>
