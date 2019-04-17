@@ -16,7 +16,7 @@ class Middle extends Component {
       colorInput: this.generateRandomColor(),
       labelInput: "",
       error: false,
-      currEntity: -1,
+      currEntity: -1
     };
   }
 
@@ -33,7 +33,7 @@ class Middle extends Component {
   getReq = () => {
     axios.get("/api/entities/").then(res => {
       this.setState({
-        entities: res.data,
+        entities: res.data
       });
     });
   };
@@ -45,7 +45,7 @@ class Middle extends Component {
     } else {
       const entity = {
         color: e.target.color.value,
-        label: e.target.label.value,
+        label: e.target.label.value
       };
       axios.post("/api/entities/", entity).then(res => {
         this.setState(state => {
@@ -56,7 +56,7 @@ class Middle extends Component {
       this.setState({
         colorInput: this.generateRandomColor(),
         labelInput: "",
-        error: false,
+        error: false
       });
     }
   };
@@ -65,19 +65,19 @@ class Middle extends Component {
     this.setState({
       addInput: !this.state.addInput,
       colorInput: this.generateRandomColor(),
-      error: false,
+      error: false
     });
   };
 
   inputColorValueHandler = event => {
     this.setState({
-      colorInput: event.target.value,
+      colorInput: event.target.value
     });
   };
 
   inputLabelValueHandler = event => {
     this.setState({
-      labelInput: event.target.value,
+      labelInput: event.target.value
     });
   };
 
@@ -97,7 +97,7 @@ class Middle extends Component {
       colorInput,
       labelInput,
       error,
-      currEntity,
+      currEntity
     } = this.state;
     return (
       <div className="midleMain">
@@ -186,7 +186,7 @@ class Middle extends Component {
 }
 
 Middle.propTypes = {
-  currentImg: PropTypes.string.isRequired,
+  currentImg: PropTypes.string.isRequired
 };
 
 export default Middle;
