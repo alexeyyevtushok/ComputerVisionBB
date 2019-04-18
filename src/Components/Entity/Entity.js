@@ -15,7 +15,7 @@ const Entity = props => {
       <p>{label}</p>
       <div className="delete">
         <i
-          class="fas fa-trash-alt"
+          className="fas fa-trash-alt"
           onClick={event => deleteHandler(event, item.index)}
         />
       </div>

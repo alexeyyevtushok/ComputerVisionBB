@@ -17,7 +17,7 @@ class Middle extends Component {
       labelInput: "",
       error: false,
       currEntity: -1,
-      drawingMode: false,
+      drawingMode: false
     };
   }
 
@@ -34,7 +34,7 @@ class Middle extends Component {
   getReq = () => {
     axios.get("/api/entities/").then(res => {
       this.setState({
-        entities: res.data,
+        entities: res.data
       });
     });
   };
@@ -46,7 +46,7 @@ class Middle extends Component {
     } else {
       const entity = {
         color: e.target.color.value,
-        label: e.target.label.value,
+        label: e.target.label.value
       };
       axios.post("/api/entities/", entity).then(res => {
         this.setState(state => {
@@ -57,7 +57,7 @@ class Middle extends Component {
       this.setState({
         colorInput: this.generateRandomColor(),
         labelInput: "",
-        error: false,
+        error: false
       });
     }
   };
@@ -66,19 +66,19 @@ class Middle extends Component {
     this.setState({
       addInput: !this.state.addInput,
       colorInput: this.generateRandomColor(),
-      error: false,
+      error: false
     });
   };
 
   inputColorValueHandler = event => {
     this.setState({
-      colorInput: event.target.value,
+      colorInput: event.target.value
     });
   };
 
   inputLabelValueHandler = event => {
     this.setState({
-      labelInput: event.target.value,
+      labelInput: event.target.value
     });
   };
 
@@ -99,7 +99,7 @@ class Middle extends Component {
       labelInput,
       error,
       currEntity,
-      drawingMode,
+      drawingMode
     } = this.state;
     let drawingField = null;
     if (drawingMode) {
@@ -114,84 +114,90 @@ class Middle extends Component {
         <DrawingField drawingMode={drawingMode} currentColor={"none"} />
       );
     }
+
+    const styledClick = `
+    .item:nth-child(${currEntity + 1}) {
+      background: whitesmoke;
+      border: 2px solid #737373;
+    }
+  `;
     return (
-      <div className="midleMain">
-        <div className="leftbarNav">
-          <p>Entities</p>
-          <div
-            title="Add entity"
-            onClick={() => this.changeInput()}
-            className={
-              addInput ? "addBtn fas fa-user-slash" : "addBtn fas fa-user-plus"
-            }
-          >
-            <span>{addInput ? "Close" : "Add entity"}</span>
-          </div>
-          <form
-            style={
-              addInput
-                ? { visibility: "visible", opacity: "1", height: "57px" }
-                : {}
-            }
-            onSubmit={this.addEntity}
-          >
+      <div>
+        <style jsx="">{styledClick}</style>
+        <div className="midleMain">
+          <div className="leftbarNav">
+            <p>Entities</p>
             <div
-              className="errorField"
-              style={
-                error
-                  ? { visibility: "visible", opacity: "1", height: "20px" }
-                  : {}
+              title="Add entity"
+              onClick={() => this.changeInput()}
+              className={
+                addInput
+                  ? "addBtn fas fa-user-slash"
+                  : "addBtn fas fa-user-plus"
               }
             >
-              Incorrect input
+              <span>{addInput ? "Close" : "Add entity"}</span>
             </div>
-            <div className="inputBox">
-              <label htmlFor="label">
-                {"Label: "}
-                <input
-                  style={error ? { border: "1px solid maroon" } : {}}
-                  type="text"
-                  id="label"
-                  value={labelInput}
-                  onChange={this.inputLabelValueHandler}
-                />
-              </label>
-            </div>
-            <div className="inputBox">
-              <label htmlFor="color">
-                {"Color: "}
-                <input
-                  type="text"
-                  id="color"
-                  value={colorInput}
-                  onChange={this.inputColorValueHandler}
-                />
-              </label>
-            </div>
-            <button title="Add entity" type="submit">
-              <i className="fas fa-user-check" />
-            </button>
-          </form>
-          <div className="items">
-            {entities.map(item => (
-              <Entity
-                key={item.index}
-                item={item}
-                onClick={() => this.entityClick(item.index)}
-              />
-            ))}
-            <style jsx>{`
-              .item:nth-child(${currEntity + 1}) {
-                background: whitesmoke;
-                border: 2px solid #737373;
+            <form
+              style={
+                addInput
+                  ? { visibility: "visible", opacity: "1", height: "57px" }
+                  : {}
               }
-            `}</style>
+              onSubmit={this.addEntity}
+            >
+              <div
+                className="errorField"
+                style={
+                  error
+                    ? { visibility: "visible", opacity: "1", height: "20px" }
+                    : {}
+                }
+              >
+                Incorrect input
+              </div>
+              <div className="inputBox">
+                <label htmlFor="label">
+                  {"Label: "}
+                  <input
+                    style={error ? { border: "1px solid maroon" } : {}}
+                    type="text"
+                    id="label"
+                    value={labelInput}
+                    onChange={this.inputLabelValueHandler}
+                  />
+                </label>
+              </div>
+              <div className="inputBox">
+                <label htmlFor="color">
+                  {"Color: "}
+                  <input
+                    type="text"
+                    id="color"
+                    value={colorInput}
+                    onChange={this.inputColorValueHandler}
+                  />
+                </label>
+              </div>
+              <button title="Add entity" type="submit">
+                <i className="fas fa-user-check" />
+              </button>
+            </form>
+            <div className="items">
+              {entities.map(item => (
+                <Entity
+                  key={item.index}
+                  item={item}
+                  onClick={() => this.entityClick(item.index)}
+                />
+              ))}
+            </div>
           </div>
-        </div>
-        <div className="targetImg">
-          <p>Image</p>
-          {drawingField}
-          <Image currentImg={currentImg} />
+          <div className="targetImg">
+            <p>Image</p>
+            {drawingField}
+            <Image currentImg={currentImg} />
+          </div>
         </div>
       </div>
     );
@@ -199,7 +205,7 @@ class Middle extends Component {
 }
 
 Middle.propTypes = {
-  currentImg: PropTypes.string.isRequired,
+  currentImg: PropTypes.string.isRequired
 };
 
 export default Middle;
