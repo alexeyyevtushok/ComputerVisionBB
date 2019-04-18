@@ -13,7 +13,7 @@ class EntitiesField extends React.Component {
       colorInput: this.generateRandomColor(),
       labelInput: "",
       error: false,
-      currEntity: -1
+      currEntity: -1,
       //   drawingMode: false,
     };
   }
@@ -24,14 +24,10 @@ class EntitiesField extends React.Component {
     this.getReq();
   }
 
-  componentDidUpdate() {
-    this.getReq();
-  }
-
   getReq = () => {
     axios.get("/api/entities/").then(res => {
       this.setState({
-        entities: res.data
+        entities: res.data,
       });
     });
   };
@@ -40,19 +36,19 @@ class EntitiesField extends React.Component {
     this.setState({
       addInput: !this.state.addInput,
       colorInput: this.generateRandomColor(),
-      error: false
+      error: false,
     });
   };
 
   inputColorValueHandler = event => {
     this.setState({
-      colorInput: event.target.value
+      colorInput: event.target.value,
     });
   };
 
   inputLabelValueHandler = event => {
     this.setState({
-      labelInput: event.target.value
+      labelInput: event.target.value,
     });
   };
 
@@ -63,7 +59,7 @@ class EntitiesField extends React.Component {
     } else {
       const entity = {
         color: e.target.color.value,
-        label: e.target.label.value
+        label: e.target.label.value,
       };
       axios.post("/api/entities/", entity).then(res => {
         this.setState(state => {
@@ -74,17 +70,18 @@ class EntitiesField extends React.Component {
       this.setState({
         colorInput: this.generateRandomColor(),
         labelInput: "",
-        error: false
+        error: false,
       });
     }
   };
 
   deleteHandler = (event, index) => {
     if (index === this.state.currEntity) {
+      this.props.setCurrentEntity(null);
       this.setState({ currEntity: -1, drawingMode: false });
     }
     event.stopPropagation();
-    axios.delete(`/api/entities/${index}`);
+    axios.delete(`/api/entities/${index}`).then(this.getReq());
   };
 
   entityClick = index => {
@@ -98,13 +95,14 @@ class EntitiesField extends React.Component {
   };
 
   render() {
+    console.log("entitiesfield");
     const {
       entities,
       addInput,
       colorInput,
       labelInput,
       error,
-      currEntity
+      currEntity,
     } = this.state;
 
     const styledClick = `
