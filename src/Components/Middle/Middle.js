@@ -39,12 +39,6 @@ class Middle extends Component {
       );
     }
 
-    const styledClick = `
-    .item:nth-child(${currEntity + 1}) {
-      background: whitesmoke;
-      border: 2px solid #737373;
-    }
-  `;
     return (
       <div className="midleMain">
         <EntitiesField setCurrentEntity={this.setCurrentEntity} />
@@ -59,7 +53,7 @@ class Middle extends Component {
 }
 
 Middle.propTypes = {
-  currentImg: PropTypes.string.isRequired
+  currentImg: PropTypes.string.isRequired,
 };
 
 export default Middle;
