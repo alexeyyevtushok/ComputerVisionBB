@@ -1,14 +1,14 @@
 import React from "react";
 import "./Entity.css";
-import axios from "axios";
 
 const Entity = props => {
-  const { item, onClick } = props;
+  const { item, onClick, deleteHandler } = props;
   const { color, label } = item;
-  const deleteHandler = (event, index) => {
-    event.stopPropagation();
-    axios.delete(`/api/entities/${index}`);
-  };
+
+  // const toParent = (event,index) => {
+  //   deleteHandler(event,index)
+  // }
+
   return (
     <div className="item" onClick={onClick}>
       <div className="color" style={{ background: color }} />
