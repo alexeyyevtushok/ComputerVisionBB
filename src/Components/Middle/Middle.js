@@ -62,6 +62,12 @@ class Middle extends Component {
     }
   };
 
+  deleteHandler = (event, index) => {
+    event.stopPropagation();
+    this.entityClick(index);
+    axios.delete(`/api/entities/${index}`);
+  };
+
   changeInput = () => {
     this.setState({
       addInput: !this.state.addInput,
@@ -178,6 +184,7 @@ class Middle extends Component {
                 key={item.index}
                 item={item}
                 onClick={() => this.entityClick(item.index)}
+                deleteHandler={this.deleteHandler}
               />
             ))}
             <style jsx>{`
