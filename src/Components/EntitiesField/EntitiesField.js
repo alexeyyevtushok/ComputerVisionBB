@@ -13,7 +13,7 @@ class EntitiesField extends React.Component {
       colorInput: this.generateRandomColor(),
       labelInput: "",
       error: false,
-      //   currEntity: -1,
+      currEntity: -1
       //   drawingMode: false,
     };
   }
@@ -31,7 +31,7 @@ class EntitiesField extends React.Component {
   getReq = () => {
     axios.get("/api/entities/").then(res => {
       this.setState({
-        entities: res.data,
+        entities: res.data
       });
     });
   };
@@ -40,19 +40,19 @@ class EntitiesField extends React.Component {
     this.setState({
       addInput: !this.state.addInput,
       colorInput: this.generateRandomColor(),
-      error: false,
+      error: false
     });
   };
 
   inputColorValueHandler = event => {
     this.setState({
-      colorInput: event.target.value,
+      colorInput: event.target.value
     });
   };
 
   inputLabelValueHandler = event => {
     this.setState({
-      labelInput: event.target.value,
+      labelInput: event.target.value
     });
   };
 
@@ -63,7 +63,7 @@ class EntitiesField extends React.Component {
     } else {
       const entity = {
         color: e.target.color.value,
-        label: e.target.label.value,
+        label: e.target.label.value
       };
       axios.post("/api/entities/", entity).then(res => {
         this.setState(state => {
@@ -74,7 +74,7 @@ class EntitiesField extends React.Component {
       this.setState({
         colorInput: this.generateRandomColor(),
         labelInput: "",
-        error: false,
+        error: false
       });
     }
   };
@@ -98,20 +98,21 @@ class EntitiesField extends React.Component {
   };
 
   render() {
-    const styledClick = `
-    .item:nth-child(${currEntity + 1}) {
-      background: whitesmoke;
-      border: 2px solid #737373;
-    }
-  `;
     const {
       entities,
       addInput,
       colorInput,
       labelInput,
       error,
-      currEntity,
+      currEntity
     } = this.state;
+
+    const styledClick = `
+    .item:nth-child(${currEntity + 1}) {
+      background: whitesmoke;
+      border: 2px solid #737373;
+    }
+  `;
     return (
       <div className="leftbarNav">
         <p>Entities</p>
@@ -178,12 +179,7 @@ class EntitiesField extends React.Component {
               deleteHandler={this.deleteHandler}
             />
           ))}
-          <style jsx>{`
-            .item:nth-child(${currEntity + 1}) {
-              background: whitesmoke;
-              border: 2px solid #737373;
-            }
-          `}</style>
+          <style jsx="">{styledClick}</style>
         </div>
       </div>
     );
