@@ -80,6 +80,9 @@ class EntitiesField extends React.Component {
   };
 
   deleteHandler = (event, index) => {
+    if (index === this.state.currEntity) {
+      this.setState({ currEntity: -1, drawingMode: false });
+    }
     event.stopPropagation();
     axios.delete(`/api/entities/${index}`);
   };
@@ -95,6 +98,12 @@ class EntitiesField extends React.Component {
   };
 
   render() {
+    const styledClick = `
+    .item:nth-child(${currEntity + 1}) {
+      background: whitesmoke;
+      border: 2px solid #737373;
+    }
+  `;
     const {
       entities,
       addInput,
