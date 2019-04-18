@@ -12,7 +12,7 @@ class DrawingField extends React.Component {
       shapes: [],
       isDrawing: false,
       width: this.calculateWidth(),
-      height: this.calculateHeight(),
+      height: this.calculateHeight()
     };
   }
 
@@ -49,7 +49,7 @@ class DrawingField extends React.Component {
 
     if (isDrawing) {
       this.setState({
-        isDrawing: !isDrawing,
+        isDrawing: !isDrawing
       });
       return;
     }
@@ -60,12 +60,12 @@ class DrawingField extends React.Component {
       y: e.evt.layerY,
       width: 0,
       height: 0,
-      color: this.transformColor(currentColor),
+      color: this.transformColor(currentColor)
     });
 
     this.setState({
       isDrawing: true,
-      shapes: newShapes,
+      shapes: newShapes
     });
   };
 
@@ -90,11 +90,11 @@ class DrawingField extends React.Component {
         y: currShape.y,
         width: newWidth, // new width and height
         height: newHeight,
-        color: currShape.color,
+        color: currShape.color
       };
 
       this.setState({
-        shapes: newShapesList,
+        shapes: newShapesList
       });
     }
   };
@@ -113,6 +113,7 @@ class DrawingField extends React.Component {
           <Layer>
             {shapes.map(shape => (
               <ColoredRect
+                key={shape.color}
                 x={shape.x}
                 y={shape.y}
                 width={shape.width}
@@ -129,7 +130,7 @@ class DrawingField extends React.Component {
 
 DrawingField.propTypes = {
   drawingMode: PropTypes.bool.isRequired,
-  currentColor: PropTypes.string.isRequired,
+  currentColor: PropTypes.string.isRequired
 };
 
 export default DrawingField;
