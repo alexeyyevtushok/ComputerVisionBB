@@ -1,6 +1,8 @@
 import React from "react";
 import axios from "axios";
 import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import { addEntity } from "../../actions/entitiesActions";
 import Entity from "../Entity/Entity";
 import Konva from "konva";
 

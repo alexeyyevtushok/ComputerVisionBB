@@ -1,4 +1,6 @@
 import React, { Component } from "react";
+import { Provider } from "react-redux";
+import store from "../../store";
 import Header from "../Header/Header";
 import Middle from "../Middle/Middle";
 import Slider from "../Slider/Slider";
@@ -10,7 +12,7 @@ class Application extends Component {
     super(props);
     this.state = {
       currentImg:
-        "http://pcexpert86.ru/image/cache/catalog/thumbs/nofoto-1200x800.gif"
+        "http://pcexpert86.ru/image/cache/catalog/thumbs/nofoto-1200x800.gif",
     };
   }
 
@@ -22,7 +24,7 @@ class Application extends Component {
     axios.get("/api/images/").then(res => {
       if (res.data.length > 0) {
         this.setState({
-          currentImg: res.data[0].picture
+          currentImg: res.data[0].picture,
         });
       }
     });
@@ -30,7 +32,7 @@ class Application extends Component {
 
   getUrl = url => {
     this.setState({
-      currentImg: url
+      currentImg: url,
     });
   };
 
@@ -47,11 +49,13 @@ class Application extends Component {
   render() {
     const { currentImg } = this.state;
     return (
-      <div className="main">
-        <Header fileHandler={this.fileHandler} />
-        <Middle currentImg={currentImg} />
-        <Slider onGetUrl={this.getUrl} />
-      </div>
+      <Provider store={store}>
+        <div className="main">
+          <Header fileHandler={this.fileHandler} />
+          <Middle currentImg={currentImg} />
+          <Slider onGetUrl={this.getUrl} />
+        </div>
+      </Provider>
     );
   }
 }
