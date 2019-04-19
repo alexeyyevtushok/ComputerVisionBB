@@ -14,6 +14,7 @@ export const setEmptyCurrEntity = () => ({
     label: '',
   },
 });
+
 const getEntities = () => axios
   .get('/api/entities')
   .then(res => res.data)
