@@ -1,9 +1,9 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Image from "../Image/Image";
-import "./Middle.css";
-import DrawingField from "../DrawingField/DrawingField";
-import EntitiesField from "../EntitiesField/EntitiesField";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import Image from '../Image/Image';
+import './Middle.css';
+import DrawingField from '../DrawingField/DrawingField';
+import EntitiesField from '../EntitiesField/EntitiesField';
 
 class Middle extends Component {
   constructor(props) {
@@ -14,7 +14,7 @@ class Middle extends Component {
     };
   }
 
-  setCurrentEntity = entity => {
+  setCurrentEntity = (entity) => {
     if (entity === null) {
       this.setState({ currEntity: null, drawingMode: false });
     } else {
@@ -26,6 +26,16 @@ class Middle extends Component {
     const { currentImg } = this.props;
     const { currEntity, drawingMode } = this.state;
     let drawingField = null;
+    // eslint-disable-next-line no-unused-vars
+    let styledClick;
+    if (currEntity) {
+      styledClick = `
+      .item:nth-child(${currEntity.index + 1}) {
+        background: whitesmoke;
+        border: 2px solid #737373;
+      }
+    `;
+    }
     if (drawingMode) {
       drawingField = (
         <DrawingField
@@ -35,7 +45,7 @@ class Middle extends Component {
       );
     } else {
       drawingField = (
-        <DrawingField drawingMode={drawingMode} currentColor={"none"} />
+        <DrawingField drawingMode={drawingMode} currentColor="none" />
       );
     }
 

@@ -1,8 +1,7 @@
-import React from "react";
-import axios from "axios";
-import PropTypes from "prop-types";
-import Entity from "../Entity/Entity";
-import Konva from "konva";
+import React from 'react';
+import axios from 'axios';
+import Konva from 'konva';
+import Entity from '../Entity/Entity';
 
 class EntitiesField extends React.Component {
   constructor(props) {
@@ -11,10 +10,9 @@ class EntitiesField extends React.Component {
       entities: [],
       addInput: false,
       colorInput: this.generateRandomColor(),
-      labelInput: "",
+      labelInput: '',
       error: false,
       currEntity: -1,
-      //   drawingMode: false,
     };
   }
 
@@ -25,7 +23,7 @@ class EntitiesField extends React.Component {
   }
 
   getReq = () => {
-    axios.get("/api/entities/").then(res => {
+    axios.get('/api/entities/').then(res => {
       this.setState({
         entities: res.data,
       });
@@ -54,14 +52,14 @@ class EntitiesField extends React.Component {
 
   addEntity = e => {
     e.preventDefault();
-    if (e.target.label.value === "") {
+    if (e.target.label.value === '') {
       this.setState({ error: true });
     } else {
       const entity = {
         color: e.target.color.value,
         label: e.target.label.value,
       };
-      axios.post("/api/entities/", entity).then(res => {
+      axios.post('/api/entities/', entity).then(res => {
         this.setState(state => {
           const entities = state.entities.push(res.data);
           return entities;
@@ -69,7 +67,7 @@ class EntitiesField extends React.Component {
       });
       this.setState({
         colorInput: this.generateRandomColor(),
-        labelInput: "",
+        labelInput: '',
         error: false,
       });
     }
@@ -78,7 +76,7 @@ class EntitiesField extends React.Component {
   deleteHandler = (event, index) => {
     if (index === this.state.currEntity) {
       this.props.setCurrentEntity(null);
-      this.setState({ currEntity: -1, drawingMode: false });
+      this.setState({ currEntity: -1 });
     }
     event.stopPropagation();
     axios.delete(`/api/entities/${index}`).then(this.getReq());
@@ -95,7 +93,6 @@ class EntitiesField extends React.Component {
   };
 
   render() {
-    console.log("entitiesfield");
     const {
       entities,
       addInput,
@@ -104,7 +101,7 @@ class EntitiesField extends React.Component {
       error,
       currEntity,
     } = this.state;
-
+    console.log(entities);
     const styledClick = `
     .item:nth-child(${currEntity + 1}) {
       background: whitesmoke;
@@ -118,15 +115,15 @@ class EntitiesField extends React.Component {
           title="Add entity"
           onClick={() => this.changeInput()}
           className={
-            addInput ? "addBtn fas fa-user-slash" : "addBtn fas fa-user-plus"
+            addInput ? 'addBtn fas fa-user-slash' : 'addBtn fas fa-user-plus'
           }
         >
-          <span>{addInput ? "Close" : "Add entity"}</span>
+          <span>{addInput ? 'Close' : 'Add entity'}</span>
         </div>
         <form
           style={
             addInput
-              ? { visibility: "visible", opacity: "1", height: "57px" }
+              ? { visibility: 'visible', opacity: '1', height: '57px' }
               : {}
           }
           onSubmit={this.addEntity}
@@ -135,7 +132,7 @@ class EntitiesField extends React.Component {
             className="errorField"
             style={
               error
-                ? { visibility: "visible", opacity: "1", height: "20px" }
+                ? { visibility: 'visible', opacity: '1', height: '20px' }
                 : {}
             }
           >
@@ -143,9 +140,9 @@ class EntitiesField extends React.Component {
           </div>
           <div className="inputBox">
             <label htmlFor="label">
-              {"Label: "}
+              {'Label: '}
               <input
-                style={error ? { border: "1px solid maroon" } : {}}
+                style={error ? { border: '1px solid maroon' } : {}}
                 type="text"
                 id="label"
                 value={labelInput}
@@ -155,7 +152,7 @@ class EntitiesField extends React.Component {
           </div>
           <div className="inputBox">
             <label htmlFor="color">
-              {"Color: "}
+              {'Color: '}
               <input
                 type="text"
                 id="color"

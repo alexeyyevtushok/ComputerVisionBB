@@ -1,5 +1,5 @@
-import React from "react";
-import "./Entity.css";
+import React from 'react';
+import './Entity.css';
 
 const Entity = props => {
   const { item, onClick, deleteHandler } = props;
