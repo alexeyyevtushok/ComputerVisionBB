@@ -1,7 +1,9 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
 import { Layer, Stage } from 'react-konva';
 import Konva from 'konva';
+import { addShape } from '../../actions/shapesActions';
 import ColoredRect from '../ColoredRect/ColoredRect';
 import './DrawingField.css';
 
@@ -43,11 +45,12 @@ class DrawingField extends React.Component {
 
   handleClick = (e) => {
     const { isDrawing, shapes } = this.state;
-    const { currentColor, drawingMode } = this.props;
+    const { currEntity } = this.props;
 
-    if (!drawingMode) return;
+    if (currEntity.index === -1) return;
 
     if (isDrawing) {
+      this.props.addShape(shapes[shapes.length - 1], currEntity.label);
       this.setState({
         isDrawing: !isDrawing,
       });
@@ -60,7 +63,7 @@ class DrawingField extends React.Component {
       y: e.evt.layerY,
       width: 0,
       height: 0,
-      color: this.transformColor(currentColor),
+      color: this.transformColor(currEntity.color),
     });
 
     this.setState({
@@ -71,9 +74,9 @@ class DrawingField extends React.Component {
 
   handleMouseMove = (e) => {
     const { isDrawing, shapes } = this.state;
-    const { drawingMode } = this.props;
+    const { currEntity } = this.props;
 
-    if (!drawingMode) return;
+    if (currEntity.index === -1) return;
 
     const mouseX = e.evt.layerX;
     const mouseY = e.evt.layerY;
@@ -129,8 +132,18 @@ class DrawingField extends React.Component {
 }
 
 DrawingField.propTypes = {
-  drawingMode: PropTypes.bool.isRequired,
-  currentColor: PropTypes.string.isRequired,
+  currEntity: PropTypes.shape({
+    index: PropTypes.number.isRequired,
+    label: PropTypes.string.isRequired,
+    color: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
-export default DrawingField;
+const mapStateToProps = state => ({
+  currEntity: state.entities.currEntity,
+});
+
+export default connect(
+  mapStateToProps,
+  { addShape },
+)(DrawingField);
