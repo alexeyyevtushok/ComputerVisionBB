@@ -1,50 +1,30 @@
-import React, { Component } from "react";
-import PropTypes from "prop-types";
-import Image from "../Image/Image";
-import "./Middle.css";
-import DrawingField from "../DrawingField/DrawingField";
-import EntitiesField from "../EntitiesField/EntitiesField";
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+import Image from '../Image/Image';
+import './Middle.css';
+import DrawingField from '../DrawingField/DrawingField';
+import EntitiesField from '../EntitiesField/EntitiesField';
 
 class Middle extends Component {
   constructor(props) {
     super(props);
-    this.state = {
-      currEntity: null,
-      drawingMode: false,
-    };
+    this.state = {};
   }
 
-  setCurrentEntity = entity => {
-    if (entity === null) {
-      this.setState({ currEntity: null, drawingMode: false });
-    } else {
-      this.setState({ currEntity: entity, drawingMode: true });
-    }
-  };
-
   render() {
-    const { currentImg } = this.props;
-    const { currEntity, drawingMode } = this.state;
-    let drawingField = null;
-    if (drawingMode) {
-      drawingField = (
-        <DrawingField
-          drawingMode={drawingMode}
-          currentColor={currEntity.color}
-        />
-      );
-    } else {
-      drawingField = (
-        <DrawingField drawingMode={drawingMode} currentColor={"none"} />
-      );
+    const { currentImg, currEntity } = this.props;
+    let drawingMode = false;
+    if (currEntity.color !== '') {
+      drawingMode = true;
     }
 
     return (
       <div className="midleMain">
-        <EntitiesField setCurrentEntity={this.setCurrentEntity} />
+        <EntitiesField />
         <div className="targetImg">
           <p>Image</p>
-          {drawingField}
+          <DrawingField drawingMode={drawingMode} currentColor={currEntity.color} />
           <Image currentImg={currentImg} />
         </div>
       </div>
@@ -54,6 +34,15 @@ class Middle extends Component {
 
 Middle.propTypes = {
   currentImg: PropTypes.string.isRequired,
+  currEntity: PropTypes.shape({
+    index: PropTypes.number.isRequired,
+    label: PropTypes.string.isRequired,
+    color: PropTypes.string.isRequired,
+  }).isRequired,
 };
 
-export default Middle;
+const mapStateToProps = state => ({
+  currEntity: state.entities.currEntity,
+});
+
+export default connect(mapStateToProps)(Middle);
