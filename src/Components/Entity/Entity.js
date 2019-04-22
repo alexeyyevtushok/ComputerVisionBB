@@ -15,6 +15,12 @@ const Entity = props => {
           onClick={event => deleteHandler(event, item.index)}
         />
       </div>
+      <div className="modify">
+        <i
+          className="fas fa-trash-alt"
+          onClick={event => deleteHandler(event, item.index)}
+        />
+      </div>
     </div>
   );
 };

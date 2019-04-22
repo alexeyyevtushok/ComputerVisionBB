@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
 import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
 import Image from '../Image/Image';
 import './Middle.css';
 import DrawingField from '../DrawingField/DrawingField';
@@ -13,21 +12,13 @@ class Middle extends Component {
   }
 
   render() {
-    const { currentImg, currEntity } = this.props;
-    let drawingMode = false;
-    if (currEntity.color !== '') {
-      drawingMode = true;
-    }
-
+    const { currentImg } = this.props;
     return (
       <div className="midleMain">
         <EntitiesField />
         <div className="targetImg">
           <p>Image</p>
-          <DrawingField
-            drawingMode={drawingMode}
-            currentColor={currEntity.color}
-          />
+          <DrawingField />
           <Image currentImg={currentImg} />
         </div>
       </div>
@@ -37,15 +28,6 @@ class Middle extends Component {
 
 Middle.propTypes = {
   currentImg: PropTypes.string.isRequired,
-  currEntity: PropTypes.shape({
-    index: PropTypes.number.isRequired,
-    label: PropTypes.string.isRequired,
-    color: PropTypes.string.isRequired,
-  }).isRequired,
 };
 
-const mapStateToProps = state => ({
-  currEntity: state.entities.currEntity,
-});
-
-export default connect(mapStateToProps)(Middle);
+export default Middle;
