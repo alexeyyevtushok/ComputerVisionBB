@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import debounce from 'lodash.debounce';
 import { Layer, Stage } from 'react-konva';
-import Konva from 'konva';
 import { addShape } from '../../actions/shapesActions';
 import ColoredRect from '../ColoredRect/ColoredRect';
 import './DrawingField.css';
@@ -18,30 +18,29 @@ class DrawingField extends React.Component {
     };
   }
 
-  // componentDidMount = () => {
-  //   window.addEventListener('resize', this.updateDimensions);
-  // };
+  componentDidUpdate() {
+    this.layer.batchDraw();
+  }
 
-  // componentWillUnmount = () => {
-  //   window.removeEventListener('resize', this.updateDimensions);
-  // };
+  componentDidMount = () => {
+    window.addEventListener('resize', this.updateFieldSize);
+  };
 
-  // updateDimensions = () => {
-  //   console.log('updating dimensions');
-  //   this.setState({
-  //     width: this.calculateWidth(),
-  //     height: this.calculateHeight(),
-  //   });
-  // };
+  componentWillUnmount = () => {
+    window.removeEventListener('resize', this.updateFieldSize);
+  };
 
   calculateHeight = () => document.documentElement.clientHeight * 0.7;
 
   calculateWidth = () => document.documentElement.clientWidth * 0.555;
 
-  transformColor = (color) => {
-    const rgb = Konva.Util.getRGB(color);
-    return `rgba(${rgb.r},${rgb.g},${rgb.b},0.5)`;
-  };
+  updateFieldSize = debounce(() => {
+    console.log('updating dimensions');
+    this.setState({
+      width: this.calculateWidth(),
+      height: this.calculateHeight(),
+    });
+  }, 500);
 
   handleClick = (e) => {
     const { isDrawing, shapes } = this.state;
@@ -63,7 +62,7 @@ class DrawingField extends React.Component {
       y: e.evt.layerY,
       width: 0,
       height: 0,
-      color: this.transformColor(currEntity.color),
+      color: currEntity.color,
     });
 
     this.setState({
@@ -113,10 +112,14 @@ class DrawingField extends React.Component {
           onClick={this.handleClick}
           onContentMouseMove={this.handleMouseMove}
         >
-          <Layer>
+          <Layer
+            ref={(ref) => {
+              this.layer = ref;
+            }}
+          >
             {shapes.map(shape => (
               <ColoredRect
-                key={shape.color}
+                key={`${shape.color}${shape.x}${shape.y}`}
                 x={shape.x}
                 y={shape.y}
                 width={shape.width}
