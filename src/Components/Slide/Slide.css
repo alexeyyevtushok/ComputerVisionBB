@@ -1,0 +1,15 @@
+.slide{
+  color:white;
+}
+
+.picture {
+  height: 11vh;
+  width: 11vh;
+  user-select: none;
+}
+
+.picture:hover {
+  transform: scale(0.9);
+  cursor: pointer;
+  box-shadow: 0px 0px 6px 0px rgba(0,0,0,0.75);
+}
