@@ -124,7 +124,7 @@ class DrawingField extends React.Component {
           >
             {shapes.map(shape => (
               <ColoredRect
-                key={shape.color}
+                key={`${shape.color}${shape.x}${shape.y}`}
                 x={shape.x}
                 y={shape.y}
                 width={shape.width}
