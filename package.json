@@ -9,6 +9,10 @@
     "prop-types": "^15.7.2",
     "react": "^16.8.6",
     "react-awesome-modal": "^2.0.5",
+<<<<<<< HEAD
+=======
+    "react-contextmenu": "^2.11.0",
+>>>>>>> 5cfc52a43f09e2e67b74691e73ce04ee7afa4d3b
     "react-dom": "^16.8.6",
     "react-konva": "^16.8.6",
     "react-redux": "^7.0.2",

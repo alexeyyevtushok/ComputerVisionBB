@@ -5,6 +5,7 @@ import Konva from 'konva';
 import {
   addEntity,
   deleteEntity,
+  modifyEntity,
   setCurrEntity,
   setEmptyCurrEntity,
 } from '../../actions/entitiesActions';
@@ -18,6 +19,7 @@ class EntitiesField extends React.Component {
       colorInput: this.generateRandomColor(),
       labelInput: '',
       error: false,
+      editInput: -1,
     };
   }
 
@@ -31,13 +33,13 @@ class EntitiesField extends React.Component {
     }));
   };
 
-  inputHandler = (event) => {
+  inputHandler = event => {
     this.setState({
       [event.target.id]: event.target.value,
     });
   };
 
-  addEntity = (e) => {
+  addEntity = e => {
     e.preventDefault();
     if (e.target.labelInput.value === '') {
       this.setState({ error: true });
@@ -63,9 +65,22 @@ class EntitiesField extends React.Component {
     }
     event.stopPropagation();
     this.props.deleteEntity(index);
+    this.setState({ editInput: -1 });
   };
 
-  entityClick = (index) => {
+  modifyHandler = (event, index) => {
+    event.stopPropagation();
+    if (this.state.editInput === index) this.setState({ editInput: -1 });
+    else this.setState({ editInput: index });
+  };
+
+  modifyAcceptHandler = (event, index) => {
+    event.preventDefault();
+    this.props.modifyEntity(index, event.target.modifyInput.value);
+    this.setState({ editInput: -1 });
+  };
+
+  entityClick = index => {
     const { currEntity, entities } = this.props;
 
     if (index === currEntity.index) {
@@ -77,14 +92,18 @@ class EntitiesField extends React.Component {
 
   render() {
     console.log('entitiesfield');
-    const {
-      addInput, colorInput, labelInput, error,
-    } = this.state;
+    const { addInput, colorInput, labelInput, error, editInput } = this.state;
     const { entities, currEntity } = this.props;
     const styledClick = `
     .item:nth-child(${currEntity.index + 1}) {
       background: whitesmoke;
       border: 2px solid #737373;
+    }
+  `;
+    const editClick = `
+    .item:nth-child(${editInput + 1}) .modifyForm{
+      visibility: visible;
+      opacity:1;
     }
   `;
     return (
@@ -93,17 +112,28 @@ class EntitiesField extends React.Component {
         <div
           title="Add entity"
           onClick={() => this.changeInput()}
-          className={addInput ? 'addBtn fas fa-user-slash' : 'addBtn fas fa-user-plus'}
+          className={
+            addInput ? 'addBtn fas fa-user-slash' : 'addBtn fas fa-user-plus'
+          }
         >
           <span>{addInput ? 'Close' : 'Add entity'}</span>
         </div>
         <form
-          style={addInput ? { visibility: 'visible', opacity: '1', height: '57px' } : {}}
+          style={
+            addInput
+              ? { visibility: 'visible', opacity: '1', height: '57px' }
+              : {}
+          }
+          className="entFieldForm"
           onSubmit={this.addEntity}
         >
           <div
             className="errorField"
-            style={error ? { visibility: 'visible', opacity: '1', height: '20px' } : {}}
+            style={
+              error
+                ? { visibility: 'visible', opacity: '1', height: '20px' }
+                : {}
+            }
           >
             {'Incorrect input'}
           </div>
@@ -122,7 +152,12 @@ class EntitiesField extends React.Component {
           <div className="inputBox">
             <label htmlFor="color">
               {'Color: '}
-              <input type="text" id="colorInput" value={colorInput} onChange={this.inputHandler} />
+              <input
+                type="text"
+                id="colorInput"
+                value={colorInput}
+                onChange={this.inputHandler}
+              />
             </label>
           </div>
           <button title="Add entity" type="submit">
@@ -136,9 +171,12 @@ class EntitiesField extends React.Component {
               item={item}
               onClick={() => this.entityClick(item.index)}
               deleteHandler={this.deleteHandler}
+              modifyHandler={this.modifyHandler}
+              modifyAcceptHandler={this.modifyAcceptHandler}
             />
           ))}
           <style jsx="">{styledClick}</style>
+          <style jsx="">{editClick}</style>
         </div>
       </div>
     );
@@ -168,6 +206,7 @@ export default connect(
   {
     addEntity,
     deleteEntity,
+    modifyEntity,
     setCurrEntity,
     setEmptyCurrEntity,
   },
