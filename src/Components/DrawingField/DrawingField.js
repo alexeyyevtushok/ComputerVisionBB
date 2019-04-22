@@ -1,8 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
 import PropTypes from 'prop-types';
+import debounce from 'lodash.debounce';
 import { Layer, Stage } from 'react-konva';
-import Konva from 'konva';
 import { addShape } from '../../actions/shapesActions';
 import ColoredRect from '../ColoredRect/ColoredRect';
 import './DrawingField.css';
@@ -22,25 +22,25 @@ class DrawingField extends React.Component {
     this.layer.batchDraw();
   }
 
-  // componentDidMount = () => {
-  //   window.addEventListener('resize', this.updateDimensions);
-  // };
+  componentDidMount = () => {
+    window.addEventListener('resize', this.updateFieldSize);
+  };
 
-  // componentWillUnmount = () => {
-  //   window.removeEventListener('resize', this.updateDimensions);
-  // };
-
-  // updateDimensions = () => {
-  //   console.log('updating dimensions');
-  //   this.setState({
-  //     width: this.calculateWidth(),
-  //     height: this.calculateHeight(),
-  //   });
-  // };
+  componentWillUnmount = () => {
+    window.removeEventListener('resize', this.updateFieldSize);
+  };
 
   calculateHeight = () => document.documentElement.clientHeight * 0.7;
 
   calculateWidth = () => document.documentElement.clientWidth * 0.555;
+
+  updateFieldSize = debounce(() => {
+    console.log('updating dimensions');
+    this.setState({
+      width: this.calculateWidth(),
+      height: this.calculateHeight(),
+    });
+  }, 500);
 
   handleClick = (e) => {
     const { isDrawing, shapes } = this.state;
