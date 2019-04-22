@@ -1,9 +1,9 @@
-import React from "react";
-import PropTypes from "prop-types";
-import { Layer, Stage } from "react-konva";
-import Konva from "konva";
-import ColoredRect from "../ColoredRect/ColoredRect";
-import "./DrawingField.css";
+import React from 'react';
+import PropTypes from 'prop-types';
+import { Layer, Stage } from 'react-konva';
+import Konva from 'konva';
+import ColoredRect from '../ColoredRect/ColoredRect';
+import './DrawingField.css';
 
 class DrawingField extends React.Component {
   constructor(props) {
@@ -12,7 +12,7 @@ class DrawingField extends React.Component {
       shapes: [],
       isDrawing: false,
       width: this.calculateWidth(),
-      height: this.calculateHeight()
+      height: this.calculateHeight(),
     };
   }
 
@@ -36,12 +36,12 @@ class DrawingField extends React.Component {
 
   calculateWidth = () => document.documentElement.clientWidth * 0.555;
 
-  transformColor = color => {
+  transformColor = (color) => {
     const rgb = Konva.Util.getRGB(color);
     return `rgba(${rgb.r},${rgb.g},${rgb.b},0.5)`;
   };
 
-  handleClick = e => {
+  handleClick = (e) => {
     const { isDrawing, shapes } = this.state;
     const { currentColor, drawingMode } = this.props;
 
@@ -49,7 +49,7 @@ class DrawingField extends React.Component {
 
     if (isDrawing) {
       this.setState({
-        isDrawing: !isDrawing
+        isDrawing: !isDrawing,
       });
       return;
     }
@@ -60,16 +60,16 @@ class DrawingField extends React.Component {
       y: e.evt.layerY,
       width: 0,
       height: 0,
-      color: this.transformColor(currentColor)
+      color: this.transformColor(currentColor),
     });
 
     this.setState({
       isDrawing: true,
-      shapes: newShapes
+      shapes: newShapes,
     });
   };
 
-  handleMouseMove = e => {
+  handleMouseMove = (e) => {
     const { isDrawing, shapes } = this.state;
     const { drawingMode } = this.props;
 
@@ -90,11 +90,11 @@ class DrawingField extends React.Component {
         y: currShape.y,
         width: newWidth, // new width and height
         height: newHeight,
-        color: currShape.color
+        color: currShape.color,
       };
 
       this.setState({
-        shapes: newShapesList
+        shapes: newShapesList,
       });
     }
   };
@@ -130,7 +130,7 @@ class DrawingField extends React.Component {
 
 DrawingField.propTypes = {
   drawingMode: PropTypes.bool.isRequired,
-  currentColor: PropTypes.string.isRequired
+  currentColor: PropTypes.string.isRequired,
 };
 
 export default DrawingField;

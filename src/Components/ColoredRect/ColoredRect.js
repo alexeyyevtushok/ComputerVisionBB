@@ -1,6 +1,7 @@
-import React from "react";
-import { Rect, Group } from "react-konva";
-import PropTypes from "prop-types";
+/* eslint-disable react/prefer-stateless-function */
+import React from 'react';
+import { Rect, Group } from 'react-konva';
+import PropTypes from 'prop-types';
 
 class ColoredRect extends React.Component {
   render() {
@@ -18,7 +19,7 @@ ColoredRect.propTypes = {
   y: PropTypes.number.isRequired,
   width: PropTypes.number.isRequired,
   height: PropTypes.number.isRequired,
-  color: PropTypes.string.isRequired
+  color: PropTypes.string.isRequired,
 };
 
 export default ColoredRect;

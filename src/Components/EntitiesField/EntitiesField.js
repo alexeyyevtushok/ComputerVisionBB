@@ -1,70 +1,53 @@
 import React from 'react';
-import axios from 'axios';
+import PropTypes from 'prop-types';
+import { connect } from 'react-redux';
+
 import Konva from 'konva';
+import {
+  addEntity,
+  deleteEntity,
+  setCurrEntity,
+  setEmptyCurrEntity,
+} from '../../actions/entitiesActions';
 import Entity from '../Entity/Entity';
 
 class EntitiesField extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      entities: [],
       addInput: false,
       colorInput: this.generateRandomColor(),
       labelInput: '',
       error: false,
-      currEntity: -1,
     };
   }
 
   generateRandomColor = () => Konva.Util.getRandomColor();
 
-  componentDidMount() {
-    this.getReq();
-  }
-
-  getReq = () => {
-    axios.get('/api/entities/').then(res => {
-      this.setState({
-        entities: res.data,
-      });
-    });
-  };
-
   changeInput = () => {
-    this.setState({
-      addInput: !this.state.addInput,
+    this.setState(prevState => ({
+      addInput: !prevState.addInput,
       colorInput: this.generateRandomColor(),
       error: false,
-    });
+    }));
   };
 
-  inputColorValueHandler = event => {
+  inputHandler = event => {
     this.setState({
-      colorInput: event.target.value,
-    });
-  };
-
-  inputLabelValueHandler = event => {
-    this.setState({
-      labelInput: event.target.value,
+      [event.target.id]: event.target.value,
     });
   };
 
   addEntity = e => {
     e.preventDefault();
-    if (e.target.label.value === '') {
+    if (e.target.labelInput.value === '') {
       this.setState({ error: true });
     } else {
       const entity = {
-        color: e.target.color.value,
-        label: e.target.label.value,
+        color: e.target.colorInput.value,
+        label: e.target.labelInput.value,
       };
-      axios.post('/api/entities/', entity).then(res => {
-        this.setState(state => {
-          const entities = state.entities.push(res.data);
-          return entities;
-        });
-      });
+      this.props.addEntity(entity);
       this.setState({
         colorInput: this.generateRandomColor(),
         labelInput: '',
@@ -74,36 +57,31 @@ class EntitiesField extends React.Component {
   };
 
   deleteHandler = (event, index) => {
-    if (index === this.state.currEntity) {
-      this.props.setCurrentEntity(null);
-      this.setState({ currEntity: -1 });
+    const { currEntity } = this.props;
+
+    if (index === currEntity.index) {
+      this.props.setEmptyCurrEntity();
     }
     event.stopPropagation();
-    axios.delete(`/api/entities/${index}`).then(this.getReq());
+    this.props.deleteEntity(index);
   };
 
   entityClick = index => {
-    if (this.state.currEntity === index) {
-      this.props.setCurrentEntity(null);
-      this.setState({ currEntity: -1 });
+    const { currEntity, entities } = this.props;
+
+    if (index === currEntity.index) {
+      this.props.setEmptyCurrEntity();
     } else {
-      this.props.setCurrentEntity(this.state.entities[index]);
-      this.setState({ currEntity: index });
+      this.props.setCurrEntity(entities[index]);
     }
   };
 
   render() {
-    const {
-      entities,
-      addInput,
-      colorInput,
-      labelInput,
-      error,
-      currEntity,
-    } = this.state;
-    console.log(entities);
+    console.log('entitiesfield');
+    const { addInput, colorInput, labelInput, error } = this.state;
+    const { entities, currEntity } = this.props;
     const styledClick = `
-    .item:nth-child(${currEntity + 1}) {
+    .item:nth-child(${currEntity.index + 1}) {
       background: whitesmoke;
       border: 2px solid #737373;
     }
@@ -136,7 +114,7 @@ class EntitiesField extends React.Component {
                 : {}
             }
           >
-            Incorrect input
+            {'Incorrect input'}
           </div>
           <div className="inputBox">
             <label htmlFor="label">
@@ -144,9 +122,9 @@ class EntitiesField extends React.Component {
               <input
                 style={error ? { border: '1px solid maroon' } : {}}
                 type="text"
-                id="label"
+                id="labelInput"
                 value={labelInput}
-                onChange={this.inputLabelValueHandler}
+                onChange={this.inputHandler}
               />
             </label>
           </div>
@@ -155,9 +133,9 @@ class EntitiesField extends React.Component {
               {'Color: '}
               <input
                 type="text"
-                id="color"
+                id="colorInput"
                 value={colorInput}
-                onChange={this.inputColorValueHandler}
+                onChange={this.inputHandler}
               />
             </label>
           </div>
@@ -180,5 +158,31 @@ class EntitiesField extends React.Component {
     );
   }
 }
+const entityShape = {
+  index: PropTypes.number.isRequired,
+  label: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired,
+};
 
-export default EntitiesField;
+EntitiesField.propTypes = {
+  entities: PropTypes.arrayOf(PropTypes.shape(entityShape)).isRequired,
+  currEntity: PropTypes.shape(entityShape).isRequired,
+  addEntity: PropTypes.func.isRequired,
+  deleteEntity: PropTypes.func.isRequired,
+  setCurrEntity: PropTypes.func.isRequired,
+};
+
+const mapStateToProps = state => ({
+  entities: state.entities.entities,
+  currEntity: state.entities.currEntity,
+});
+
+export default connect(
+  mapStateToProps,
+  {
+    addEntity,
+    deleteEntity,
+    setCurrEntity,
+    setEmptyCurrEntity,
+  },
+)(EntitiesField);
