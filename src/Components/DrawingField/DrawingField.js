@@ -42,11 +42,6 @@ class DrawingField extends React.Component {
 
   calculateWidth = () => document.documentElement.clientWidth * 0.555;
 
-  transformColor = (color) => {
-    const rgb = Konva.Util.getRGB(color);
-    return `rgba(${rgb.r},${rgb.g},${rgb.b},0.5)`;
-  };
-
   handleClick = (e) => {
     const { isDrawing, shapes } = this.state;
     const { currEntity } = this.props;
@@ -67,7 +62,7 @@ class DrawingField extends React.Component {
       y: e.evt.layerY,
       width: 0,
       height: 0,
-      color: this.transformColor(currEntity.color),
+      color: currEntity.color,
     });
 
     this.setState({
