@@ -18,6 +18,10 @@ class DrawingField extends React.Component {
     };
   }
 
+  componentDidUpdate() {
+    this.layer.batchDraw();
+  }
+
   // componentDidMount = () => {
   //   window.addEventListener('resize', this.updateDimensions);
   // };
@@ -113,7 +117,11 @@ class DrawingField extends React.Component {
           onClick={this.handleClick}
           onContentMouseMove={this.handleMouseMove}
         >
-          <Layer>
+          <Layer
+            ref={(ref) => {
+              this.layer = ref;
+            }}
+          >
             {shapes.map(shape => (
               <ColoredRect
                 key={shape.color}
