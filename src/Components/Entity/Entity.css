@@ -1,7 +1,64 @@
+.item {
+  position: relative;
+}
+
+.icons {
+  margin-left: auto;
+}
+
+.modifyForm {
+  visibility: hidden;
+  opacity: 0;
+  position: absolute;
+  left: 40px;
+  transition: 1s ease;
+}
+
+.modifyForm {
+  display: block;
+}
+
+.modifyForm input {
+  color: #444444;
+  font-family: 'Rufina', serif;
+  padding: 4px 6px;
+  margin: 5px 0;
+  font-size: 14px;
+  background-color: #dbdbdb;
+  border: 0px solid;
+  border-radius: 10px;
+  outline: none;
+  width: 5vw;
+  text-transform: uppercase;
+}
+
+
+.modifyForm button {
+  background-color: transparent;
+  border: 0px solid;
+  color: #737373;
+  font-size: 18px;
+  margin-left: 5px;
+  border-radius: 50%;
+  padding: 5px;
+  outline: none;
+}
+
+.modifyForm button:hover {
+  font-size: 20px;
+  color: darkgreen;
+  cursor: pointer;
+  background-color: rgba(33, 33, 33, 0.125);
+}
+
+.modify {
+  display: none;
+  margin-right: 10px;
+}
+
 .delete {
   display: none;
-  margin-left: auto;
-  margin-right: 25px;
+  margin-right: 20px;
 }
 
 .deleted {
@@ -12,7 +69,16 @@
   display: block;
 }
 
+.item:hover .modify {
+  display: block;
+}
+
 .delete:hover {
   font-size: 18px;
   color: maroon;
+}
+
+.modify:hover {
+  font-size: 18px;
+  color: #c99749;
 }

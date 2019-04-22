@@ -42,7 +42,7 @@ class DrawingField extends React.Component {
     });
   }, 500);
 
-  handleClick = (e) => {
+  handleClick = e => {
     const { isDrawing, shapes } = this.state;
     const { currEntity } = this.props;
 
@@ -71,7 +71,7 @@ class DrawingField extends React.Component {
     });
   };
 
-  handleMouseMove = (e) => {
+  handleMouseMove = e => {
     const { isDrawing, shapes } = this.state;
     const { currEntity } = this.props;
 
@@ -113,7 +113,7 @@ class DrawingField extends React.Component {
           onContentMouseMove={this.handleMouseMove}
         >
           <Layer
-            ref={(ref) => {
+            ref={ref => {
               this.layer = ref;
             }}
           >

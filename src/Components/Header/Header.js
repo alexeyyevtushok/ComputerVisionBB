@@ -1,16 +1,21 @@
-import React, { Component } from "react";
-import "./Header.css";
+import React, { Component } from 'react';
+import './Header.css';
+import { connect } from 'react-redux';
+import { addImages } from '../../actions/imagesActions';
 
 class Header extends Component {
   uploadFile = () => this.fileInput.click();
 
+  uploadFileRequest = event => {
+    this.props.addImages(event.target.files);
+  };
+
   render() {
-    const { fileHandler } = this.props;
     return (
       <div>
         <div className="navigation">
           <div className="logoBlock">
-            <img src={require("../../img/logotype.png")} alt="Logo" />
+            <img src={require('../../img/logotype.png')} alt="Logo" />
             <p>Bounding boxes tool</p>
           </div>
           <nav className="tools">
@@ -18,7 +23,7 @@ class Header extends Component {
               <li
                 title="Upload"
                 className="fas fa-upload"
-                onClick={() => this.uploadFile()}
+                onClick={e => this.uploadFile(e)}
               >
                 <span>Upload</span>
               </li>
@@ -33,7 +38,7 @@ class Header extends Component {
                 id="targetImage"
                 ref={fileInput => (this.fileInput = fileInput)}
                 accept="image/*"
-                onChange={fileHandler}
+                onChange={event => this.uploadFileRequest(event)}
                 multiple="multiple"
               />
             </ul>
@@ -44,4 +49,11 @@ class Header extends Component {
   }
 }
 
-export default Header;
+const mapStateToProps = state => ({});
+
+export default connect(
+  mapStateToProps,
+  {
+    addImages,
+  },
+)(Header);
