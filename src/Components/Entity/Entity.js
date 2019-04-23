@@ -42,7 +42,7 @@ const Entity = props => {
       >
         <input
           style={modifyInputError ? { border: '1px solid maroon' } : {}}
-          placeholder={modifyInputError ? 'Already exist' : 'New label'}
+          placeholder={modifyInputError ? 'Incorrect input' : 'New label'}
           type="text"
           id="modifyInput"
           value={modifyInput}

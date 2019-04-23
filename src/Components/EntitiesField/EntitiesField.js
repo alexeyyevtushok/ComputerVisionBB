@@ -100,10 +100,15 @@ class EntitiesField extends React.Component {
 
   modifyAcceptHandler = (event, index) => {
     event.preventDefault();
-    if (this.isDublicate(event.target.modifyInput.value, 'label')) {
+    let value = event.target.modifyInput.value;
+    if (
+      value === '' ||
+      !/^[a-zA-Z]{3,15}$/.test(value) ||
+      this.isDublicate(value, 'label')
+    ) {
       this.setState({ modifyInput: '', modifyInputError: true });
     } else {
-      this.props.modifyEntity(index, event.target.modifyInput.value);
+      this.props.modifyEntity(index, value);
       this.setState({
         modifyInputIndex: -1,
         modifyInput: '',
