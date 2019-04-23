@@ -12,8 +12,9 @@ class Header extends Component {
     axios.get('/api/generator', { responseType: 'blob' }).then((res) => {
       fileDownload(res.data, 'output.zip');
     });
-    
-  uploadFileRequest = event => {
+  };
+
+  uploadFileRequest = (event) => {
     this.props.addImages(event.target.files);
   };
 
@@ -27,11 +28,7 @@ class Header extends Component {
           </div>
           <nav className="tools">
             <ul>
-              <li
-                title="Upload"
-                className="fas fa-upload"
-                onClick={e => this.uploadFile(e)}
-              >
+              <li title="Upload" className="fas fa-upload" onClick={e => this.uploadFile(e)}>
                 <span>Upload</span>
               </li>
               <li title="Download" className="fa fa-download" onClick={this.downloadOutput}>
