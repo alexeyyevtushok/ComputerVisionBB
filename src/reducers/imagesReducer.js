@@ -9,16 +9,18 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case SET_IMAGES: {
-      if (action.payload[0]) {
+      if (!action.payload[0]) {
         return {
           ...state,
           images: action.payload,
-          currentImg: action.payload[0].picture,
+          currentImg:
+            'http://pcexpert86.ru/image/cache/catalog/thumbs/nofoto-1200x800.gif',
         };
       } else {
         return {
           ...state,
           images: action.payload,
+          currentImg: action.payload[0].picture,
         };
       }
     }

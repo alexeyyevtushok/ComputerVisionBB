@@ -40,8 +40,7 @@ export const addImages = images => dispatch => {
 };
 
 export const deleteImage = state => dispatch => {
-  axios.delete(`/api/images/${state}`).then(() => {
-    console.log('del');
-    updateImages(dispatch);
-  });
+  axios.delete(`/api/images/${state}`);
+  updateImages(dispatch);
+  updateImages(dispatch);
 };
