@@ -77,6 +77,7 @@ class DrawingField extends React.Component {
     const currShape = shapes[shapes.length - 1];
     const labeledShape = {
       label: currEntity.label,
+      color: currEntity.color,
       x: currShape.x,
       y: currShape.y,
       width: currShape.width,
