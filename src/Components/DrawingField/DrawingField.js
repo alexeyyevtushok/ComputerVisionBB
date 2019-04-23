@@ -49,7 +49,7 @@ class DrawingField extends React.Component {
     if (currEntity.index === -1) return;
 
     if (isDrawing) {
-      this.props.addShape(shapes[shapes.length - 1], currEntity.label);
+      this.saveLabeledShape();
       this.setState({
         isDrawing: !isDrawing,
       });
@@ -69,6 +69,20 @@ class DrawingField extends React.Component {
       isDrawing: true,
       shapes: newShapes,
     });
+  };
+
+  saveLabeledShape = () => {
+    const { shapes } = this.state;
+    const { currEntity } = this.props;
+    const currShape = shapes[shapes.length - 1];
+    const labeledShape = {
+      label: currEntity.label,
+      x: currShape.x,
+      y: currShape.y,
+      width: currShape.width,
+      height: currShape.height,
+    };
+    this.props.addShape(labeledShape);
   };
 
   handleMouseMove = (e) => {
