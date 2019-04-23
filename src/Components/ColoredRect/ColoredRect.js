@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 
 class ColoredRect extends React.Component {
   render() {
-    const { x, y, width, height, color } = this.props;
+    const { x, y, width, height, color, onClick } = this.props;
     return (
       <Group>
         <Rect
@@ -14,6 +14,7 @@ class ColoredRect extends React.Component {
           height={height}
           stroke={color}
           strokeWidth={4}
+          onClick={e => onClick(e)}
         />
       </Group>
     );

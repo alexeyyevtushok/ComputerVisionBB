@@ -35,7 +35,6 @@ class DrawingField extends React.Component {
   calculateWidth = () => document.documentElement.clientWidth * 0.555;
 
   updateFieldSize = debounce(() => {
-    console.log('updating dimensions');
     this.setState({
       width: this.calculateWidth(),
       height: this.calculateHeight(),
@@ -92,8 +91,8 @@ class DrawingField extends React.Component {
 
     if (currEntity.index === -1) return;
 
-    const mouseX = e.evt.layerX;
-    const mouseY = e.evt.layerY;
+    const mouseX = e.evt.layerX - 2;
+    const mouseY = e.evt.layerY - 2;
 
     if (isDrawing) {
       const currShapeIndex = shapes.length - 1;
@@ -114,6 +113,11 @@ class DrawingField extends React.Component {
         shapes: newShapesList,
       });
     }
+  };
+
+  handleInnerClick = e => {
+    e.cancelBubble = true;
+    console.log(e);
   };
 
   render() {
@@ -140,6 +144,7 @@ class DrawingField extends React.Component {
                 width={shape.width}
                 height={shape.height}
                 color={shape.color}
+                onClick={this.handleInnerClick}
               />
             ))}
           </Layer>
