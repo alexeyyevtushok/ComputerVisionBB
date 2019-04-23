@@ -35,14 +35,13 @@ class DrawingField extends React.Component {
   calculateWidth = () => document.documentElement.clientWidth * 0.555;
 
   updateFieldSize = debounce(() => {
-    console.log('updating dimensions');
     this.setState({
       width: this.calculateWidth(),
       height: this.calculateHeight(),
     });
   }, 500);
 
-  handleClick = (e) => {
+  handleClick = e => {
     const { isDrawing, shapes } = this.state;
     const { currEntity } = this.props;
 
@@ -86,7 +85,7 @@ class DrawingField extends React.Component {
     this.props.addShape(labeledShape);
   };
 
-  handleMouseMove = (e) => {
+  handleMouseMove = e => {
     const { isDrawing, shapes } = this.state;
     const { currEntity } = this.props;
 
@@ -116,6 +115,11 @@ class DrawingField extends React.Component {
     }
   };
 
+  handleInnerClick = e => {
+    // e.cancelBubble = true;
+    // console.log(e);
+  };
+
   render() {
     const { shapes, width, height } = this.state;
     return (
@@ -128,7 +132,7 @@ class DrawingField extends React.Component {
           onContentMouseMove={this.handleMouseMove}
         >
           <Layer
-            ref={(ref) => {
+            ref={ref => {
               this.layer = ref;
             }}
           >
@@ -140,6 +144,7 @@ class DrawingField extends React.Component {
                 width={shape.width}
                 height={shape.height}
                 color={shape.color}
+                onClick={this.handleInnerClick}
               />
             ))}
           </Layer>

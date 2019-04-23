@@ -1,16 +1,20 @@
 import React from 'react';
-import { Rect, Group } from 'react-konva';
+import { Rect } from 'react-konva';
 import PropTypes from 'prop-types';
 
 class ColoredRect extends React.Component {
   render() {
-    const {
-      x, y, width, height, color,
-    } = this.props;
+    const { x, y, width, height, color, onClick } = this.props;
     return (
-      <Group>
-        <Rect x={x} y={y} width={width} height={height} stroke={color} strokeWidth={4} />
-      </Group>
+      <Rect
+        x={x}
+        y={y}
+        width={width}
+        height={height}
+        stroke={color}
+        strokeWidth={4}
+        onClick={e => onClick(e)}
+      />
     );
   }
 }

@@ -5,6 +5,7 @@ import Konva from 'konva';
 import {
   addEntity,
   deleteEntity,
+  modifyEntity,
   setCurrEntity,
   setEmptyCurrEntity,
 } from '../../actions/entitiesActions';
@@ -17,7 +18,10 @@ class EntitiesField extends React.Component {
       addInput: false,
       colorInput: this.generateRandomColor(),
       labelInput: '',
+      modifyInput: '',
       error: false,
+      modifyInputError: false,
+      modifyInputIndex: -1,
     };
   }
 
@@ -31,20 +35,37 @@ class EntitiesField extends React.Component {
     }));
   };
 
-  inputHandler = (event) => {
+  inputHandler = event => {
     this.setState({
       [event.target.id]: event.target.value,
     });
   };
 
-  addEntity = (e) => {
+  isDublicate = (value, property) => {
+    const entitiesArr = this.props.entities;
+    for (let i = 0; i < entitiesArr.length; i++) {
+      if (entitiesArr[i][property] === value) return true;
+    }
+    return false;
+  };
+
+  addEntity = e => {
     e.preventDefault();
-    if (e.target.labelInput.value === '') {
-      this.setState({ error: true });
+    let colorValue = e.target.colorInput.value;
+    let labelValue = e.target.labelInput.value;
+    if (
+      labelValue === '' ||
+      !/^[a-zA-Z]{3,15}$/.test(labelValue) ||
+      this.isDublicate(labelValue, 'label')
+    ) {
+      this.setState({ error: true, labelInput: '' });
     } else {
+      if (this.isDublicate(colorValue, 'color')) {
+        colorValue = this.generateRandomColor();
+      }
       const entity = {
-        color: e.target.colorInput.value,
-        label: e.target.labelInput.value,
+        color: colorValue,
+        label: labelValue,
       };
       this.props.addEntity(entity);
       this.setState({
@@ -63,9 +84,40 @@ class EntitiesField extends React.Component {
     }
     event.stopPropagation();
     this.props.deleteEntity(index);
+    this.setState({ modifyInputIndex: -1 });
   };
 
-  entityClick = (index) => {
+  modifyHandler = (event, index) => {
+    event.stopPropagation();
+    if (this.state.modifyInputIndex === index)
+      this.setState({
+        modifyInputIndex: -1,
+        modifyInput: '',
+        modifyInputError: false,
+      });
+    else this.setState({ modifyInputIndex: index });
+  };
+
+  modifyAcceptHandler = (event, index) => {
+    event.preventDefault();
+    let value = event.target.modifyInput.value;
+    if (
+      value === '' ||
+      !/^[a-zA-Z]{3,15}$/.test(value) ||
+      this.isDublicate(value, 'label')
+    ) {
+      this.setState({ modifyInput: '', modifyInputError: true });
+    } else {
+      this.props.modifyEntity(index, value);
+      this.setState({
+        modifyInputIndex: -1,
+        modifyInput: '',
+        modifyInputError: false,
+      });
+    }
+  };
+
+  entityClick = index => {
     const { currEntity, entities } = this.props;
 
     if (index === currEntity.index) {
@@ -76,9 +128,14 @@ class EntitiesField extends React.Component {
   };
 
   render() {
-    console.log('entitiesfield');
     const {
-      addInput, colorInput, labelInput, error,
+      addInput,
+      colorInput,
+      labelInput,
+      error,
+      modifyInputIndex,
+      modifyInput,
+      modifyInputError,
     } = this.state;
     const { entities, currEntity } = this.props;
     const styledClick = `
@@ -87,23 +144,40 @@ class EntitiesField extends React.Component {
       border: 2px solid #737373;
     }
   `;
+    const editClick = `
+    .item:nth-child(${modifyInputIndex + 1}) .modifyForm{
+      visibility: visible;
+      opacity:1;
+    }
+  `;
     return (
       <div className="leftbarNav">
         <p>Entities</p>
         <div
           title="Add entity"
           onClick={() => this.changeInput()}
-          className={addInput ? 'addBtn fas fa-user-slash' : 'addBtn fas fa-user-plus'}
+          className={
+            addInput ? 'addBtn fas fa-user-slash' : 'addBtn fas fa-user-plus'
+          }
         >
           <span>{addInput ? 'Close' : 'Add entity'}</span>
         </div>
         <form
-          style={addInput ? { visibility: 'visible', opacity: '1', height: '57px' } : {}}
+          style={
+            addInput
+              ? { visibility: 'visible', opacity: '1', height: '57px' }
+              : {}
+          }
+          className="entFieldForm"
           onSubmit={this.addEntity}
         >
           <div
             className="errorField"
-            style={error ? { visibility: 'visible', opacity: '1', height: '20px' } : {}}
+            style={
+              error
+                ? { visibility: 'visible', opacity: '1', height: '20px' }
+                : {}
+            }
           >
             {'Incorrect input'}
           </div>
@@ -122,7 +196,12 @@ class EntitiesField extends React.Component {
           <div className="inputBox">
             <label htmlFor="color">
               {'Color: '}
-              <input type="text" id="colorInput" value={colorInput} onChange={this.inputHandler} />
+              <input
+                type="text"
+                id="colorInput"
+                value={colorInput}
+                onChange={this.inputHandler}
+              />
             </label>
           </div>
           <button title="Add entity" type="submit">
@@ -136,9 +215,15 @@ class EntitiesField extends React.Component {
               item={item}
               onClick={() => this.entityClick(item.index)}
               deleteHandler={this.deleteHandler}
+              modifyHandler={this.modifyHandler}
+              modifyAcceptHandler={this.modifyAcceptHandler}
+              modifyInput={modifyInput}
+              changeModify={this.inputHandler}
+              modifyInputError={modifyInputError}
             />
           ))}
           <style jsx="">{styledClick}</style>
+          <style jsx="">{editClick}</style>
         </div>
       </div>
     );
@@ -168,6 +253,7 @@ export default connect(
   {
     addEntity,
     deleteEntity,
+    modifyEntity,
     setCurrEntity,
     setEmptyCurrEntity,
   },

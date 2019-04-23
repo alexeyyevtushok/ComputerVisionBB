@@ -3,10 +3,11 @@
   display: inline-flex;
   width: 75vw;
   overflow: hidden;
-  transition:all ease 1s;
+  transition: all ease 1s;
   position: relative;
-  margin-left:40px;
+  margin-left: 40px;
 }
+
 /*slider*/
 .slider {
   display: flex;
@@ -14,8 +15,9 @@
   background: whitesmoke;
   border: 1px solid #737373;
   position: relative;
-  transition:all ease 1s;
+  transition: all ease 1s;
 }
+
 /*arrows*/
 .arrows {
   position: absolute;
@@ -26,22 +28,39 @@
 
 
 .prev {
-  display:inline-block;
+  display: inline-block;
   border-bottom: 4px solid;
   border-left: 4px solid;
   transform: rotate(45deg);
-  margin-top:3vh;
+  margin-top: 3vh;
 }
 
 .next {
-  display:inline-block;
+  display: inline-block;
   border-bottom: 4px solid;
   border-left: 4px solid;
   transform: rotate(-135deg);
-  margin-top:3vh;
+  margin-top: 3vh;
 }
 
-.prev:hover, .next:hover {
+.prev:hover,
+.next:hover {
   border-bottom: 6px solid;
   border-left: 6px solid;
+}
+
+.contextMenu {
+  background: white;
+  z-index: 500;
+}
+
+.react-contextmenu-item {
+  padding: 5px 5px;
+  color: #0066aa
+}
+
+.react-contextmenu-item:hover {
+  color: #fff;
+  background-color: #0066aa;
+  cursor: pointer;
 }

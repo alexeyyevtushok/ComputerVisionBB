@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import axios from 'axios';
 import fileDownload from 'js-file-download';
 import './Header.css';
+import { connect } from 'react-redux';
+import { addImages } from '../../actions/imagesActions';
 
 class Header extends Component {
   uploadFile = () => this.fileInput.click();
@@ -10,10 +12,12 @@ class Header extends Component {
     axios.get('/api/generator', { responseType: 'blob' }).then((res) => {
       fileDownload(res.data, 'output.zip');
     });
+    
+  uploadFileRequest = event => {
+    this.props.addImages(event.target.files);
   };
 
   render() {
-    const { fileHandler } = this.props;
     return (
       <div>
         <div className="navigation">
@@ -23,7 +27,11 @@ class Header extends Component {
           </div>
           <nav className="tools">
             <ul>
-              <li title="Upload" className="fas fa-upload" onClick={() => this.uploadFile()}>
+              <li
+                title="Upload"
+                className="fas fa-upload"
+                onClick={e => this.uploadFile(e)}
+              >
                 <span>Upload</span>
               </li>
               <li title="Download" className="fa fa-download" onClick={this.downloadOutput}>
@@ -37,7 +45,7 @@ class Header extends Component {
                 id="targetImage"
                 ref={fileInput => (this.fileInput = fileInput)}
                 accept="image/*"
-                onChange={fileHandler}
+                onChange={event => this.uploadFileRequest(event)}
                 multiple="multiple"
               />
             </ul>
@@ -48,4 +56,11 @@ class Header extends Component {
   }
 }
 
-export default Header;
+const mapStateToProps = state => ({});
+
+export default connect(
+  mapStateToProps,
+  {
+    addImages,
+  },
+)(Header);
