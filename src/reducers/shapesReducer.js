@@ -1,7 +1,7 @@
 import { ADD_SHAPE } from '../actions/types';
 
 const initialState = {
-  shapes: [],
+  labeledShapes: [],
 };
 
 export default function (state = initialState, action) {
@@ -9,7 +9,7 @@ export default function (state = initialState, action) {
     case ADD_SHAPE: {
       return {
         ...state,
-        shapes: [...state.shapes, action.payload],
+        labeledShapes: [...state.labeledShapes, action.payload],
       };
     }
     default:
