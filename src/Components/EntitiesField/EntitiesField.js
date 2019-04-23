@@ -18,7 +18,9 @@ class EntitiesField extends React.Component {
       addInput: false,
       colorInput: this.generateRandomColor(),
       labelInput: '',
+      modifyInput: '',
       error: false,
+      modifyInputError: false,
       editInput: -1,
     };
   }
@@ -56,7 +58,7 @@ class EntitiesField extends React.Component {
       !/^[a-zA-Z]{3,15}$/.test(labelValue) ||
       this.isDublicate(labelValue, 'label')
     ) {
-      this.setState({ error: true });
+      this.setState({ error: true, labelInput: '' });
     } else {
       if (this.isDublicate(colorValue, 'color')) {
         colorValue = this.generateRandomColor();
@@ -87,17 +89,22 @@ class EntitiesField extends React.Component {
 
   modifyHandler = (event, index) => {
     event.stopPropagation();
-    if (this.state.editInput === index) this.setState({ editInput: -1 });
+    if (this.state.editInput === index)
+      this.setState({ editInput: -1, modifyInput: '' });
     else this.setState({ editInput: index });
   };
 
   modifyAcceptHandler = (event, index) => {
     event.preventDefault();
     if (this.isDublicate(event.target.modifyInput.value, 'label')) {
-      alert('Already exist,choose another name.');
+      this.setState({ modifyInput: '', modifyInputError: true });
     } else {
       this.props.modifyEntity(index, event.target.modifyInput.value);
-      this.setState({ editInput: -1 });
+      this.setState({
+        editInput: -1,
+        modifyInput: '',
+        modifyInputError: false,
+      });
     }
   };
 
@@ -112,7 +119,15 @@ class EntitiesField extends React.Component {
   };
 
   render() {
-    const { addInput, colorInput, labelInput, error, editInput } = this.state;
+    const {
+      addInput,
+      colorInput,
+      labelInput,
+      error,
+      editInput,
+      modifyInput,
+      modifyInputError,
+    } = this.state;
     const { entities, currEntity } = this.props;
     const styledClick = `
     .item:nth-child(${currEntity.index + 1}) {
@@ -193,6 +208,9 @@ class EntitiesField extends React.Component {
               deleteHandler={this.deleteHandler}
               modifyHandler={this.modifyHandler}
               modifyAcceptHandler={this.modifyAcceptHandler}
+              modifyInput={modifyInput}
+              changeModify={this.inputHandler}
+              modifyInputError={modifyInputError}
             />
           ))}
           <style jsx="">{styledClick}</style>

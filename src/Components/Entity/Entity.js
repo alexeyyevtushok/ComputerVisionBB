@@ -8,6 +8,9 @@ const Entity = props => {
     deleteHandler,
     modifyHandler,
     modifyAcceptHandler,
+    modifyInput,
+    changeModify,
+    modifyInputError,
   } = props;
   const { color, label } = item;
 
@@ -37,7 +40,14 @@ const Entity = props => {
           modifyAcceptHandler(e, item.index);
         }}
       >
-        <input type="text" id="modifyInput" />
+        <input
+          style={modifyInputError ? { border: '1px solid maroon' } : {}}
+          placeholder={modifyInputError ? 'Already exist' : 'New label'}
+          type="text"
+          id="modifyInput"
+          value={modifyInput}
+          onChange={changeModify}
+        />
         <button title="Accept" type="submit">
           <i className="fas fa-check" />
         </button>
