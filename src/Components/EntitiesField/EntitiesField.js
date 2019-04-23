@@ -90,7 +90,11 @@ class EntitiesField extends React.Component {
   modifyHandler = (event, index) => {
     event.stopPropagation();
     if (this.state.modifyInputIndex === index)
-      this.setState({ modifyInputIndex: -1, modifyInput: '' });
+      this.setState({
+        modifyInputIndex: -1,
+        modifyInput: '',
+        modifyInputError: false,
+      });
     else this.setState({ modifyInputIndex: index });
   };
 
