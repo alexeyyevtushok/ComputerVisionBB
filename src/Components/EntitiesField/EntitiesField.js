@@ -39,14 +39,31 @@ class EntitiesField extends React.Component {
     });
   };
 
+  isDublicate = (value, property) => {
+    const entitiesArr = this.props.entities;
+    for (let i = 0; i < entitiesArr.length; i++) {
+      if (entitiesArr[i][property] === value) return true;
+    }
+    return false;
+  };
+
   addEntity = e => {
     e.preventDefault();
-    if (e.target.labelInput.value === '') {
+    let colorValue = e.target.colorInput.value;
+    let labelValue = e.target.labelInput.value;
+    if (
+      labelValue === '' ||
+      !/^[a-zA-Z]{3,15}$/.test(labelValue) ||
+      this.isDublicate(labelValue, 'label')
+    ) {
       this.setState({ error: true });
     } else {
+      if (this.isDublicate(colorValue, 'color')) {
+        colorValue = this.generateRandomColor();
+      }
       const entity = {
-        color: e.target.colorInput.value,
-        label: e.target.labelInput.value,
+        color: colorValue,
+        label: labelValue,
       };
       this.props.addEntity(entity);
       this.setState({
@@ -76,8 +93,12 @@ class EntitiesField extends React.Component {
 
   modifyAcceptHandler = (event, index) => {
     event.preventDefault();
-    this.props.modifyEntity(index, event.target.modifyInput.value);
-    this.setState({ editInput: -1 });
+    if (this.isDublicate(event.target.modifyInput.value, 'label')) {
+      alert('Already exist,choose another name.');
+    } else {
+      this.props.modifyEntity(index, event.target.modifyInput.value);
+      this.setState({ editInput: -1 });
+    }
   };
 
   entityClick = index => {

@@ -35,7 +35,6 @@ class DrawingField extends React.Component {
   calculateWidth = () => document.documentElement.clientWidth * 0.555;
 
   updateFieldSize = debounce(() => {
-    console.log('updating dimensions');
     this.setState({
       width: this.calculateWidth(),
       height: this.calculateHeight(),
