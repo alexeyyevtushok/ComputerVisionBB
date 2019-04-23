@@ -35,14 +35,13 @@ class DrawingField extends React.Component {
   calculateWidth = () => document.documentElement.clientWidth * 0.555;
 
   updateFieldSize = debounce(() => {
-    console.log('updating dimensions');
     this.setState({
       width: this.calculateWidth(),
       height: this.calculateHeight(),
     });
   }, 500);
 
-  handleClick = (e) => {
+  handleClick = e => {
     const { isDrawing, shapes } = this.state;
     const { currEntity } = this.props;
 
@@ -70,22 +69,6 @@ class DrawingField extends React.Component {
       shapes: newShapes,
     });
   };
-
-  saveLabeledShape = () => {
-    const { shapes } = this.state;
-    const { currEntity } = this.props;
-    const currShape = shapes[shapes.length - 1];
-    const labeledShape = {
-      label: currEntity.label,
-      color: currEntity.color,
-      x: currShape.x,
-      y: currShape.y,
-      width: currShape.width,
-      height: currShape.height,
-    };
-    this.props.addShape(labeledShape);
-  };
-
   handleMouseMove = (e) => {
     const { isDrawing, shapes } = this.state;
     const { currEntity } = this.props;
@@ -128,7 +111,7 @@ class DrawingField extends React.Component {
           onContentMouseMove={this.handleMouseMove}
         >
           <Layer
-            ref={(ref) => {
+            ref={ref => {
               this.layer = ref;
             }}
           >
