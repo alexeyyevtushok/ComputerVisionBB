@@ -2,39 +2,20 @@ import React, { Component } from 'react';
 import './Slider.css';
 import { connect } from 'react-redux';
 import Slide from '../Slide/Slide';
-import axios from 'axios';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
-import { deleteImage } from '../../actions/imagesActions';
+import { deleteImage, imageOnClick } from '../../actions/imagesActions';
 
 class Slider extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      properties: [],
       left: 0,
       clickedSlide: null,
     };
   }
 
-  componentWillReceiveProps() {
-    this.getReq();
-  }
-
-  componentDidMount() {
-    this.getReq();
-  }
-
-  getReq = () => {
-    axios.get('/api/images/').then(res => {
-      this.setState({
-        properties: res.data,
-      });
-    });
-  };
-
-  /*data to Parent component*/
-  handleUrl = i => {
-    this.props.onGetUrl(i);
+  handleClick = i => {
+    this.props.imageOnClick(i);
   };
 
   handleRightClick = (e, i) => {
@@ -42,14 +23,8 @@ class Slider extends Component {
     this.setState({ clickedSlide: i });
   };
 
-  rightArrow = () => {
-    const outOfRange = -11 * (this.state.properties.length - 14);
-    if (this.state.left < outOfRange) this.setState({ left: 0 });
-    this.setState(prevState => {
-      return {
-        left: prevState.left - 11,
-      };
-    });
+  deleteSlide = () => {
+    this.props.deleteImage(this.state.clickedSlide.slice(26));
   };
 
   leftArrow = () => {
@@ -62,8 +37,14 @@ class Slider extends Component {
     }
   };
 
-  deleteSlide = () => {
-    this.props.deleteImage(this.state.clickedSlide.slice(26));
+  rightArrow = () => {
+    const outOfRange = -11 * (this.props.images.length - 14);
+    if (this.state.left < outOfRange) this.setState({ left: 0 });
+    this.setState(prevState => {
+      return {
+        left: prevState.left - 11,
+      };
+    });
   };
 
   render() {
@@ -71,14 +52,14 @@ class Slider extends Component {
     const styleChange = {
       left: this.state.left + 'vh',
     };
-    const { properties } = this.state;
+    const { images } = this.props;
     return (
       <div className="fullSlider">
         <ContextMenu className="contextMenu" id="some_unique_identifier">
           <MenuItem onClick={this.deleteSlide}>
             <i className="fas fa-trash-alt" /> Delete
           </MenuItem>
-          <MenuItem onClick={this.handleClick}>
+          <MenuItem>
             <i className="fas fa-undo" />
             Undo
           </MenuItem>
@@ -91,11 +72,11 @@ class Slider extends Component {
           <ContextMenuTrigger id="some_unique_identifier">
             <div className="slider" style={styleChange}>
               {/*list of slides*/}
-              {properties.map(property => (
+              {images.map(property => (
                 <Slide
                   key={property._id}
                   property={property}
-                  onClick={() => this.handleUrl(property.picture)}
+                  onClick={() => this.handleClick(property.picture)}
                   onContextMenu={e =>
                     this.handleRightClick(e, property.picture)
                   }
@@ -113,11 +94,14 @@ class Slider extends Component {
   }
 }
 
-const mapStateToProps = state => ({});
+const mapStateToProps = state => ({
+  images: state.images.images,
+});
 
 export default connect(
   mapStateToProps,
   {
     deleteImage,
+    imageOnClick,
   },
 )(Slider);

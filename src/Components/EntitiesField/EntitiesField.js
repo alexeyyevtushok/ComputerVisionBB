@@ -91,7 +91,6 @@ class EntitiesField extends React.Component {
   };
 
   render() {
-    console.log('entitiesfield');
     const { addInput, colorInput, labelInput, error, editInput } = this.state;
     const { entities, currEntity } = this.props;
     const styledClick = `

@@ -1,4 +1,4 @@
-import { DELETE_IMAGE, SET_IMAGES } from '../actions/types';
+import { SET_IMAGES, IMAGE_CLICK } from '../actions/types';
 
 const initialState = {
   images: [],
@@ -9,10 +9,23 @@ const initialState = {
 export default function(state = initialState, action) {
   switch (action.type) {
     case SET_IMAGES: {
+      if (action.payload[0]) {
+        return {
+          ...state,
+          images: action.payload,
+          currentImg: action.payload[0].picture,
+        };
+      } else {
+        return {
+          ...state,
+          images: action.payload,
+        };
+      }
+    }
+    case IMAGE_CLICK: {
       return {
         ...state,
-        images: action.payload,
-        currentImg: action.payload[0],
+        currentImg: action.payload,
       };
     }
     default:

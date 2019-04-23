@@ -1,12 +1,12 @@
 import axios from 'axios';
-import { SET_IMAGES } from './types';
+import { SET_IMAGES, IMAGE_CLICK } from './types';
 
 const getImages = () =>
   axios
-    .get('/api/entities')
+    .get('/api/images')
     .then(res => res.data)
     .catch(err => {
-      console.log(`err in getEntities ${err}`);
+      console.log(`err in getImages ${err}`);
     });
 
 const setImages = images => ({
@@ -19,14 +19,20 @@ export const updateImages = dispatch =>
     dispatch(setImages(images));
   });
 
+export const imageOnClick = image => ({
+  type: IMAGE_CLICK,
+  payload: image,
+});
+
 export const addImages = images => dispatch => {
   for (let i = 0; i < images.length; i++) {
-    console.log(i);
     const data = new FormData();
     data.append('targetImage', images[i]);
     axios
       .post('api/images/', data, {})
-      .then(updateImages(dispatch))
+      .then(() => {
+        updateImages(dispatch);
+      })
       .catch(err => {
         console.log(`errors in addImages ${err}`);
       });
@@ -34,5 +40,8 @@ export const addImages = images => dispatch => {
 };
 
 export const deleteImage = state => dispatch => {
-  axios.delete(`/api/images/${state}`);
+  axios.delete(`/api/images/${state}`).then(() => {
+    console.log('del');
+    updateImages(dispatch);
+  });
 };
