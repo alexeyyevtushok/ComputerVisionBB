@@ -21,7 +21,7 @@ class EntitiesField extends React.Component {
       modifyInput: '',
       error: false,
       modifyInputError: false,
-      editInput: -1,
+      modifyInputIndex: -1,
     };
   }
 
@@ -84,14 +84,14 @@ class EntitiesField extends React.Component {
     }
     event.stopPropagation();
     this.props.deleteEntity(index);
-    this.setState({ editInput: -1 });
+    this.setState({ modifyInputIndex: -1 });
   };
 
   modifyHandler = (event, index) => {
     event.stopPropagation();
-    if (this.state.editInput === index)
-      this.setState({ editInput: -1, modifyInput: '' });
-    else this.setState({ editInput: index });
+    if (this.state.modifyInputIndex === index)
+      this.setState({ modifyInputIndex: -1, modifyInput: '' });
+    else this.setState({ modifyInputIndex: index });
   };
 
   modifyAcceptHandler = (event, index) => {
@@ -101,7 +101,7 @@ class EntitiesField extends React.Component {
     } else {
       this.props.modifyEntity(index, event.target.modifyInput.value);
       this.setState({
-        editInput: -1,
+        modifyInputIndex: -1,
         modifyInput: '',
         modifyInputError: false,
       });
@@ -124,7 +124,7 @@ class EntitiesField extends React.Component {
       colorInput,
       labelInput,
       error,
-      editInput,
+      modifyInputIndex,
       modifyInput,
       modifyInputError,
     } = this.state;
@@ -136,7 +136,7 @@ class EntitiesField extends React.Component {
     }
   `;
     const editClick = `
-    .item:nth-child(${editInput + 1}) .modifyForm{
+    .item:nth-child(${modifyInputIndex + 1}) .modifyForm{
       visibility: visible;
       opacity:1;
     }
