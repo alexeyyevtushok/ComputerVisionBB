@@ -4,13 +4,6 @@ import {
   SET_IMAGES, IMAGE_CLICK, CLEAR_SHAPES, SET_SHAPES,
 } from './types';
 
-const getImages = () => axios
-  .get('/api/images')
-  .then(res => res.data)
-  .catch((err) => {
-    console.log(`err in getImages ${err}`);
-  });
-
 const setImages = images => ({
   type: SET_IMAGES,
   payload: images,
@@ -21,9 +14,12 @@ const changeImage = image => ({
   payload: image,
 });
 
-export const updateImages = dispatch => getImages().then((images) => {
-  dispatch(setImages(images));
-});
+const getImages = () => axios
+  .get('/api/images')
+  .then(res => res.data)
+  .catch((err) => {
+    console.log(`err in getImages ${err}`);
+  });
 
 const getNewImageShapes = (image, dispatch) => {
   const imageName = image.slice(image.lastIndexOf('/') + 1);
@@ -41,6 +37,7 @@ const getNewImageShapes = (image, dispatch) => {
     dispatch(changeImage(image));
   });
 };
+
 const saveCurrentImageShapes = () => {
   const shapes = store.getState().shapes.labeledShapes;
   if (shapes.length > 0) {
@@ -56,6 +53,11 @@ const saveCurrentImageShapes = () => {
   }
   return Promise.resolve();
 };
+
+export const updateImages = dispatch => getImages().then((images) => {
+  dispatch(setImages(images));
+  getNewImageShapes(images[0].picture, dispatch);
+});
 
 export const imageOnClick = image => (dispatch) => {
   saveCurrentImageShapes().then(getNewImageShapes(image, dispatch));
