@@ -51,8 +51,8 @@ class EntitiesField extends React.Component {
 
   addEntity = e => {
     e.preventDefault();
-    let colorValue = e.target.colorInput.value;
-    let labelValue = e.target.labelInput.value;
+    let colorValue = e.target.colorInput.value.toLowerCase();
+    let labelValue = e.target.labelInput.value.toLowerCase();
     if (
       labelValue === '' ||
       !/^[a-zA-Z]{3,15}$/.test(labelValue) ||
@@ -100,7 +100,7 @@ class EntitiesField extends React.Component {
 
   modifyAcceptHandler = (event, index) => {
     event.preventDefault();
-    let value = event.target.modifyInput.value;
+    let value = event.target.modifyInput.value.toLowerCase();
     if (
       value === '' ||
       !/^[a-zA-Z]{3,15}$/.test(value) ||
@@ -138,7 +138,7 @@ class EntitiesField extends React.Component {
       modifyInputError,
     } = this.state;
     const { entities, currEntity } = this.props;
-    const styledClick = `
+    const currentClick = `
     .item:nth-child(${currEntity.index + 1}) {
       background: whitesmoke;
       border: 2px solid #737373;
@@ -222,7 +222,7 @@ class EntitiesField extends React.Component {
               modifyInputError={modifyInputError}
             />
           ))}
-          <style jsx="">{styledClick}</style>
+          <style jsx="">{currentClick}</style>
           <style jsx="">{editClick}</style>
         </div>
       </div>
