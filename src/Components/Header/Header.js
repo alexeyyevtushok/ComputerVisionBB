@@ -10,7 +10,10 @@ class Header extends Component {
 
   downloadOutput = () => {
     axios.get('/api/generator', { responseType: 'blob' }).then((res) => {
-      fileDownload(res.data, 'output.zip');
+      const fileName = prompt('Enter file name:', 'output');
+      if (fileName !== null) {
+        fileDownload(res.data, `${fileName}.zip`);
+      }
     });
   };
 
