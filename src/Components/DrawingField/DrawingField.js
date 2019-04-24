@@ -18,6 +18,13 @@ class DrawingField extends React.Component {
     };
   }
 
+  componentWillReceiveProps() {
+    this.setState({
+      shape: null,
+      isDrawing: false,
+    });
+  }
+
   componentDidUpdate() {
     this.layer.batchDraw();
   }
