@@ -1,4 +1,4 @@
-import { ADD_SHAPE } from '../actions/types';
+import { ADD_SHAPE, CLEAR_SHAPES, SET_SHAPES } from '../actions/types';
 
 const initialState = {
   labeledShapes: [],
@@ -10,6 +10,18 @@ export default function (state = initialState, action) {
       return {
         ...state,
         labeledShapes: [...state.labeledShapes, action.payload],
+      };
+    }
+    case CLEAR_SHAPES: {
+      return {
+        ...state,
+        labeledShapes: [],
+      };
+    }
+    case SET_SHAPES: {
+      return {
+        ...state,
+        labeledShapes: action.payload,
       };
     }
     default:
