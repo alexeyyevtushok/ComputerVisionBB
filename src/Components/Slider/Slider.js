@@ -48,7 +48,7 @@ class Slider extends Component {
   };
 
   render() {
-    /*move slide*/
+    // Move slider.
     const styleChange = {
       left: this.state.left + 'vh',
     };

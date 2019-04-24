@@ -1,4 +1,5 @@
 import React from 'react';
+import './EntitiesField.css';
 import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import Konva from 'konva';
@@ -27,6 +28,7 @@ class EntitiesField extends React.Component {
 
   generateRandomColor = () => Konva.Util.getRandomColor();
 
+  // Makes 'add entity' form visible/unvisible.
   changeInput = () => {
     this.setState(prevState => ({
       addInput: !prevState.addInput,
@@ -35,12 +37,14 @@ class EntitiesField extends React.Component {
     }));
   };
 
+  // Input value.
   inputHandler = event => {
     this.setState({
       [event.target.id]: event.target.value,
     });
   };
 
+  // Validator is some value already exist.
   isDublicate = (value, property) => {
     const entitiesArr = this.props.entities;
     for (let i = 0; i < entitiesArr.length; i++) {
@@ -87,6 +91,7 @@ class EntitiesField extends React.Component {
     this.setState({ modifyInputIndex: -1 });
   };
 
+  // Make edit field visible/unvisible.
   modifyHandler = (event, index) => {
     event.stopPropagation();
     if (this.state.modifyInputIndex === index)
@@ -97,7 +102,7 @@ class EntitiesField extends React.Component {
       });
     else this.setState({ modifyInputIndex: index });
   };
-
+  // Save new label.
   modifyAcceptHandler = (event, index) => {
     event.preventDefault();
     let value = event.target.modifyInput.value.toLowerCase();
@@ -151,7 +156,7 @@ class EntitiesField extends React.Component {
     }
   `;
     return (
-      <div className="leftbarNav">
+      <div className="entitiesField">
         <p>Entities</p>
         <div
           title="Add entity"
