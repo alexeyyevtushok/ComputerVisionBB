@@ -11,11 +11,18 @@ class DrawingField extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      shapes: [],
+      shape: null,
       isDrawing: false,
       width: this.calculateWidth(),
       height: this.calculateHeight(),
     };
+  }
+
+  componentWillReceiveProps() {
+    this.setState({
+      shape: null,
+      isDrawing: false,
+    });
   }
 
   componentDidUpdate() {
@@ -42,51 +49,50 @@ class DrawingField extends React.Component {
   }, 500);
 
   handleClick = e => {
-    const { isDrawing, shapes } = this.state;
+    const { isDrawing, shape } = this.state;
     const { currEntity } = this.props;
 
     if (currEntity.index === -1) return;
 
     if (isDrawing) {
-      this.saveLabeledShape();
+      this.saveLabeledShape(shape);
       this.setState({
         isDrawing: !isDrawing,
+        shape: null,
       });
       return;
     }
 
-    const newShapes = shapes.slice();
-    newShapes.push({
+    const newShape = {
       x: e.evt.layerX,
       y: e.evt.layerY,
       width: 0,
       height: 0,
       color: currEntity.color,
-    });
+    };
 
     this.setState({
       isDrawing: true,
-      shapes: newShapes,
+      shape: newShape,
     });
   };
 
   saveLabeledShape = () => {
-    const { shapes } = this.state;
+    const { shape } = this.state;
     const { currEntity } = this.props;
-    const currShape = shapes[shapes.length - 1];
     const labeledShape = {
       label: currEntity.label,
       color: currEntity.color,
-      x: currShape.x,
-      y: currShape.y,
-      width: currShape.width,
-      height: currShape.height,
+      x: shape.x,
+      y: shape.y,
+      width: shape.width,
+      height: shape.height,
     };
     this.props.addShape(labeledShape);
   };
 
   handleMouseMove = e => {
-    const { isDrawing, shapes } = this.state;
+    const { isDrawing, shape } = this.state;
     const { currEntity } = this.props;
 
     if (currEntity.index === -1) return;
@@ -95,22 +101,19 @@ class DrawingField extends React.Component {
     const mouseY = e.evt.layerY;
 
     if (isDrawing) {
-      const currShapeIndex = shapes.length - 1;
-      const currShape = shapes[currShapeIndex];
-      const newWidth = mouseX - currShape.x;
-      const newHeight = mouseY - currShape.y;
+      const newWidth = mouseX - shape.x;
+      const newHeight = mouseY - shape.y;
 
-      const newShapesList = shapes.slice();
-      newShapesList[currShapeIndex] = {
-        x: currShape.x, // keep starting position the same
-        y: currShape.y,
+      const newShape = {
+        x: shape.x, // keep starting position the same
+        y: shape.y,
         width: newWidth, // new width and height
         height: newHeight,
-        color: currShape.color,
+        color: shape.color,
       };
 
       this.setState({
-        shapes: newShapesList,
+        shape: newShape,
       });
     }
   };
@@ -121,7 +124,22 @@ class DrawingField extends React.Component {
   };
 
   render() {
-    const { shapes, width, height } = this.state;
+    const { shape, width, height } = this.state;
+    const { shapes } = this.props;
+    let currentShape = null;
+    if (shape !== null) {
+      currentShape = (
+        <ColoredRect
+          key={`${shape.color}${shape.x}${shape.y}`}
+          x={shape.x}
+          y={shape.y}
+          width={shape.width}
+          height={shape.height}
+          color={shape.color}
+          onClick={this.handleInnerClick}
+        />
+      );
+    }
     return (
       <div>
         <Stage
@@ -136,17 +154,18 @@ class DrawingField extends React.Component {
               this.layer = ref;
             }}
           >
-            {shapes.map(shape => (
+            {shapes.map(obj => (
               <ColoredRect
-                key={`${shape.color}${shape.x}${shape.y}`}
-                x={shape.x}
-                y={shape.y}
-                width={shape.width}
-                height={shape.height}
-                color={shape.color}
+                key={`${obj.color}${obj.x}${obj.y}`}
+                x={obj.x}
+                y={obj.y}
+                width={obj.width}
+                height={obj.height}
+                color={obj.color}
                 onClick={this.handleInnerClick}
               />
             ))}
+            {currentShape}
           </Layer>
         </Stage>
       </div>
@@ -155,6 +174,7 @@ class DrawingField extends React.Component {
 }
 
 DrawingField.propTypes = {
+  shapes: PropTypes.array.isRequired,
   currEntity: PropTypes.shape({
     index: PropTypes.number.isRequired,
     label: PropTypes.string.isRequired,
@@ -164,6 +184,7 @@ DrawingField.propTypes = {
 
 const mapStateToProps = state => ({
   currEntity: state.entities.currEntity,
+  shapes: state.shapes.labeledShapes,
 });
 
 export default connect(
