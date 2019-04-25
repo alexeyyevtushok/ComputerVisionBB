@@ -58,11 +58,10 @@ class EntitiesField extends React.Component {
     let colorValue = e.target.colorInput.value.toLowerCase();
     let labelValue = e.target.labelInput.value.toLowerCase();
     if (
-      labelValue === '' ||
       !/^[a-zA-Z]{3,15}$/.test(labelValue) ||
       this.isDublicate(labelValue, 'label')
     ) {
-      this.setState({ error: true, labelInput: '' });
+      this.setState({ error: true });
     } else {
       if (this.isDublicate(colorValue, 'color')) {
         colorValue = this.generateRandomColor();
@@ -97,26 +96,25 @@ class EntitiesField extends React.Component {
     if (this.state.modifyInputIndex === index)
       this.setState({
         modifyInputIndex: -1,
-        modifyInput: '',
+        modifyInput: this.props.entities[index].label,
         modifyInputError: false,
       });
-    else this.setState({ modifyInputIndex: index });
+    else
+      this.setState({
+        modifyInputIndex: index,
+        modifyInput: this.props.entities[index].label,
+      });
   };
   // Save new label.
   modifyAcceptHandler = (event, index) => {
     event.preventDefault();
     let value = event.target.modifyInput.value.toLowerCase();
-    if (
-      value === '' ||
-      !/^[a-zA-Z]{3,15}$/.test(value) ||
-      this.isDublicate(value, 'label')
-    ) {
-      this.setState({ modifyInput: '', modifyInputError: true });
+    if (!/^[a-zA-Z]{3,15}$/.test(value) || this.isDublicate(value, 'label')) {
+      this.setState({ modifyInputError: true });
     } else {
       this.props.modifyEntity(index, value);
       this.setState({
         modifyInputIndex: -1,
-        modifyInput: '',
         modifyInputError: false,
       });
     }
