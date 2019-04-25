@@ -56,7 +56,9 @@ const saveCurrentImageShapes = () => {
 
 export const updateImages = dispatch => getImages().then((images) => {
   dispatch(setImages(images));
-  getNewImageShapes(images[0].picture, dispatch);
+  if (images.length > 0) {
+    getNewImageShapes(images[0].picture, dispatch);
+  }
 });
 
 export const imageOnClick = image => (dispatch) => {
@@ -79,7 +81,7 @@ export const addImages = images => (dispatch) => {
 };
 
 export const deleteImage = state => (dispatch) => {
-  axios.delete(`/api/images/${state}`);
-  updateImages(dispatch);
-  updateImages(dispatch);
+  axios.delete(`/api/images/${state}`).then((res) => {
+    updateImages(dispatch);
+  });
 };

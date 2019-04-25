@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import './Slider.css';
 import { connect } from 'react-redux';
-import Slide from '../Slide/Slide';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
+import Slide from '../Slide/Slide';
 import { deleteImage, imageOnClick } from '../../actions/imagesActions';
 
 class Slider extends Component {
@@ -14,7 +14,7 @@ class Slider extends Component {
     };
   }
 
-  handleClick = i => {
+  handleClick = (i) => {
     this.props.imageOnClick(i);
   };
 
@@ -24,71 +24,62 @@ class Slider extends Component {
   };
 
   deleteSlide = () => {
-    this.props.deleteImage(this.state.clickedSlide.slice(26));
+    this.props.deleteImage(this.state.clickedSlide);
   };
 
   leftArrow = () => {
     if (this.state.left <= -11) {
-      this.setState(prevState => {
-        return {
-          left: prevState.left + 11,
-        };
-      });
+      this.setState(prevState => ({
+        left: prevState.left + 11,
+      }));
     }
   };
 
   rightArrow = () => {
     const outOfRange = -11 * (this.props.images.length - 14);
     if (this.state.left < outOfRange) this.setState({ left: 0 });
-    this.setState(prevState => {
-      return {
-        left: prevState.left - 11,
-      };
-    });
+    this.setState(prevState => ({
+      left: prevState.left - 11,
+    }));
   };
 
   render() {
     // Move slider.
     const styleChange = {
-      left: this.state.left + 'vh',
+      left: `${this.state.left}vh`,
     };
     const { images } = this.props;
     return (
       <div className="fullSlider">
         <ContextMenu className="contextMenu" id="some_unique_identifier">
           <MenuItem onClick={this.deleteSlide}>
-            <i className="fas fa-trash-alt" /> Delete
+            <i className="fas fa-trash-alt" />
+            {' '}
+Delete
           </MenuItem>
           <MenuItem>
             <i className="fas fa-undo" />
+
             Undo
           </MenuItem>
         </ContextMenu>
-        <div
-          className="arrows prev"
-          onClick={() => this.leftArrow(styleChange)}
-        />
+        <div className="arrows prev" onClick={() => this.leftArrow(styleChange)} />
         <div className="slideList">
           <ContextMenuTrigger id="some_unique_identifier">
             <div className="slider" style={styleChange}>
-              {/*list of slides*/}
+              {/* list of slides */}
               {images.map(property => (
                 <Slide
                   key={property._id}
                   property={property}
                   onClick={() => this.handleClick(property.picture)}
-                  onContextMenu={e =>
-                    this.handleRightClick(e, property.picture)
-                  }
+                  onContextMenu={e => this.handleRightClick(e, property.picture)}
                 />
               ))}
             </div>
           </ContextMenuTrigger>
         </div>
-        <div
-          className="arrows next"
-          onClick={() => this.rightArrow(styleChange)}
-        />
+        <div className="arrows next" onClick={() => this.rightArrow(styleChange)} />
       </div>
     );
   }
