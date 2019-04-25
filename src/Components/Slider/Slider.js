@@ -14,7 +14,7 @@ class Slider extends Component {
     };
   }
 
-  handleClick = (i) => {
+  handleClick = i => {
     this.props.imageOnClick(i);
   };
 
@@ -53,17 +53,17 @@ class Slider extends Component {
       <div className="fullSlider">
         <ContextMenu className="contextMenu" id="some_unique_identifier">
           <MenuItem onClick={this.deleteSlide}>
-            <i className="fas fa-trash-alt" />
-            {' '}
-Delete
+            <i className="fas fa-trash-alt" /> Delete
           </MenuItem>
           <MenuItem>
             <i className="fas fa-undo" />
-
             Undo
           </MenuItem>
         </ContextMenu>
-        <div className="arrows prev" onClick={() => this.leftArrow(styleChange)} />
+        <div
+          className="arrows prev"
+          onClick={() => this.leftArrow(styleChange)}
+        />
         <div className="slideList">
           <ContextMenuTrigger id="some_unique_identifier">
             <div className="slider" style={styleChange}>
@@ -73,13 +73,18 @@ Delete
                   key={property._id}
                   property={property}
                   onClick={() => this.handleClick(property.picture)}
-                  onContextMenu={e => this.handleRightClick(e, property.picture)}
+                  onContextMenu={e =>
+                    this.handleRightClick(e, property.picture)
+                  }
                 />
               ))}
             </div>
           </ContextMenuTrigger>
         </div>
-        <div className="arrows next" onClick={() => this.rightArrow(styleChange)} />
+        <div
+          className="arrows next"
+          onClick={() => this.rightArrow(styleChange)}
+        />
       </div>
     );
   }

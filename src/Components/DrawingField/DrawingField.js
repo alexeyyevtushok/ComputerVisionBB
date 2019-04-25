@@ -79,8 +79,9 @@ class DrawingField extends React.Component {
 
   saveLabeledShape = () => {
     const { shape } = this.state;
-    const { currEntity } = this.props;
+    const { currEntity, shapes } = this.props;
     const labeledShape = {
+      index: shapes.length,
       label: currEntity.label,
       color: currEntity.color,
       x: shape.x,
