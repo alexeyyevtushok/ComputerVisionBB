@@ -1,8 +1,6 @@
 import axios from 'axios';
 import store from '../store';
-import {
-  SET_IMAGES, IMAGE_CLICK, CLEAR_SHAPES, SET_SHAPES,
-} from './types';
+import { SET_IMAGES, IMAGE_CLICK, CLEAR_SHAPES, SET_SHAPES } from './types';
 
 const setImages = images => ({
   type: SET_IMAGES,
@@ -14,16 +12,17 @@ const changeImage = image => ({
   payload: image,
 });
 
-const getImages = () => axios
-  .get('/api/images')
-  .then(res => res.data)
-  .catch((err) => {
-    console.log(`err in getImages ${err}`);
-  });
+const getImages = () =>
+  axios
+    .get('/api/images')
+    .then(res => res.data)
+    .catch(err => {
+      console.log(`err in getImages ${err}`);
+    });
 
 const getNewImageShapes = (image, dispatch) => {
   const imageName = image.slice(image.lastIndexOf('/') + 1);
-  axios.get(`/api/labeled/${imageName}`).then((res) => {
+  axios.get(`/api/labeled/${imageName}`).then(res => {
     if (res.data.shapes) {
       dispatch({
         type: SET_SHAPES,
@@ -54,16 +53,19 @@ const saveCurrentImageShapes = () => {
   return Promise.resolve();
 };
 
-export const updateImages = dispatch => getImages().then((images) => {
-  dispatch(setImages(images));
-  getNewImageShapes(images[0].picture, dispatch);
-});
+export const updateImages = dispatch =>
+  getImages().then(images => {
+    dispatch(setImages(images));
+    if (images.length > 0) {
+      getNewImageShapes(images[0].picture, dispatch);
+    }
+  });
 
-export const imageOnClick = image => (dispatch) => {
+export const imageOnClick = image => dispatch => {
   saveCurrentImageShapes().then(getNewImageShapes(image, dispatch));
 };
 
-export const addImages = images => (dispatch) => {
+export const addImages = images => dispatch => {
   for (let i = 0; i < images.length; i++) {
     const data = new FormData();
     data.append('targetImage', images[i]);
@@ -72,14 +74,14 @@ export const addImages = images => (dispatch) => {
       .then(() => {
         updateImages(dispatch);
       })
-      .catch((err) => {
+      .catch(err => {
         console.log(`errors in addImages ${err}`);
       });
   }
 };
 
-export const deleteImage = state => (dispatch) => {
-  axios.delete(`/api/images/${state}`);
-  updateImages(dispatch);
-  updateImages(dispatch);
+export const deleteImage = state => dispatch => {
+  axios.delete(`/api/images/${state}`).then(res => {
+    updateImages(dispatch);
+  });
 };
