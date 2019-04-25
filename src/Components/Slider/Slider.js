@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import './Slider.css';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import Slide from '../Slide/Slide';
 import { deleteImage, imageOnClick } from '../../actions/imagesActions';
@@ -14,8 +15,12 @@ class Slider extends Component {
     };
   }
 
-  handleClick = (i) => {
-    this.props.imageOnClick(i);
+  handleClick = (img) => {
+    const currentImg = this.props.match.params.imgName;
+    const newImg = img.slice(4);
+    this.props.imageOnClick(currentImg, newImg);
+    // then(
+    this.props.history.push(`/${newImg}`);
   };
 
   handleRightClick = (e, i) => {
@@ -95,4 +100,4 @@ export default connect(
     deleteImage,
     imageOnClick,
   },
-)(Slider);
+)(withRouter(Slider));

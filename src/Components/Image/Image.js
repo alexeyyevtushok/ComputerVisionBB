@@ -1,23 +1,25 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { withRouter } from 'react-router-dom';
 import './Image.css';
 import { connect } from 'react-redux';
 
-const Image = props => {
-  const { currentImg } = props;
+const Image = (props) => {
+  const { imgName } = props.match.params;
   return (
     <div>
-      <img className="currentImg" src={currentImg} alt="Logo" />
+      <img className="currentImg" src={`img/${imgName}`} alt="Logo" />
     </div>
   );
 };
 
-Image.propTypes = {
-  currentImg: PropTypes.string.isRequired,
-};
+export default withRouter(Image);
+// Image.propTypes = {
+//   currentImg: PropTypes.string.isRequired,
+// };
 
-const mapStateToProps = state => ({
-  currentImg: state.images.currentImg,
-});
+// const mapStateToProps = state => ({
+//   currentImg: state.images.currentImg,
+// });
 
-export default connect(mapStateToProps)(Image);
+// export default connect(mapStateToProps)(Image);

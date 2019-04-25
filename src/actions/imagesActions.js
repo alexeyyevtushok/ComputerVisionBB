@@ -22,8 +22,7 @@ const getImages = () => axios
   });
 
 const getNewImageShapes = (image, dispatch) => {
-  const imageName = image.slice(image.lastIndexOf('/') + 1);
-  axios.get(`/api/labeled/${imageName}`).then((res) => {
+  axios.get(`/api/labeled/${image}`).then((res) => {
     if (res.data.shapes) {
       dispatch({
         type: SET_SHAPES,
@@ -34,18 +33,16 @@ const getNewImageShapes = (image, dispatch) => {
         type: CLEAR_SHAPES,
       });
     }
-    dispatch(changeImage(image));
+    // dispatch(changeImage(image));
   });
 };
 
-const saveCurrentImageShapes = () => {
+const saveCurrentImageShapes = (image) => {
   const shapes = store.getState().shapes.labeledShapes;
   if (shapes.length > 0) {
-    let prevImg = store.getState().images.currentImg;
-    prevImg = prevImg.slice(prevImg.lastIndexOf('/') + 1);
     const data = {
       image: {
-        name: prevImg,
+        name: image,
       },
       shapes,
     };
@@ -56,13 +53,13 @@ const saveCurrentImageShapes = () => {
 
 export const updateImages = dispatch => getImages().then((images) => {
   dispatch(setImages(images));
-  if (images.length > 0) {
-    getNewImageShapes(images[0].picture, dispatch);
-  }
+  // if (images.length > 0) {
+  //   getNewImageShapes(images[0].picture, dispatch);
+  // }
 });
 
-export const imageOnClick = image => (dispatch) => {
-  saveCurrentImageShapes().then(getNewImageShapes(image, dispatch));
+export const imageOnClick = (currentImg, newImg) => (dispatch) => {
+  saveCurrentImageShapes(currentImg).then(getNewImageShapes(newImg, dispatch));
 };
 
 export const addImages = images => (dispatch) => {

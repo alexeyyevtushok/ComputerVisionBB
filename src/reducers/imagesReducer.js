@@ -2,7 +2,7 @@ import { SET_IMAGES, IMAGE_CLICK } from '../actions/types';
 
 const initialState = {
   images: [],
-  currentImg: 'http://pcexpert86.ru/image/cache/catalog/thumbs/nofoto-1200x800.gif',
+  // currentImg: 'http://pcexpert86.ru/image/cache/catalog/thumbs/nofoto-1200x800.gif',
 };
 
 export default function (state = initialState, action) {
@@ -12,21 +12,21 @@ export default function (state = initialState, action) {
         return {
           ...state,
           images: action.payload,
-          currentImg: 'http://pcexpert86.ru/image/cache/catalog/thumbs/nofoto-1200x800.gif',
+          // currentImg: 'http://pcexpert86.ru/image/cache/catalog/thumbs/nofoto-1200x800.gif',
         };
       }
       return {
         ...state,
         images: action.payload,
-        currentImg: action.payload[0].picture,
+        // currentImg: action.payload[0].picture,
       };
     }
-    case IMAGE_CLICK: {
-      return {
-        ...state,
-        currentImg: action.payload,
-      };
-    }
+    // case IMAGE_CLICK: {
+    //   return {
+    //     ...state,
+    //     currentImg: action.payload,
+    //   };
+    // }
     default:
       return state;
   }
