@@ -1,23 +1,48 @@
 import React from 'react';
-import PropTypes from 'prop-types';
-import './Image.css';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
+import { getNewImageShapes } from '../../actions/imagesActions';
+import './Image.css';
 
-const Image = props => {
-  const { currentImg } = props;
-  return (
-    <div>
-      <img className="currentImg" src={currentImg} alt="Logo" />
-    </div>
-  );
-};
+class Image extends React.Component {
+  componentDidMount() {
+    this.getImageShapes();
+  }
 
-Image.propTypes = {
-  currentImg: PropTypes.string.isRequired,
-};
+  componentDidUpdate() {
+    this.getImageShapes();
+  }
 
-const mapStateToProps = state => ({
-  currentImg: state.images.currentImg,
-});
+  getImageShapes = () => {
+    const imgName = this.getImageName();
+    if (imgName) {
+      this.props.getNewImageShapes(imgName);
+    }
+  };
 
-export default connect(mapStateToProps)(Image);
+  getImageName = () => {
+    if (this.props.match) {
+      const { imgName } = this.props.match.params;
+      return imgName;
+    }
+    return null;
+  };
+
+  render() {
+    let imgUrl = 'public/nofoto-1200x800.gif';
+    const imgName = this.getImageName();
+    if (imgName) {
+      imgUrl = `img/${imgName}`;
+    }
+    return (
+      <div>
+        <img className="currentImg" src={imgUrl} alt="Logo" />
+      </div>
+    );
+  }
+}
+
+export default connect(
+  null,
+  { getNewImageShapes },
+)(withRouter(Image));
