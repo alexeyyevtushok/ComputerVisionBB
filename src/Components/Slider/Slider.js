@@ -15,7 +15,6 @@ class Slider extends Component {
     };
   }
 
-  // add componentDidMount to change picture
   componentDidUpdate() {
     if (!this.props.match) {
       const { images } = this.props;
@@ -43,7 +42,7 @@ class Slider extends Component {
   deleteSlide = () => {
     const { clickedSlide } = this.state;
     const { params } = this.props.match;
-    this.props.deleteImage(clickedSlide);
+    this.props.deleteImage(clickedSlide.slice(4));
     if (params) {
       if (clickedSlide.slice(4) === params.imgName) {
         this.props.history.push('/');
