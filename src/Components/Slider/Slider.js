@@ -4,7 +4,10 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import Slide from '../Slide/Slide';
-import { deleteImage, saveCurrentImageShapes } from '../../actions/imagesActions';
+import {
+  deleteImage,
+  saveCurrentImageShapes,
+} from '../../actions/imagesActions';
 
 class Slider extends Component {
   constructor(props) {
@@ -25,7 +28,7 @@ class Slider extends Component {
     }
   }
 
-  handleClick = (img) => {
+  handleClick = img => {
     if (this.props.match) {
       const { imgName } = this.props.match.params;
       this.props.saveCurrentImageShapes(imgName);
@@ -42,7 +45,7 @@ class Slider extends Component {
   deleteSlide = () => {
     const { clickedSlide } = this.state;
     const { params } = this.props.match;
-    this.props.deleteImage(clickedSlide.slice(4)).then((res) => {
+    this.props.deleteImage(clickedSlide.slice(4)).then(res => {
       console.log(res);
       if (params) {
         if (clickedSlide.slice(4) === params.imgName) {
@@ -78,17 +81,17 @@ class Slider extends Component {
       <div className="fullSlider">
         <ContextMenu className="contextMenu" id="some_unique_identifier">
           <MenuItem onClick={this.deleteSlide}>
-            <i className="fas fa-trash-alt" />
-            {' '}
-Delete
+            <i className="fas fa-trash-alt" /> Delete
           </MenuItem>
           <MenuItem>
             <i className="fas fa-undo" />
-
             Undo
           </MenuItem>
         </ContextMenu>
-        <div className="arrows prev" onClick={() => this.leftArrow(styleChange)} />
+        <div
+          className="arrows prev"
+          onClick={() => this.leftArrow(styleChange)}
+        />
         <div className="slideList">
           <ContextMenuTrigger id="some_unique_identifier">
             <div className="slider" style={styleChange}>
@@ -98,13 +101,18 @@ Delete
                   key={property._id}
                   property={property}
                   onClick={() => this.handleClick(property.picture)}
-                  onContextMenu={e => this.handleRightClick(e, property.picture)}
+                  onContextMenu={e =>
+                    this.handleRightClick(e, property.picture)
+                  }
                 />
               ))}
             </div>
           </ContextMenuTrigger>
         </div>
-        <div className="arrows next" onClick={() => this.rightArrow(styleChange)} />
+        <div
+          className="arrows next"
+          onClick={() => this.rightArrow(styleChange)}
+        />
       </div>
     );
   }

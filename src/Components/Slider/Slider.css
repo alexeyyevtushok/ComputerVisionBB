@@ -1,4 +1,8 @@
 /*Main block*/
+.fullSlider {
+  text-align: center;
+}
+
 .slideList {
   display: inline-flex;
   width: 75vw;

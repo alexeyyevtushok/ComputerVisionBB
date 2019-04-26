@@ -3,6 +3,7 @@ import Image from '../Image/Image';
 import './Middle.css';
 import DrawingField from '../DrawingField/DrawingField';
 import EntitiesField from '../EntitiesField/EntitiesField';
+import BoxesField from '../BoxesField/BoxesField';
 
 class Middle extends Component {
   render() {
@@ -14,6 +15,7 @@ class Middle extends Component {
           <DrawingField />
           <Image />
         </div>
+        <BoxesField />
       </div>
     );
   }
