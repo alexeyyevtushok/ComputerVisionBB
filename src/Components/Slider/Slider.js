@@ -42,12 +42,14 @@ class Slider extends Component {
   deleteSlide = () => {
     const { clickedSlide } = this.state;
     const { params } = this.props.match;
-    this.props.deleteImage(clickedSlide.slice(4));
-    if (params) {
-      if (clickedSlide.slice(4) === params.imgName) {
-        this.props.history.push('/');
+    this.props.deleteImage(clickedSlide.slice(4)).then((res) => {
+      console.log(res);
+      if (params) {
+        if (clickedSlide.slice(4) === params.imgName) {
+          this.props.history.push('/');
+        }
       }
-    }
+    });
   };
 
   leftArrow = () => {

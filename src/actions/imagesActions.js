@@ -50,6 +50,7 @@ export const saveCurrentImageShapes = image => (dispatch) => {
 
 export const updateImages = dispatch => getImages().then((images) => {
   dispatch(setImages(images));
+  return Promise.resolve();
 });
 
 export const addImages = images => (dispatch) => {
@@ -67,8 +68,6 @@ export const addImages = images => (dispatch) => {
   }
 };
 
-export const deleteImage = state => (dispatch) => {
-  axios.delete(`/api/images/img/${state}`).then((res) => {
-    updateImages(dispatch);
-  });
-};
+export const deleteImage = state => dispatch => axios
+  .delete(`/api/images/img/${state}`)
+  .then(res => updateImages(dispatch).then(res => Promise.resolve()));
