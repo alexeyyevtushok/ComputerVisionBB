@@ -1,33 +1,48 @@
-import React, { Component } from 'react';
-import PropTypes from 'prop-types';
-import './Image.css';
+import React from 'react';
+import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
-import { imageOnClick } from '../../actions/imagesActions';
+import { getNewImageShapes } from '../../actions/imagesActions';
+import './Image.css';
 
-class Image extends Component {
-  componentDidUpdate() {
-    console.log(this.props.currentImg);
+class Image extends React.Component {
+  componentDidMount() {
+    this.getImageShapes();
   }
 
+  componentDidUpdate() {
+    this.getImageShapes();
+  }
+
+  getImageShapes = () => {
+    const imgName = this.getImageName();
+    if (imgName) {
+      this.props.getNewImageShapes(imgName);
+    }
+  };
+
+  getImageName = () => {
+    if (this.props.match) {
+      const { imgName } = this.props.match.params;
+      return imgName;
+    }
+    return null;
+  };
+
   render() {
-    const { currentImg } = this.props;
+    let imgUrl = 'public/nofoto-1200x800.gif';
+    const imgName = this.getImageName();
+    if (imgName) {
+      imgUrl = `img/${imgName}`;
+    }
     return (
       <div>
-        <img className="currentImg" src={currentImg} alt="Logo" />
+        <img className="currentImg" src={imgUrl} alt="Logo" />
       </div>
     );
   }
 }
 
-Image.propTypes = {
-  currentImg: PropTypes.string.isRequired,
-};
-
-const mapStateToProps = state => ({
-  currentImg: state.images.currentImg,
-});
-
 export default connect(
-  mapStateToProps,
-  { imageOnClick },
-)(Image);
+  null,
+  { getNewImageShapes },
+)(withRouter(Image));

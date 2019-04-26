@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React from 'react';
+import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from '../../store';
 import { updateEntities } from '../../actions/entitiesActions';
@@ -12,18 +13,17 @@ import { updateImages } from '../../actions/imagesActions';
 store.dispatch(updateImages);
 store.dispatch(updateEntities);
 
-class Application extends Component {
-  render() {
-    return (
-      <Provider store={store}>
-        <div className="main">
-          <Header />
-          <Middle />
-          <Slider />
-        </div>
-      </Provider>
-    );
-  }
-}
+const Application = () => (
+  <Provider store={store}>
+    <Router>
+      <Header />
+      <Route path="/:imgName">
+        <Middle />
+
+        <Slider />
+      </Route>
+    </Router>
+  </Provider>
+);
 
 export default Application;
