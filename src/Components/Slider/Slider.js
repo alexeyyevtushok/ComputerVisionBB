@@ -4,7 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import Slide from '../Slide/Slide';
-import { deleteImage, imageOnClick } from '../../actions/imagesActions';
+import { deleteImage, saveCurrentImageShapes } from '../../actions/imagesActions';
 
 class Slider extends Component {
   constructor(props) {
@@ -15,11 +15,23 @@ class Slider extends Component {
     };
   }
 
+  // add componentDidMount to change picture
+  componentDidUpdate() {
+    if (!this.props.match) {
+      const { images } = this.props;
+      if (images.length > 0) {
+        const newImg = images[0].picture.slice(4);
+        this.props.history.push(`/${newImg}`);
+      }
+    }
+  }
+
   handleClick = (img) => {
-    const currentImg = this.props.match.params.imgName;
+    if (this.props.match) {
+      const { imgName } = this.props.match.params;
+      this.props.saveCurrentImageShapes(imgName);
+    }
     const newImg = img.slice(4);
-    this.props.imageOnClick(currentImg, newImg);
-    // then(
     this.props.history.push(`/${newImg}`);
   };
 
@@ -29,7 +41,14 @@ class Slider extends Component {
   };
 
   deleteSlide = () => {
-    this.props.deleteImage(this.state.clickedSlide);
+    const { clickedSlide } = this.state;
+    const { params } = this.props.match;
+    this.props.deleteImage(clickedSlide);
+    if (params) {
+      if (clickedSlide.slice(4) === params.imgName) {
+        this.props.history.push('/');
+      }
+    }
   };
 
   leftArrow = () => {
@@ -98,6 +117,6 @@ export default connect(
   mapStateToProps,
   {
     deleteImage,
-    imageOnClick,
+    saveCurrentImageShapes,
   },
 )(withRouter(Slider));

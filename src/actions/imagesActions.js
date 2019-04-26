@@ -21,23 +21,18 @@ const getImages = () => axios
     console.log(`err in getImages ${err}`);
   });
 
-const getNewImageShapes = (image, dispatch) => {
+export const getNewImageShapes = image => (dispatch) => {
   axios.get(`/api/labeled/${image}`).then((res) => {
     if (res.data.shapes) {
       dispatch({
         type: SET_SHAPES,
         payload: res.data.shapes,
       });
-    } else {
-      dispatch({
-        type: CLEAR_SHAPES,
-      });
     }
-    // dispatch(changeImage(image));
   });
 };
 
-const saveCurrentImageShapes = (image) => {
+export const saveCurrentImageShapes = image => (dispatch) => {
   const shapes = store.getState().shapes.labeledShapes;
   if (shapes.length > 0) {
     const data = {
@@ -46,21 +41,16 @@ const saveCurrentImageShapes = (image) => {
       },
       shapes,
     };
-    return axios.post('/api/labeled', data);
+    dispatch({
+      type: CLEAR_SHAPES,
+    });
+    axios.post('/api/labeled', data);
   }
-  return Promise.resolve();
 };
 
 export const updateImages = dispatch => getImages().then((images) => {
   dispatch(setImages(images));
-  // if (images.length > 0) {
-  //   getNewImageShapes(images[0].picture, dispatch);
-  // }
 });
-
-export const imageOnClick = (currentImg, newImg) => (dispatch) => {
-  saveCurrentImageShapes(currentImg).then(getNewImageShapes(newImg, dispatch));
-};
 
 export const addImages = images => (dispatch) => {
   for (let i = 0; i < images.length; i++) {
