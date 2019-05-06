@@ -50,7 +50,7 @@ class Image extends React.Component {
           let delta = e.deltaY || e.detail || e.wheelDelta;
           if (delta < 0) scale += 0.05;
           else scale -= 0.05;
-          imgScale.style.transform = `translate(-50%, -50%) scale(${scale})`;
+          imgScale.style.transform = ` scale(${scale})`;
         }}
       >
         <div className="imgScale">
