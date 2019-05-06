@@ -138,7 +138,7 @@ class DrawingField extends React.Component {
       );
     }
     return (
-      <div>
+      <div className="mainDrawing">
         <Stage
           className="drawingField"
           width={width}

@@ -19,3 +19,22 @@
   width: 10px;
   height: 10px;
 }
+
+.boxesIcons {
+  margin-left: auto;
+}
+
+.boxesDelete {
+  display: none;
+  margin-right: 20px;
+}
+
+.boxesItem:hover .boxesDelete {
+  display: block;
+}
+
+
+.boxesDelete:hover {
+  font-size: 18px;
+  color: maroon;
+}
