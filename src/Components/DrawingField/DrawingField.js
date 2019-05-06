@@ -13,8 +13,8 @@ class DrawingField extends React.Component {
     this.state = {
       shape: null,
       isDrawing: false,
-      width: this.calculateWidth(),
-      height: this.calculateHeight(),
+      width: 0,
+      height: 0,
     };
   }
 
@@ -22,6 +22,8 @@ class DrawingField extends React.Component {
     this.setState({
       shape: null,
       isDrawing: false,
+      width: this.calculateWidth(),
+      height: this.calculateHeight(),
     });
   }
 
@@ -29,24 +31,18 @@ class DrawingField extends React.Component {
     this.layer.batchDraw();
   }
 
-  componentDidMount = () => {
-    window.addEventListener('resize', this.updateFieldSize);
-  };
+  calculateHeight = () =>
+    document.getElementsByClassName('imgScale')[0].clientHeight;
 
-  componentWillUnmount = () => {
-    window.removeEventListener('resize', this.updateFieldSize);
-  };
-
-  calculateHeight = () => document.documentElement.clientHeight * 0.7;
-
-  calculateWidth = () => document.documentElement.clientWidth * 0.555;
+  calculateWidth = () =>
+    document.getElementsByClassName('imgScale')[0].clientWidth;
 
   updateFieldSize = debounce(() => {
     this.setState({
       width: this.calculateWidth(),
       height: this.calculateHeight(),
     });
-  }, 500);
+  }, 0);
 
   handleClick = e => {
     const { isDrawing, shape } = this.state;
