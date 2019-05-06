@@ -1,11 +1,11 @@
-import { SET_IMAGES, IMAGE_CLICK } from '../actions/types';
+import { SET_IMAGES } from '../actions/types';
 
 const initialState = {
   images: [],
   // currentImg: 'http://pcexpert86.ru/image/cache/catalog/thumbs/nofoto-1200x800.gif',
 };
 
-export default function (state = initialState, action) {
+export default function(state = initialState, action) {
   switch (action.type) {
     case SET_IMAGES: {
       if (!action.payload[0]) {

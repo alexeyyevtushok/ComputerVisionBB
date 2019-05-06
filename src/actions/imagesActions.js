@@ -1,16 +1,16 @@
 import axios from 'axios';
 import store from '../store';
-import { SET_IMAGES, IMAGE_CLICK, CLEAR_SHAPES, SET_SHAPES } from './types';
+import { SET_IMAGES, CLEAR_SHAPES, SET_SHAPES } from './types';
 
 const setImages = images => ({
   type: SET_IMAGES,
   payload: images,
 });
 
-const changeImage = image => ({
-  type: IMAGE_CLICK,
-  payload: image,
-});
+// const changeImage = image => ({
+//   type: IMAGE_CLICK,
+//   payload: image,
+// });
 
 const getImages = () =>
   axios
@@ -33,18 +33,16 @@ export const getNewImageShapes = image => dispatch => {
 
 export const saveCurrentImageShapes = image => dispatch => {
   const shapes = store.getState().shapes.labeledShapes;
-  if (shapes.length > 0) {
-    const data = {
-      image: {
-        name: image,
-      },
-      shapes,
-    };
-    dispatch({
-      type: CLEAR_SHAPES,
-    });
-    axios.post('/api/labeled', data);
-  }
+  const data = {
+    image: {
+      name: image,
+    },
+    shapes,
+  };
+  dispatch({
+    type: CLEAR_SHAPES,
+  });
+  axios.post('/api/labeled', data);
 };
 
 export const updateImages = dispatch =>

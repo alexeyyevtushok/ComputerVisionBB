@@ -20,6 +20,7 @@ export default function(state = initialState, action) {
     case DEL_SHAPE: {
       return {
         ...state,
+        labeledShapes: action.payload,
       };
     }
     case CLEAR_SHAPES: {
