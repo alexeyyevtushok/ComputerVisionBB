@@ -3,9 +3,12 @@
   width: 55.5vw;
   height: 70vh;
   border: 1px solid #737373;
-  overflow: auto;
+  overflow: scroll;
 }
 
 .imgScale {
   position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
