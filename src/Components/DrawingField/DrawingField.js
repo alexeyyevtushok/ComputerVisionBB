@@ -32,10 +32,10 @@ class DrawingField extends React.Component {
   }
 
   calculateHeight = () =>
-    document.getElementsByClassName('imgScale')[0].clientHeight;
+    document.getElementsByClassName('currentImg')[0].clientHeight;
 
   calculateWidth = () =>
-    document.getElementsByClassName('imgScale')[0].clientWidth;
+    document.getElementsByClassName('currentImg')[0].clientWidth;
 
   updateFieldSize = debounce(() => {
     this.setState({
