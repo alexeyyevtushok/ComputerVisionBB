@@ -7,7 +7,6 @@ import Slide from '../Slide/Slide';
 import {
   deleteImage,
   saveCurrentImageShapes,
-  clearShape,
 } from '../../actions/imagesActions';
 
 class Slider extends Component {
@@ -30,7 +29,10 @@ class Slider extends Component {
   }
 
   handleClick = img => {
-    this.props.clearShape();
+    if (this.props.match) {
+      const { imgName } = this.props.match.params;
+      this.props.saveCurrentImageShapes(imgName);
+    }
     const newImg = img.slice(4);
     this.props.history.push(`/${newImg}`);
   };
@@ -81,10 +83,6 @@ class Slider extends Component {
           <MenuItem onClick={this.deleteSlide}>
             <i className="fas fa-trash-alt" /> Delete
           </MenuItem>
-          <MenuItem>
-            <i className="fas fa-undo" />
-            Undo
-          </MenuItem>
         </ContextMenu>
         <div
           className="arrows prev"
@@ -125,6 +123,5 @@ export default connect(
   {
     deleteImage,
     saveCurrentImageShapes,
-    clearShape,
   },
 )(withRouter(Slider));

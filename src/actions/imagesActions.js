@@ -66,3 +66,7 @@ export const deleteImage = state => dispatch =>
   axios
     .delete(`/api/images/img/${state}`)
     .then(res => updateImages(dispatch).then(res => Promise.resolve()));
+
+export const resetAll = () => dispatch => {
+  axios.delete('api/images/reset');
+};
