@@ -2,16 +2,23 @@ import React from 'react';
 import { withRouter } from 'react-router-dom';
 import { connect } from 'react-redux';
 import { getNewImageShapes } from '../../actions/imagesActions';
+import { plusScale, minusScale } from '../../actions/shapesActions';
 import './Image.css';
 import DrawingField from '../DrawingField/DrawingField';
+import store from '../../store';
 
 class Image extends React.Component {
   componentDidMount() {
     this.getImageShapes();
+    //disable wheel
+    document
+      .getElementsByClassName('imgWrapper')[0]
+      .addEventListener('wheel', e => e.preventDefault(), { passive: false });
   }
 
   componentDidUpdate() {
     this.getImageShapes();
+    console.log(this.props.scale);
   }
 
   getImageShapes = () => {
@@ -29,6 +36,17 @@ class Image extends React.Component {
     return null;
   };
 
+  scaleHandler = e => {
+    const imgScale = document.getElementsByClassName('imgScale')[0];
+    let delta = e.deltaY || e.detail || e.wheelDelta;
+    if (delta < 0) {
+      this.props.plusScale();
+    } else {
+      this.props.minusScale();
+    }
+    imgScale.style.transform = ` scale(${store.getState().shapes.scale})`;
+  };
+
   render() {
     let imgUrl = 'public/nofoto-1200x800.gif';
     const imgName = this.getImageName();
@@ -36,23 +54,7 @@ class Image extends React.Component {
       imgUrl = `img/${imgName}`;
     }
     return (
-      <div
-        className="imgWrapper"
-        onWheel={e => {
-          document.getElementsByClassName(
-            'imgWrapper',
-          )[0].onmousewheel = document.onmousewheel = e => {
-            e.preventDefault();
-            e.returnValue = false;
-          };
-
-          const imgScale = document.getElementsByClassName('imgScale')[0];
-          let delta = e.deltaY || e.detail || e.wheelDelta;
-          if (delta < 0) scale += 0.05;
-          else scale -= 0.05;
-          imgScale.style.transform = ` scale(${scale})`;
-        }}
-      >
+      <div className="imgWrapper" onWheel={this.scaleHandler}>
         <div className="imgScale">
           <DrawingField />
           <img id="test" className="currentImg" src={imgUrl} alt="Logo" />
@@ -62,9 +64,11 @@ class Image extends React.Component {
   }
 }
 
-var scale = 1;
+const mapStateToProps = state => ({
+  scale: state.shapes.scale,
+});
 
 export default connect(
-  null,
-  { getNewImageShapes },
+  mapStateToProps,
+  { getNewImageShapes, plusScale, minusScale },
 )(withRouter(Image));

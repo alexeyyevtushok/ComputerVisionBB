@@ -3,10 +3,13 @@ import {
   CLEAR_SHAPES,
   SET_SHAPES,
   DEL_SHAPE,
+  PLUS_SCALE,
+  MINUS_SCALE,
 } from '../actions/types';
 
 const initialState = {
   labeledShapes: [],
+  scale: 1,
 };
 
 export default function(state = initialState, action) {
@@ -33,6 +36,18 @@ export default function(state = initialState, action) {
       return {
         ...state,
         labeledShapes: action.payload,
+      };
+    }
+    case PLUS_SCALE: {
+      return {
+        ...state,
+        scale: action.payload,
+      };
+    }
+    case MINUS_SCALE: {
+      return {
+        ...state,
+        scale: action.payload,
       };
     }
     default:

@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import debounce from 'lodash.debounce';
 import { Layer, Stage } from 'react-konva';
 import { addShape } from '../../actions/shapesActions';
+import { saveCurrentImageShapes } from '../../actions/imagesActions';
 import ColoredRect from '../ColoredRect/ColoredRect';
 import './DrawingField.css';
 
@@ -27,22 +28,24 @@ class DrawingField extends React.Component {
     });
   }
 
-  componentDidUpdate() {
-    this.layer.batchDraw();
-  }
+  // componentDidUpdate() {
+  //   this.layer.batchDraw();
+  // }
 
-  calculateHeight = () =>
-    document.getElementsByClassName('currentImg')[0].clientHeight;
+  calculateHeight = () => {
+    return document.getElementsByClassName('currentImg')[0].clientHeight;
+  };
 
-  calculateWidth = () =>
-    document.getElementsByClassName('currentImg')[0].clientWidth;
+  calculateWidth = () => {
+    return document.getElementsByClassName('currentImg')[0].clientWidth;
+  };
 
-  updateFieldSize = debounce(() => {
-    this.setState({
-      width: this.calculateWidth(),
-      height: this.calculateHeight(),
-    });
-  }, 0);
+  // updateFieldSize = debounce(() => {
+  //   this.setState({
+  //     width: this.calculateWidth(),
+  //     height: this.calculateHeight(),
+  //   });
+  // }, 0);
 
   handleClick = e => {
     const { isDrawing, shape } = this.state;
@@ -60,8 +63,8 @@ class DrawingField extends React.Component {
     }
 
     const newShape = {
-      x: e.evt.layerX,
-      y: e.evt.layerY,
+      x: e.evt.layerX / this.props.scale,
+      y: e.evt.layerY / this.props.scale,
       width: 0,
       height: 0,
       color: currEntity.color,
@@ -86,6 +89,7 @@ class DrawingField extends React.Component {
       height: shape.height,
     };
     this.props.addShape(labeledShape);
+    // this.props.saveCurrentImageShapes();
   };
 
   handleMouseMove = e => {
@@ -94,8 +98,8 @@ class DrawingField extends React.Component {
 
     if (currEntity.index === -1) return;
 
-    const mouseX = e.evt.layerX;
-    const mouseY = e.evt.layerY;
+    const mouseX = e.evt.layerX / this.props.scale;
+    const mouseY = e.evt.layerY / this.props.scale;
 
     if (isDrawing) {
       const newWidth = mouseX - shape.x;
@@ -181,10 +185,11 @@ DrawingField.propTypes = {
 
 const mapStateToProps = state => ({
   currEntity: state.entities.currEntity,
+  scale: state.shapes.scale,
   shapes: state.shapes.labeledShapes,
 });
 
 export default connect(
   mapStateToProps,
-  { addShape },
+  { addShape, saveCurrentImageShapes },
 )(DrawingField);
