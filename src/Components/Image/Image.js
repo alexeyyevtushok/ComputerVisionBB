@@ -18,7 +18,6 @@ class Image extends React.Component {
 
   componentDidUpdate() {
     this.getImageShapes();
-    console.log(this.props.scale);
   }
 
   getImageShapes = () => {

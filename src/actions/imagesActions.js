@@ -7,11 +7,6 @@ const setImages = images => ({
   payload: images,
 });
 
-// const changeImage = image => ({
-//   type: IMAGE_CLICK,
-//   payload: image,
-// });
-
 const getImages = () =>
   axios
     .get('/api/images')
@@ -39,11 +34,12 @@ export const saveCurrentImageShapes = image => dispatch => {
     },
     shapes,
   };
-  dispatch({
-    type: CLEAR_SHAPES,
-  });
   axios.post('/api/labeled', data);
 };
+
+export const clearShape = () => ({
+  type: CLEAR_SHAPES,
+});
 
 export const updateImages = dispatch =>
   getImages().then(images => {
