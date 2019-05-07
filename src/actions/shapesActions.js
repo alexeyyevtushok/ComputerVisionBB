@@ -1,4 +1,4 @@
-import { ADD_SHAPE, DEL_SHAPE } from './types';
+import { ADD_SHAPE, DEL_SHAPE, PLUS_SCALE, MINUS_SCALE } from './types';
 import store from '../store';
 
 export const addShape = labeledShape => ({
@@ -34,3 +34,13 @@ export const delShape = (currentImg, index) => dispatch => {
     payload: del(currentImg, index),
   });
 };
+
+export const plusScale = () => ({
+  type: PLUS_SCALE,
+  payload: store.getState().shapes.scale + 0.05,
+});
+
+export const minusScale = () => ({
+  type: MINUS_SCALE,
+  payload: store.getState().shapes.scale - 0.05,
+});

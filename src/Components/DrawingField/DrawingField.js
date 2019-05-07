@@ -1,9 +1,10 @@
 import React from 'react';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import debounce from 'lodash.debounce';
 import { Layer, Stage } from 'react-konva';
 import { addShape } from '../../actions/shapesActions';
+import { saveCurrentImageShapes } from '../../actions/imagesActions';
 import ColoredRect from '../ColoredRect/ColoredRect';
 import './DrawingField.css';
 
@@ -13,8 +14,8 @@ class DrawingField extends React.Component {
     this.state = {
       shape: null,
       isDrawing: false,
-      width: this.calculateWidth(),
-      height: this.calculateHeight(),
+      width: 0,
+      height: 0,
     };
   }
 
@@ -22,31 +23,18 @@ class DrawingField extends React.Component {
     this.setState({
       shape: null,
       isDrawing: false,
-    });
-  }
-
-  componentDidUpdate() {
-    this.layer.batchDraw();
-  }
-
-  componentDidMount = () => {
-    window.addEventListener('resize', this.updateFieldSize);
-  };
-
-  componentWillUnmount = () => {
-    window.removeEventListener('resize', this.updateFieldSize);
-  };
-
-  calculateHeight = () => document.documentElement.clientHeight * 0.7;
-
-  calculateWidth = () => document.documentElement.clientWidth * 0.555;
-
-  updateFieldSize = debounce(() => {
-    this.setState({
       width: this.calculateWidth(),
       height: this.calculateHeight(),
     });
-  }, 500);
+  }
+
+  calculateHeight = () => {
+    return document.getElementsByClassName('currentImg')[0].clientHeight;
+  };
+
+  calculateWidth = () => {
+    return document.getElementsByClassName('currentImg')[0].clientWidth;
+  };
 
   handleClick = e => {
     const { isDrawing, shape } = this.state;
@@ -64,8 +52,8 @@ class DrawingField extends React.Component {
     }
 
     const newShape = {
-      x: e.evt.layerX,
-      y: e.evt.layerY,
+      x: e.evt.layerX / this.props.scale,
+      y: e.evt.layerY / this.props.scale,
       width: 0,
       height: 0,
       color: currEntity.color,
@@ -90,6 +78,10 @@ class DrawingField extends React.Component {
       height: shape.height,
     };
     this.props.addShape(labeledShape);
+    if (this.props.match) {
+      const { imgName } = this.props.match.params;
+      this.props.saveCurrentImageShapes(imgName);
+    }
   };
 
   handleMouseMove = e => {
@@ -98,8 +90,8 @@ class DrawingField extends React.Component {
 
     if (currEntity.index === -1) return;
 
-    const mouseX = e.evt.layerX;
-    const mouseY = e.evt.layerY;
+    const mouseX = e.evt.layerX / this.props.scale;
+    const mouseY = e.evt.layerY / this.props.scale;
 
     if (isDrawing) {
       const newWidth = mouseX - shape.x;
@@ -142,7 +134,7 @@ class DrawingField extends React.Component {
       );
     }
     return (
-      <div>
+      <div className="mainDrawing">
         <Stage
           className="drawingField"
           width={width}
@@ -185,10 +177,11 @@ DrawingField.propTypes = {
 
 const mapStateToProps = state => ({
   currEntity: state.entities.currEntity,
+  scale: state.shapes.scale,
   shapes: state.shapes.labeledShapes,
 });
 
 export default connect(
   mapStateToProps,
-  { addShape },
-)(DrawingField);
+  { addShape, saveCurrentImageShapes },
+)(withRouter(DrawingField));

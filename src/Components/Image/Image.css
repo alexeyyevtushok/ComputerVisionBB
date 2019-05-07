@@ -1,5 +1,17 @@
-.currentImg {
+.imgWrapper {
+  position: relative;
   width: 55.5vw;
   height: 70vh;
   border: 1px solid #737373;
+  overflow: auto;
+
+}
+
+.imgScale {
+  position: absolute;
+}
+
+.imgScale img {
+  z-index: -50;
+  position: absolute;
 }

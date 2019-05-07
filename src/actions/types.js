@@ -8,3 +8,6 @@ export const SET_SHAPES = 'SET_SHAPES';
 export const DEL_SHAPE = 'DEL_SHAPE';
 export const SET_IMAGES = 'SET_IMAGES';
 export const IMAGE_CLICK = 'IMAGE_CLICK';
+
+export const PLUS_SCALE = 'PLUS_SCALE';
+export const MINUS_SCALE = 'MINUS_SCALE';
