@@ -4,10 +4,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import Slide from '../Slide/Slide';
-import {
-  deleteImage,
-  saveCurrentImageShapes,
-} from '../../actions/imagesActions';
+import { deleteImage, clearShape } from '../../actions/imagesActions';
 
 class Slider extends Component {
   constructor(props) {
@@ -29,10 +26,7 @@ class Slider extends Component {
   }
 
   handleClick = img => {
-    if (this.props.match) {
-      const { imgName } = this.props.match.params;
-      this.props.saveCurrentImageShapes(imgName);
-    }
+    this.props.clearShape();
     const newImg = img.slice(4);
     this.props.history.push(`/${newImg}`);
   };
@@ -122,6 +116,6 @@ export default connect(
   mapStateToProps,
   {
     deleteImage,
-    saveCurrentImageShapes,
+    clearShape,
   },
 )(withRouter(Slider));
