@@ -55,6 +55,7 @@ class Header extends Component {
           <nav className="tools">
             <ul>
               <li title="Upload" className="fas fa-upload">
+                {/* change this to simple span with onClick when registered and check token expiration */}
                 <GoogleLogin
                   clientId="504294961504-265csqd1aar75cphf1qme0q0ockt8ukt.apps.googleusercontent.com"
                   render={renderProps => (
