@@ -7,6 +7,7 @@ class ColoredRect extends React.Component {
     const { x, y, width, height, color, onClick } = this.props;
     return (
       <Rect
+        sacleY={5}
         x={x}
         y={y}
         width={width}
@@ -14,6 +15,7 @@ class ColoredRect extends React.Component {
         stroke={color}
         strokeWidth={4}
         onClick={e => onClick(e)}
+        draggable
       />
     );
   }

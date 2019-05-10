@@ -2,6 +2,7 @@
   display: flex;
   align-items: center;
   justify-content: space-between;
+  width: 92%;
 }
 
 /*logoBlock*/
@@ -24,7 +25,8 @@
 /*toolbar*/
 .tools {
   color: #737373;
-  width: 35vw;
+  margin-left: auto;
+  width: 45vw;
 }
 
 .tools span {
