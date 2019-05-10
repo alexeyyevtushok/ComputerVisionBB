@@ -7,16 +7,15 @@ const setImages = images => ({
   payload: images,
 });
 
-const getImages = () =>
-  axios
-    .get('/api/images')
-    .then(res => res.data)
-    .catch(err => {
-      console.log(`err in getImages ${err}`);
-    });
+const getImages = () => axios
+  .get('/api/images')
+  .then(res => res.data)
+  .catch((err) => {
+    console.log(`err in getImages ${err}`);
+  });
 
-export const getNewImageShapes = image => dispatch => {
-  axios.get(`/api/labeled/${image}`).then(res => {
+export const getNewImageShapes = image => (dispatch) => {
+  axios.get(`/api/labeled/${image}`).then((res) => {
     if (res.data.shapes) {
       dispatch({
         type: SET_SHAPES,
@@ -26,7 +25,7 @@ export const getNewImageShapes = image => dispatch => {
   });
 };
 
-export const saveCurrentImageShapes = image => dispatch => {
+export const saveCurrentImageShapes = image => (dispatch) => {
   const shapes = store.getState().shapes.labeledShapes;
   const data = {
     image: {
@@ -41,13 +40,12 @@ export const clearShape = () => ({
   type: CLEAR_SHAPES,
 });
 
-export const updateImages = dispatch =>
-  getImages().then(images => {
-    dispatch(setImages(images));
-    return Promise.resolve();
-  });
+export const updateImages = dispatch => getImages().then((images) => {
+  dispatch(setImages(images));
+  return Promise.resolve();
+});
 
-export const addImages = images => dispatch => {
+export const addImages = images => (dispatch) => {
   for (let i = 0; i < images.length; i++) {
     const data = new FormData();
     data.append('targetImage', images[i]);
@@ -56,17 +54,22 @@ export const addImages = images => dispatch => {
       .then(() => {
         updateImages(dispatch);
       })
-      .catch(err => {
+      .catch((err) => {
         console.log(`errors in addImages ${err}`);
       });
   }
 };
 
-export const deleteImage = state => dispatch =>
-  axios
-    .delete(`/api/images/img/${state}`)
-    .then(res => updateImages(dispatch).then(res => Promise.resolve()));
+export const addGDriveImages = data => (dispatch) => {
+  axios.post('api/images/gdrive', data).then(() => {
+    updateImages(dispatch);
+  });
+};
 
-export const resetAll = () => dispatch => {
+export const deleteImage = state => dispatch => axios
+  .delete(`/api/images/img/${state}`)
+  .then(res => updateImages(dispatch).then(res => Promise.resolve()));
+
+export const resetAll = () => (dispatch) => {
   axios.delete('api/images/reset');
 };

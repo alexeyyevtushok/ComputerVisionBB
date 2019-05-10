@@ -1,24 +1,28 @@
 module.exports = {
   env: {
     browser: true,
-    es6: true
+    es6: true,
   },
-  extends: "airbnb",
+  extends: 'airbnb',
   globals: {
-    Atomics: "readonly",
-    SharedArrayBuffer: "readonly"
+    Atomics: 'readonly',
+    SharedArrayBuffer: 'readonly',
   },
-  parser: "babel-eslint",
+  parser: 'babel-eslint',
   parserOptions: {
     ecmaFeatures: {
-      jsx: true
+      jsx: true,
     },
     ecmaVersion: 2018,
-    sourceType: "module"
+    sourceType: 'module',
   },
-  plugins: ["react"],
+  plugins: ['react'],
   rules: {
-    "linebreak-style": 0,
-    "react/jsx-filename-extension": [1, { "extensions": [".js", ".jsx"] }],
-  }
+    'jsx-a11y/no-noninteractive-element-interactions': 0,
+    'jsx-a11y/click-events-have-key-events': 0,
+    'react/destructuring-assignment': 0,
+    'react/prop-types': 0,
+    'linebreak-style': 0,
+    'react/jsx-filename-extension': [1, { extensions: ['.js', '.jsx'] }],
+  },
 };
