@@ -121,8 +121,8 @@ class DrawingField extends React.Component {
   };
 
   handleInnerClick = e => {
-    // e.cancelBubble = true;
-    // console.log(e);
+    e.cancelBubble = true;
+    console.log('here');
   };
 
   render() {
@@ -165,6 +165,9 @@ class DrawingField extends React.Component {
                 height={obj.height}
                 color={obj.color}
                 onClick={this.handleInnerClick}
+                onDragStart={() => {
+                  console.log('a');
+                }}
               />
             ))}
             {currentShape}
