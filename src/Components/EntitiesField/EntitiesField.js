@@ -38,7 +38,7 @@ class EntitiesField extends React.Component {
   };
 
   // Input value.
-  inputHandler = event => {
+  inputHandler = (event) => {
     this.setState({
       [event.target.id]: event.target.value,
     });
@@ -53,14 +53,11 @@ class EntitiesField extends React.Component {
     return false;
   };
 
-  addEntity = e => {
+  addEntity = (e) => {
     e.preventDefault();
     let colorValue = e.target.colorInput.value.toLowerCase();
-    let labelValue = e.target.labelInput.value.toLowerCase();
-    if (
-      !/^[a-zA-Z]{3,15}$/.test(labelValue) ||
-      this.isDublicate(labelValue, 'label')
-    ) {
+    const labelValue = e.target.labelInput.value.toLowerCase();
+    if (!/^[a-zA-Z]{3,15}$/.test(labelValue) || this.isDublicate(labelValue, 'label')) {
       this.setState({ error: true });
     } else {
       if (this.isDublicate(colorValue, 'color')) {
@@ -80,35 +77,40 @@ class EntitiesField extends React.Component {
   };
 
   deleteHandler = (event, index) => {
-    const { currEntity } = this.props;
-
-    if (index === currEntity.index) {
-      this.props.setEmptyCurrEntity();
-    }
     event.stopPropagation();
-    this.props.deleteEntity(index);
-    this.setState({ modifyInputIndex: -1 });
+    if (window.confirm('Do you want to delete this entity?')) {
+      const { currEntity } = this.props;
+
+      if (index === currEntity.index) {
+        this.props.setEmptyCurrEntity();
+      }
+      event.stopPropagation();
+      this.props.deleteEntity(index);
+      this.setState({ modifyInputIndex: -1 });
+    }
   };
 
   // Make edit field visible/unvisible.
   modifyHandler = (event, index) => {
     event.stopPropagation();
-    if (this.state.modifyInputIndex === index)
+    if (this.state.modifyInputIndex === index) {
       this.setState({
         modifyInputIndex: -1,
         modifyInput: this.props.entities[index].label,
         modifyInputError: false,
       });
-    else
+    } else {
       this.setState({
         modifyInputIndex: index,
         modifyInput: this.props.entities[index].label,
       });
+    }
   };
+
   // Save new label.
   modifyAcceptHandler = (event, index) => {
     event.preventDefault();
-    let value = event.target.modifyInput.value.toLowerCase();
+    const value = event.target.modifyInput.value.toLowerCase();
     if (!/^[a-zA-Z]{3,15}$/.test(value) || this.isDublicate(value, 'label')) {
       this.setState({ modifyInputError: true });
     } else {
@@ -120,7 +122,7 @@ class EntitiesField extends React.Component {
     }
   };
 
-  entityClick = index => {
+  entityClick = (index) => {
     const { currEntity, entities } = this.props;
 
     if (index === currEntity.index) {
@@ -159,28 +161,18 @@ class EntitiesField extends React.Component {
         <div
           title="Add entity"
           onClick={() => this.changeInput()}
-          className={
-            addInput ? 'addBtn fas fa-user-slash' : 'addBtn fas fa-user-plus'
-          }
+          className={addInput ? 'addBtn fas fa-user-slash' : 'addBtn fas fa-user-plus'}
         >
           <span>{addInput ? 'Close' : 'Add entity'}</span>
         </div>
         <form
-          style={
-            addInput
-              ? { visibility: 'visible', opacity: '1', height: '57px' }
-              : {}
-          }
+          style={addInput ? { visibility: 'visible', opacity: '1', height: '57px' } : {}}
           className="entFieldForm"
           onSubmit={this.addEntity}
         >
           <div
             className="errorField"
-            style={
-              error
-                ? { visibility: 'visible', opacity: '1', height: '20px' }
-                : {}
-            }
+            style={error ? { visibility: 'visible', opacity: '1', height: '20px' } : {}}
           >
             {'Incorrect input'}
           </div>
@@ -199,12 +191,7 @@ class EntitiesField extends React.Component {
           <div className="inputBox">
             <label htmlFor="color">
               {'Color: '}
-              <input
-                type="text"
-                id="colorInput"
-                value={colorInput}
-                onChange={this.inputHandler}
-              />
+              <input type="text" id="colorInput" value={colorInput} onChange={this.inputHandler} />
             </label>
           </div>
           <button title="Add entity" type="submit">

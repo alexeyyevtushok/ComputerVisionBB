@@ -1,18 +1,22 @@
 import React, { Component } from 'react';
 import './BoxesField.css';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 import Box from '../Box/Box';
 import { delShape } from '../../actions/shapesActions';
 import { saveCurrentImageShapes } from '../../actions/imagesActions';
-import { withRouter } from 'react-router-dom';
+
 class BoxesField extends Component {
   clickHandler = (current, index) => {
-    this.props.delShape(current, index);
-    if (this.props.match) {
-      const { imgName } = this.props.match.params;
-      this.props.saveCurrentImageShapes(imgName);
+    if (window.confirm('Do you want to delete this box?')) {
+      this.props.delShape(current, index);
+      if (this.props.match) {
+        const { imgName } = this.props.match.params;
+        this.props.saveCurrentImageShapes(imgName);
+      }
     }
   };
+
   render() {
     const { shapes } = this.props;
     return (
@@ -24,9 +28,7 @@ class BoxesField extends Component {
               color={item.color}
               label={item.label}
               key={`${item.color}${item.x}${item.y}`}
-              onClick={() =>
-                this.clickHandler(this.props.currentImg, item.index)
-              }
+              onClick={() => this.clickHandler(this.props.currentImg, item.index)}
             />
           ))}
         </div>

@@ -25,28 +25,24 @@ class Slider extends Component {
     }
   }
 
-  handleClick = img => {
+  handleClick = (img) => {
     this.props.clearShape();
     const newImg = img.slice(4);
     this.props.history.push(`/${newImg}`);
   };
 
-  handleRightClick = (e, i) => {
-    e.preventDefault();
-    this.setState({ clickedSlide: i });
-  };
-
-  deleteSlide = () => {
-    const { clickedSlide } = this.state;
-    const { params } = this.props.match;
-    this.props.deleteImage(clickedSlide.slice(4)).then(res => {
-      console.log(res);
-      if (params) {
-        if (clickedSlide.slice(4) === params.imgName) {
-          this.props.history.push('/');
+  deleteSlide = (img) => {
+    if (window.confirm('Do you want to delete this picture?')) {
+      const { params } = this.props.match;
+      this.props.deleteImage(img.slice(4)).then((res) => {
+        console.log(res);
+        if (params) {
+          if (img.slice(4) === params.imgName) {
+            this.props.history.push('/');
+          }
         }
-      }
-    });
+      });
+    }
   };
 
   leftArrow = () => {
@@ -73,36 +69,21 @@ class Slider extends Component {
     const { images } = this.props;
     return (
       <div className="fullSlider">
-        <ContextMenu className="contextMenu" id="some_unique_identifier">
-          <MenuItem onClick={this.deleteSlide}>
-            <i className="fas fa-trash-alt" /> Delete
-          </MenuItem>
-        </ContextMenu>
-        <div
-          className="arrows prev"
-          onClick={() => this.leftArrow(styleChange)}
-        />
+        <div className="arrows prev" onClick={() => this.leftArrow(styleChange)} />
         <div className="slideList">
-          <ContextMenuTrigger id="some_unique_identifier">
-            <div className="slider" style={styleChange}>
-              {/* list of slides */}
-              {images.map(property => (
-                <Slide
-                  key={property._id}
-                  property={property}
-                  onClick={() => this.handleClick(property.picture)}
-                  onContextMenu={e =>
-                    this.handleRightClick(e, property.picture)
-                  }
-                />
-              ))}
-            </div>
-          </ContextMenuTrigger>
+          <div className="slider" style={styleChange}>
+            {/* list of slides */}
+            {images.map(property => (
+              <Slide
+                key={property._id}
+                property={property}
+                onClick={() => this.handleClick(property.picture)}
+                onDelete={() => this.deleteSlide(property.picture)}
+              />
+            ))}
+          </div>
         </div>
-        <div
-          className="arrows next"
-          onClick={() => this.rightArrow(styleChange)}
-        />
+        <div className="arrows next" onClick={() => this.rightArrow(styleChange)} />
       </div>
     );
   }
