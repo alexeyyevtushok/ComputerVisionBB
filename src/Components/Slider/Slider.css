@@ -31,7 +31,6 @@
   border-color: #000;
 }
 
-
 .prev {
   display: inline-block;
   border-bottom: 4px solid;
@@ -52,20 +51,4 @@
 .next:hover {
   border-bottom: 6px solid;
   border-left: 6px solid;
-}
-
-.contextMenu {
-  background: white;
-  z-index: 500;
-}
-
-.react-contextmenu-item {
-  padding: 5px 5px;
-  color: #0066aa
-}
-
-.react-contextmenu-item:hover {
-  color: #fff;
-  background-color: #0066aa;
-  cursor: pointer;
 }

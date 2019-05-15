@@ -1,5 +1,6 @@
 .slide {
   color: white;
+  position: relative;
 }
 
 .picture {
@@ -8,8 +9,27 @@
   user-select: none;
 }
 
-.picture:hover {
-  transform: scale(0.9);
+.slide:hover {
+  transform: scale(0.95);
   cursor: pointer;
   box-shadow: 0px 0px 6px 0px rgba(0, 0, 0, 0.75);
+}
+
+.slide:hover .imageDelete {
+  visibility: visible;
+}
+
+.imageDelete {
+  visibility: hidden;
+  z-index: 10;
+  bottom: 0;
+  background: #737373b2;
+  position: absolute;
+  height: 3vh;
+  width: 11vh;
+}
+
+.imageDelete i {
+  margin-top: 5px;
+  color: maroon;
 }
