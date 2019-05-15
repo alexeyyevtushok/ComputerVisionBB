@@ -29,11 +29,17 @@ class DrawingField extends React.Component {
   }
 
   calculateHeight = () => {
-    return document.getElementsByClassName('currentImg')[0].clientHeight;
+    return (
+      document.getElementsByClassName('currentImg')[0].clientHeight *
+      this.props.scale
+    );
   };
 
   calculateWidth = () => {
-    return document.getElementsByClassName('currentImg')[0].clientWidth;
+    return (
+      document.getElementsByClassName('currentImg')[0].clientWidth *
+      this.props.scale
+    );
   };
 
   handleClick = e => {
