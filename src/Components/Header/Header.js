@@ -38,9 +38,10 @@ class Header extends Component {
   };
 
   reset = (e) => {
-    e.preventDefault();
     if (window.confirm('Are you sure?')) {
       this.props.resetAll();
+    } else {
+      e.preventDefault();
     }
   };
 
