@@ -28,21 +28,11 @@ class DrawingField extends React.Component {
     });
   }
 
-  calculateHeight = () => {
-    return (
-      document.getElementsByClassName('currentImg')[0].clientHeight *
-      this.props.scale
-    );
-  };
+  calculateHeight = () => document.getElementsByClassName('currentImg')[0].clientHeight * this.props.scale;
 
-  calculateWidth = () => {
-    return (
-      document.getElementsByClassName('currentImg')[0].clientWidth *
-      this.props.scale
-    );
-  };
+  calculateWidth = () => document.getElementsByClassName('currentImg')[0].clientWidth * this.props.scale;
 
-  handleClick = e => {
+  handleClick = (e) => {
     // console.log(e.evt.layerX);
     // e.evt.layerX = {value:1000,writable: true}
     console.log(e);
@@ -93,7 +83,7 @@ class DrawingField extends React.Component {
     }
   };
 
-  handleMouseMove = e => {
+  handleMouseMove = (e) => {
     const { isDrawing, shape } = this.state;
     const { currEntity } = this.props;
 
@@ -120,9 +110,11 @@ class DrawingField extends React.Component {
     }
   };
 
-  handleInnerClick = e => {
-    // e.cancelBubble = true;
-    // console.log(e);
+  handleInnerClick = (e) => {
+    if (!this.state.isDrawing) {
+          e.cancelBubble = true;
+      console.log(e);
+    }
   };
 
   render() {
@@ -152,7 +144,7 @@ class DrawingField extends React.Component {
           onContentMouseMove={this.handleMouseMove}
         >
           <Layer
-            ref={ref => {
+            ref={(ref) => {
               this.layer = ref;
             }}
           >
