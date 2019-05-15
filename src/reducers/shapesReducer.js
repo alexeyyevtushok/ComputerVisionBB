@@ -5,6 +5,7 @@ import {
   DEL_SHAPE,
   PLUS_SCALE,
   MINUS_SCALE,
+  DRAG_SHAPE,
 } from '../actions/types';
 
 const initialState = {
@@ -33,6 +34,12 @@ export default function(state = initialState, action) {
       };
     }
     case SET_SHAPES: {
+      return {
+        ...state,
+        labeledShapes: action.payload,
+      };
+    }
+    case DRAG_SHAPE: {
       return {
         ...state,
         labeledShapes: action.payload,

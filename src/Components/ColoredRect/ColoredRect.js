@@ -6,7 +6,7 @@ import store from '../../store';
 class ColoredRect extends React.Component {
   render() {
     const myScale = store.getState().shapes.scale;
-    const { x, y, width, height, color } = this.props;
+    const { x, y, width, height, color, dragHandle } = this.props;
     return (
       <Rect
         x={x * myScale}
@@ -15,6 +15,7 @@ class ColoredRect extends React.Component {
         height={height * myScale}
         stroke={color}
         strokeWidth={4}
+        onDragEnd={dragHandle}
         draggable
       />
     );

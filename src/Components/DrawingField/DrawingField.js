@@ -3,7 +3,7 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Layer, Stage } from 'react-konva';
-import { addShape } from '../../actions/shapesActions';
+import { addShape, dragShape } from '../../actions/shapesActions';
 import { saveCurrentImageShapes } from '../../actions/imagesActions';
 import ColoredRect from '../ColoredRect/ColoredRect';
 import './DrawingField.css';
@@ -28,19 +28,13 @@ class DrawingField extends React.Component {
     });
   }
 
-  calculateHeight = () => {
-    return (
-      document.getElementsByClassName('currentImg')[0].clientHeight *
-      this.props.scale
-    );
-  };
+  calculateHeight = () =>
+    document.getElementsByClassName('currentImg')[0].clientHeight *
+    this.props.scale;
 
-  calculateWidth = () => {
-    return (
-      document.getElementsByClassName('currentImg')[0].clientWidth *
-      this.props.scale
-    );
-  };
+  calculateWidth = () =>
+    document.getElementsByClassName('currentImg')[0].clientWidth *
+    this.props.scale;
 
   handleClick = e => {
     // console.log(e.evt.layerX);
@@ -121,8 +115,18 @@ class DrawingField extends React.Component {
   };
 
   handleInnerClick = e => {
-    e.cancelBubble = true;
-    console.log('here');
+    if (!this.state.isDrawing) {
+      e.cancelBubble = true;
+      console.log('inner');
+    }
+  };
+
+  dragHandler = e => {
+    this.props.dragShape(e);
+    if (this.props.match) {
+      const { imgName } = this.props.match.params;
+      this.props.saveCurrentImageShapes(imgName);
+    }
   };
 
   render() {
@@ -165,9 +169,7 @@ class DrawingField extends React.Component {
                 height={obj.height}
                 color={obj.color}
                 onClick={this.handleInnerClick}
-                onDragStart={() => {
-                  console.log('a');
-                }}
+                dragHandle={this.dragHandler}
               />
             ))}
             {currentShape}
@@ -195,5 +197,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { addShape, saveCurrentImageShapes },
+  { addShape, saveCurrentImageShapes, dragShape },
 )(withRouter(DrawingField));
