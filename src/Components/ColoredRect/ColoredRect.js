@@ -1,15 +1,25 @@
-import React from "react";
-import { Rect, Group } from "react-konva";
-import PropTypes from "prop-types";
+import React from 'react';
+import { Rect } from 'react-konva';
+import PropTypes from 'prop-types';
+import store from '../../store';
 
 class ColoredRect extends React.Component {
 
   render() {
-    const { x, y, width, height, color,onClick } = this.props;
+    const myScale = store.getState().shapes.scale;
+    const { x, y, width, height, color, dragHandle,indexMy } = this.props;
     return (
-      <Group>
-        <Rect x={x} y={y} width={width} height={height} fill={color} onClick={onClick} name={`Figure${x}`}/>
-      </Group>
+      <Rect
+        x={x * myScale}
+        y={y * myScale}
+        width={width * myScale}
+        height={height * myScale}
+        stroke={color}
+        strokeWidth={4}
+        onDragEnd={dragHandle}
+        name = {`Figure${indexMy}`}
+        draggable
+      />
     );
   }
 }

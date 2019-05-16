@@ -1,22 +1,29 @@
-/*main block*/
+/*Main block*/
+.fullSlider {
+  margin-top: 5px;
+  text-align: center;
+}
+
 .slideList {
   display: inline-flex;
   width: 75vw;
   overflow: hidden;
-  transition:all ease 1s;
+  transition: all ease 1s;
   position: relative;
-  margin-left:40px;
+  margin-left: 40px;
 }
-/*slider*/
+
+/*Slider*/
 .slider {
   display: flex;
   height: 11vh;
   background: whitesmoke;
   border: 1px solid #737373;
   position: relative;
-  transition:all ease 1s;
+  transition: all ease 1s;
 }
-/*arrows*/
+
+/*Arrows*/
 .arrows {
   position: absolute;
   width: 40px;
@@ -24,24 +31,24 @@
   border-color: #000;
 }
 
-
 .prev {
-  display:inline-block;
+  display: inline-block;
   border-bottom: 4px solid;
   border-left: 4px solid;
   transform: rotate(45deg);
-  margin-top:3vh;
+  margin-top: 3vh;
 }
 
 .next {
-  display:inline-block;
+  display: inline-block;
   border-bottom: 4px solid;
   border-left: 4px solid;
   transform: rotate(-135deg);
-  margin-top:3vh;
+  margin-top: 3vh;
 }
 
-.prev:hover, .next:hover {
+.prev:hover,
+.next:hover {
   border-bottom: 6px solid;
   border-left: 6px solid;
 }

@@ -1,18 +1,19 @@
 .navigation {
   display: flex;
-  align-items:center;
+  align-items: center;
   justify-content: space-between;
+  width: 92%;
 }
 
 /*logoBlock*/
-.logoBlock{
+.logoBlock {
   display: flex;
-  align-items:center;
-  margin:0 30px;
+  align-items: center;
+  margin: 0 30px;
 }
 
-.logoBlock p{
-  font-size:22px;
+.logoBlock p {
+  font-size: 22px;
   text-transform: uppercase;
 }
 
@@ -22,31 +23,46 @@
 }
 
 /*toolbar*/
-.tools{
+.tools {
   color: #737373;
-  width:35vw;
+  margin-left: auto;
+  width: 45vw;
 }
 
 .tools span {
-  margin-left:5px;
+  margin-left: 5px;
   font-weight: 400;
 }
 
-.tools ul li{
-  font-size:20px;
+.tools ul a {
+  font-size: 20px;
   padding: 10px;
-  margin:0 8px;
-	border-radius: 50%;
+  color: #737373;
+  text-decoration: none;
+  border-radius: 50%;
   transition: background-color 0.25s ease-in-out;
-	cursor: pointer;
+  cursor: pointer;
+}
+
+.tools ul li {
+  font-size: 20px;
+  padding: 10px;
+  margin: 0 8px;
+  border-radius: 50%;
+  transition: background-color 0.25s ease-in-out;
+  cursor: pointer;
 }
 
 li:hover {
-    cursor: pointer;
-    background-color: rgba(33, 33, 33, 0.125);
+  cursor: pointer;
+  background-color: rgba(33, 33, 33, 0.125);
 }
 
-nav input{
-	display: none;
+a:hover {
+  cursor: pointer;
+  background-color: rgba(33, 33, 33, 0.125);
 }
 
+nav input {
+  display: none;
+}

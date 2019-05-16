@@ -1,0 +1,40 @@
+.boxesItem {
+  display: flex;
+  margin: 0 auto;
+  margin-top: 5px;
+  width: 90%;
+  border: 1px solid #737373;
+  background: #FDFCFC;
+  align-items: center;
+}
+
+.boxesItem:hover {
+  background: whitesmoke;
+  cursor: pointer;
+}
+
+.boxesColor {
+  border-radius: 50%;
+  margin: 15px;
+  width: 10px;
+  height: 10px;
+}
+
+.boxesIcons {
+  margin-left: auto;
+}
+
+.boxesDelete {
+  display: none;
+  margin-right: 20px;
+}
+
+.boxesItem:hover .boxesDelete {
+  display: block;
+}
+
+
+.boxesDelete:hover {
+  font-size: 18px;
+  color: maroon;
+}
