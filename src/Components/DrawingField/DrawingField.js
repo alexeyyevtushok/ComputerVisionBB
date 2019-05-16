@@ -69,6 +69,12 @@ class DrawingField extends React.Component {
     });
   };
 
+  handleDrag = e => {
+    e.evt.cancelBubble = true;
+    e.evt.stopPropagation();
+    console.log(e)
+  }
+
   handleMouseMove = e => {
     const { isDrawing, shapes } = this.state;
     const { drawingMode } = this.props;
@@ -107,7 +113,7 @@ class DrawingField extends React.Component {
           className="drawingField"
           width={width}
           height={height}
-          onClick={this.handleClick}
+          onClick={(e)=>this.handleClick(e)}
           onContentMouseMove={this.handleMouseMove}
         >
           <Layer>
@@ -118,6 +124,7 @@ class DrawingField extends React.Component {
                 width={shape.width}
                 height={shape.height}
                 color={shape.color}
+                onClick={(e) => this.handleDrag(e)}
               />
             ))}
           </Layer>
