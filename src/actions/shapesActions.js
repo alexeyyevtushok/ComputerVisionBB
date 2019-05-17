@@ -45,12 +45,13 @@ const drag = item => {
 
 const transform = item => {
   let shapes = store.getState().shapes.labeledShapes;
-  shapes[item.target.index].x = item.target.attrs.x;
-  shapes[item.target.index].y = item.target.attrs.y;
+  let scale = store.getState().shapes.scale;
+  shapes[item.target.index].x = item.target.attrs.x / scale;
+  shapes[item.target.index].y = item.target.attrs.y / scale;
   shapes[item.target.index].width =
-    item.target.attrs.width * item.target.attrs.scaleX;
+    (item.target.attrs.width * item.target.attrs.scaleX) / scale;
   shapes[item.target.index].height =
-    item.target.attrs.height * item.target.attrs.scaleY;
+    (item.target.attrs.height * item.target.attrs.scaleY) / scale;
   return shapes;
 };
 
