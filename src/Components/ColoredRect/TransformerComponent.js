@@ -5,22 +5,13 @@ import { saveCurrentImageShapes } from '../../actions/imagesActions';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 
-import PropTypes from 'prop-types';
-import {
-  addShape,
-  dragShape,
-  transformShape,
-} from '../../actions/shapesActions';
-import { saveCurrentImageShapes } from '../../actions/imagesActions';
-import ColoredRect from '../ColoredRect/ColoredRect';
-import './DrawingField.css';
-import TransformerComponent from '../ColoredRect/TransformerComponent';
-
 class TransformerComponent extends React.Component {
   componentDidMount() {
     this.checkNode();
     this.transformer.rotateEnabled(false);
     this.transformer.on('transformend', () => {
+      console.log(this.transformer);
+      console.log('a');
       const { imgName } = this.props;
       this.props.saveCurrentImageShapes(imgName);
     });
