@@ -167,41 +167,44 @@ class DrawingField extends React.Component {
   };
 
   handleStageMouseDown = e => {
-    // clicked on stage - cler selection
-    if (e.target === e.target.getStage()) {
-      this.setState({
-        selectedShapeName: '',
-      });
-      return;
-    }
-    // clicked on transformer - do nothing
-    const clickedOnTransformer =
-      e.target.getParent().className === 'Transformer';
-    if (clickedOnTransformer) {
-      return;
-    }
-
-    // find clicked rect by its name
-    const name = e.target.name();
-    const rect = this.props.shapes.find(r => r.name === name);
-    if (rect) {
-      e.cancelBubble = true;
-      this.setState({
-        selectedShapeName: name,
-      });
-    } else {
-      this.setState({
-        selectedShapeName: '',
-      });
-    }
-    console.log(e);
-    this.transformer.on('transformend', () => {
-      this.props.transformShape(e);
-      if (this.props.match) {
-        const { imgName } = this.props.match.params;
-        this.props.saveCurrentImageShapes(imgName);
+    console.log(this.props.currEntity);
+    if (this.props.currEntity.index === -1) {
+      // clicked on stage - cler selection
+      if (e.target === e.target.getStage()) {
+        this.setState({
+          selectedShapeName: '',
+        });
+        return;
       }
-    });
+      // clicked on transformer - do nothing
+      const clickedOnTransformer =
+        e.target.getParent().className === 'Transformer';
+      if (clickedOnTransformer) {
+        return;
+      }
+
+      // find clicked rect by its name
+      const name = e.target.name();
+      const rect = this.props.shapes.find(r => r.name === name);
+      if (rect) {
+        e.cancelBubble = true;
+        this.setState({
+          selectedShapeName: name,
+        });
+      } else {
+        this.setState({
+          selectedShapeName: '',
+        });
+      }
+      console.log(e);
+      this.transformer.on('transformend', () => {
+        this.props.transformShape(e);
+        if (this.props.match) {
+          const { imgName } = this.props.match.params;
+          this.props.saveCurrentImageShapes(imgName);
+        }
+      });
+    }
   };
 
   render() {
