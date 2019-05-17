@@ -4,9 +4,10 @@ import PropTypes from 'prop-types';
 import store from '../../store';
 
 class ColoredRect extends React.Component {
+
   render() {
     const myScale = store.getState().shapes.scale;
-    const { x, y, width, height, color, dragHandle } = this.props;
+    const { x, y, width, height, color, dragHandle,indexMy } = this.props;
     return (
       <Rect
         x={x * myScale}
@@ -16,6 +17,7 @@ class ColoredRect extends React.Component {
         stroke={color}
         strokeWidth={4}
         onDragEnd={dragHandle}
+        name = {`Figure${indexMy}`}
         draggable
       />
     );

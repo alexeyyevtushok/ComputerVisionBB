@@ -12,3 +12,4 @@ export const IMAGE_CLICK = 'IMAGE_CLICK';
 export const PLUS_SCALE = 'PLUS_SCALE';
 export const MINUS_SCALE = 'MINUS_SCALE';
 export const DRAG_SHAPE = 'DRAG_SHAPE';
+export const TRANSFORM_SHAPE = 'TRANSFORM_SHAPE';
