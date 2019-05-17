@@ -21,10 +21,8 @@ class TransformerComponent extends React.Component {
     this.checkNode();
     this.transformer.rotateEnabled(false);
     this.transformer.on('transformend', () => {
-      if (this.props.match) {
-        const { imgName } = this.props.match.params;
-        this.props.saveCurrentImageShapes(imgName);
-      }
+      const { imgName } = this.props;
+      this.props.saveCurrentImageShapes(imgName);
     });
   }
   componentDidUpdate() {
@@ -60,7 +58,4 @@ class TransformerComponent extends React.Component {
     );
   }
 }
-export default connect(
-  null,
-  { saveCurrentImageShapes },
-)(withRouter(TransformerComponent));
+export default TransformerComponent;
