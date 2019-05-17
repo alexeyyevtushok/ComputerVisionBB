@@ -24,35 +24,6 @@ class DrawingField extends React.Component {
     this.checkNode();
     this.transformer.rotateEnabled(false);
     this.transformer.keepRatio(false);
-    this.setState({
-      width: this.calculateWidth(),
-      height: this.calculateHeight(),
-    });
-  }
-
-  componentDidUpdate() {
-    this.checkNode();
-  }
-
-  checkNode() {
-    // here we need to manually attach or detach Transformer node
-    const stage = this.transformer.getStage();
-    const { selectedShapeName } = this.state;
-
-    const selectedNode = stage.findOne(`.${selectedShapeName}`);
-    // do nothing if selected node is already attached
-    if (selectedNode === this.transformer.node()) {
-      return;
-    }
-
-    if (selectedNode) {
-      // attach to another node
-      this.transformer.attachTo(selectedNode);
-    } else {
-      // remove transformer
-      this.transformer.detach();
-    }
-    this.transformer.getLayer().batchDraw();
   }
 
   componentWillReceiveProps() {
@@ -62,6 +33,10 @@ class DrawingField extends React.Component {
       width: this.calculateWidth(),
       height: this.calculateHeight(),
     });
+  }
+
+  componentDidUpdate() {
+    this.checkNode();
   }
 
   calculateHeight = () => document.getElementsByClassName('currentImg')[0].clientHeight * this.props.scale;
@@ -200,6 +175,27 @@ class DrawingField extends React.Component {
     }
   };
 
+  checkNode() {
+    // here we need to manually attach or detach Transformer node
+    const stage = this.transformer.getStage();
+    const { selectedShapeName } = this.state;
+
+    const selectedNode = stage.findOne(`.${selectedShapeName}`);
+    // do nothing if selected node is already attached
+    if (selectedNode === this.transformer.node()) {
+      return;
+    }
+
+    if (selectedNode) {
+      // attach to another node
+      this.transformer.attachTo(selectedNode);
+    } else {
+      // remove transformer
+      this.transformer.detach();
+    }
+    this.transformer.getLayer().batchDraw();
+  }
+
   render() {
     const { shape, width, height } = this.state;
     const { shapes } = this.props;
@@ -259,7 +255,13 @@ class DrawingField extends React.Component {
 }
 
 DrawingField.propTypes = {
-  shapes: PropTypes.array.isRequired,
+  shapes: PropTypes.arrayOf(
+    PropTypes.shape({
+      index: PropTypes.number.isRequired,
+      label: PropTypes.string.isRequired,
+      color: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
   currEntity: PropTypes.shape({
     index: PropTypes.number.isRequired,
     label: PropTypes.string.isRequired,

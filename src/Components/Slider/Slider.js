@@ -3,7 +3,8 @@ import './Slider.css';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Slide from '../Slide/Slide';
-import { deleteImage, clearShape } from '../../actions/imagesActions';
+import { deleteImage } from '../../actions/imagesActions';
+import { clearShape } from '../../actions/shapesActions';
 
 class Slider extends Component {
   constructor(props) {
