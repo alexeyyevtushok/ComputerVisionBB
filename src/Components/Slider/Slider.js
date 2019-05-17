@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './Slider.css';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import Slide from '../Slide/Slide';
 import { deleteImage, clearShape } from '../../actions/imagesActions';
 
@@ -11,7 +10,6 @@ class Slider extends Component {
     super(props);
     this.state = {
       left: 0,
-      clickedSlide: null,
     };
   }
 
