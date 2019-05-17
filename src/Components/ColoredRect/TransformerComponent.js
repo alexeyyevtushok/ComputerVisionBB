@@ -5,6 +5,7 @@ import { Stage, Layer, Rect, Transformer } from 'react-konva';
 class TransformerComponent extends React.Component {
   componentDidMount() {
     this.checkNode();
+    this.transformer.rotateEnabled(false);
   }
   componentDidUpdate() {
     this.checkNode();

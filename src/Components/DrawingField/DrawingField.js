@@ -3,11 +3,15 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Layer, Stage } from 'react-konva';
-import { addShape, dragShape,transformShape } from '../../actions/shapesActions';
+import {
+  addShape,
+  dragShape,
+  transformShape,
+} from '../../actions/shapesActions';
 import { saveCurrentImageShapes } from '../../actions/imagesActions';
 import ColoredRect from '../ColoredRect/ColoredRect';
 import './DrawingField.css';
-import TransformerComponent from '../ColoredRect/TransformerComponent'
+import TransformerComponent from '../ColoredRect/TransformerComponent';
 
 class DrawingField extends React.Component {
   constructor(props) {
@@ -17,12 +21,11 @@ class DrawingField extends React.Component {
       isDrawing: false,
       width: 0,
       height: 0,
-      selectedShapeName: ''
+      selectedShapeName: '',
     };
   }
 
   componentWillReceiveProps() {
-    
     this.setState({
       shape: null,
       isDrawing: false,
@@ -125,7 +128,7 @@ class DrawingField extends React.Component {
   };
 
   dragHandler = e => {
-    console.log(e)
+    console.log(e);
     this.props.dragShape(e);
     if (this.props.match) {
       const { imgName } = this.props.match.params;
@@ -136,8 +139,12 @@ class DrawingField extends React.Component {
   handleStageMouseDown = e => {
     // clicked on stage - cler selection
     if (e.target === e.target.getStage()) {
+      if (this.props.match) {
+        const { imgName } = this.props.match.params;
+        this.props.saveCurrentImageShapes(imgName);
+      }
       this.setState({
-        selectedShapeName: ''
+        selectedShapeName: '',
       });
       return;
     }
@@ -152,20 +159,20 @@ class DrawingField extends React.Component {
     const name = e.target.name();
     const rect = this.props.shapes.find(r => r.name === name);
     if (rect) {
-      console.log(e)
       this.setState({
-        selectedShapeName: name
+        selectedShapeName: name,
       });
       this.props.transformShape(e);
-      // if (this.props.match) {
-      //   const { imgName } = this.props.match.params;
-      //   this.props.saveCurrentImageShapes(imgName);
-      // }
+      if (this.props.match) {
+        const { imgName } = this.props.match.params;
+        this.props.saveCurrentImageShapes(imgName);
+      }
     } else {
       this.setState({
-        selectedShapeName: ''
+        selectedShapeName: '',
       });
     }
+    console.log(e);
   };
 
   render() {
@@ -191,7 +198,7 @@ class DrawingField extends React.Component {
           className="drawingField"
           width={width}
           height={height}
-          onClick={(e)=>this.handleClick(e)}
+          onClick={e => this.handleClick(e)}
           onContentMouseMove={this.handleMouseMove}
           onMouseDown={this.handleStageMouseDown}
         >
@@ -200,26 +207,25 @@ class DrawingField extends React.Component {
               this.layer = ref;
             }}
           >
-          
             {shapes.map(obj => {
-              console.log(obj.index)
-              return(              <ColoredRect
-                key={`${obj.color}${obj.x}${obj.y}`}
-                x={obj.x}
-                y={obj.y}
-                width={obj.width}
-                height={obj.height}
-                color={obj.color}
-                onClick={this.handleInnerClick}
-                dragHandle={this.dragHandler}
-                indexMy ={obj.index}
-              />)
-
+              return (
+                <ColoredRect
+                  key={`${obj.color}${obj.x}${obj.y}`}
+                  x={obj.x}
+                  y={obj.y}
+                  width={obj.width}
+                  height={obj.height}
+                  color={obj.color}
+                  onClick={this.handleInnerClick}
+                  dragHandle={this.dragHandler}
+                  indexMy={obj.index}
+                />
+              );
             })}
             {currentShape}
             <TransformerComponent
-            selectedShapeName={this.state.selectedShapeName}
-          />
+              selectedShapeName={this.state.selectedShapeName}
+            />
           </Layer>
         </Stage>
       </div>
@@ -244,5 +250,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { addShape, saveCurrentImageShapes, dragShape,transformShape },
+  { addShape, saveCurrentImageShapes, dragShape, transformShape },
 )(withRouter(DrawingField));

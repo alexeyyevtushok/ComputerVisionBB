@@ -4,7 +4,7 @@ import {
   PLUS_SCALE,
   MINUS_SCALE,
   DRAG_SHAPE,
-  TRANSFORM_SHAPE
+  TRANSFORM_SHAPE,
 } from './types';
 import store from '../store';
 
@@ -28,6 +28,7 @@ const del = (currentImg, index) => {
         label: shapes[i].label,
         x: shapes[i].x,
         y: shapes[i].y,
+        name: `Figure${newShapes.length}`,
       };
       newShapes.push(newShape);
     }
@@ -44,10 +45,12 @@ const drag = item => {
 
 const transform = item => {
   let shapes = store.getState().shapes.labeledShapes;
-  // shapes[item.target.index].x = item.target.attrs.x;
-  // shapes[item.target.index].y = item.target.attrs.y;
-  shapes[item.target.index].width =shapes[item.target.index].width * item.target.attrs.scaleX;
-  shapes[item.target.index].height = shapes[item.target.index].height * item.target.attrs.scaleY;
+  shapes[item.target.index].x = item.target.attrs.x;
+  shapes[item.target.index].y = item.target.attrs.y;
+  shapes[item.target.index].width =
+    shapes[item.target.index].width * item.target.attrs.scaleX;
+  shapes[item.target.index].height =
+    shapes[item.target.index].height * item.target.attrs.scaleY;
   return shapes;
 };
 
@@ -70,8 +73,7 @@ export const transformShape = item => dispatch => {
     type: TRANSFORM_SHAPE,
     payload: transform(item),
   });
-}
-
+};
 
 export const plusScale = () => ({
   type: PLUS_SCALE,
