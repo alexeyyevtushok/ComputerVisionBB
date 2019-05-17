@@ -48,9 +48,9 @@ const transform = item => {
   shapes[item.target.index].x = item.target.attrs.x;
   shapes[item.target.index].y = item.target.attrs.y;
   shapes[item.target.index].width =
-    shapes[item.target.index].width * item.target.attrs.scaleX;
+    item.target.attrs.width * item.target.attrs.scaleX;
   shapes[item.target.index].height =
-    shapes[item.target.index].height * item.target.attrs.scaleY;
+    item.target.attrs.height * item.target.attrs.scaleY;
   return shapes;
 };
 
