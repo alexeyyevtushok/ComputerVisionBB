@@ -3,15 +3,10 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Layer, Stage, Transformer } from 'react-konva';
-import {
-  addShape,
-  dragShape,
-  transformShape,
-} from '../../actions/shapesActions';
+import { addShape, dragShape, transformShape } from '../../actions/shapesActions';
 import { saveCurrentImageShapes } from '../../actions/imagesActions';
 import ColoredRect from '../ColoredRect/ColoredRect';
 import './DrawingField.css';
-import TransformerComponent from '../ColoredRect/TransformerComponent';
 
 class DrawingField extends React.Component {
   constructor(props) {
@@ -31,31 +26,6 @@ class DrawingField extends React.Component {
     this.transformer.keepRatio(false);
   }
 
-  componentDidUpdate() {
-    this.checkNode();
-  }
-
-  checkNode() {
-    // here we need to manually attach or detach Transformer node
-    const stage = this.transformer.getStage();
-    const { selectedShapeName } = this.state;
-
-    const selectedNode = stage.findOne(`.${selectedShapeName}`);
-    // do nothing if selected node is already attached
-    if (selectedNode === this.transformer.node()) {
-      return;
-    }
-
-    if (selectedNode) {
-      // attach to another node
-      this.transformer.attachTo(selectedNode);
-    } else {
-      // remove transformer
-      this.transformer.detach();
-    }
-    this.transformer.getLayer().batchDraw();
-  }
-
   componentWillReceiveProps() {
     this.setState({
       shape: null,
@@ -65,15 +35,15 @@ class DrawingField extends React.Component {
     });
   }
 
-  calculateHeight = () =>
-    document.getElementsByClassName('currentImg')[0].clientHeight *
-    this.props.scale;
+  componentDidUpdate() {
+    this.checkNode();
+  }
 
-  calculateWidth = () =>
-    document.getElementsByClassName('currentImg')[0].clientWidth *
-    this.props.scale;
+  calculateHeight = () => document.getElementsByClassName('currentImg')[0].clientHeight * this.props.scale;
 
-  handleClick = e => {
+  calculateWidth = () => document.getElementsByClassName('currentImg')[0].clientWidth * this.props.scale;
+
+  handleClick = (e) => {
     // console.log(e.evt.layerX);
     // e.evt.layerX = {value:1000,writable: true}
     const { isDrawing, shape } = this.state;
@@ -124,7 +94,7 @@ class DrawingField extends React.Component {
     }
   };
 
-  handleMouseMove = e => {
+  handleMouseMove = (e) => {
     const { isDrawing, shape } = this.state;
     const { currEntity } = this.props;
 
@@ -151,14 +121,14 @@ class DrawingField extends React.Component {
     }
   };
 
-  handleInnerClick = e => {
+  handleInnerClick = (e) => {
     if (!this.state.isDrawing) {
       e.cancelBubble = true;
       console.log('inner');
     }
   };
 
-  dragHandler = e => {
+  dragHandler = (e) => {
     console.log(e);
     this.props.dragShape(e);
     if (this.props.match) {
@@ -167,8 +137,7 @@ class DrawingField extends React.Component {
     }
   };
 
-  handleStageMouseDown = e => {
-    console.log(this.props.currEntity);
+  handleStageMouseDown = (e) => {
     if (this.props.currEntity.index === -1) {
       // clicked on stage - cler selection
       if (e.target === e.target.getStage()) {
@@ -178,8 +147,7 @@ class DrawingField extends React.Component {
         return;
       }
       // clicked on transformer - do nothing
-      const clickedOnTransformer =
-        e.target.getParent().className === 'Transformer';
+      const clickedOnTransformer = e.target.getParent().className === 'Transformer';
       if (clickedOnTransformer) {
         return;
       }
@@ -197,7 +165,6 @@ class DrawingField extends React.Component {
           selectedShapeName: '',
         });
       }
-      console.log(e);
       this.transformer.on('transformend', () => {
         this.props.transformShape(e);
         if (this.props.match) {
@@ -208,13 +175,30 @@ class DrawingField extends React.Component {
     }
   };
 
+  checkNode() {
+    // here we need to manually attach or detach Transformer node
+    const stage = this.transformer.getStage();
+    const { selectedShapeName } = this.state;
+
+    const selectedNode = stage.findOne(`.${selectedShapeName}`);
+    // do nothing if selected node is already attached
+    if (selectedNode === this.transformer.node()) {
+      return;
+    }
+
+    if (selectedNode) {
+      // attach to another node
+      this.transformer.attachTo(selectedNode);
+    } else {
+      // remove transformer
+      this.transformer.detach();
+    }
+    this.transformer.getLayer().batchDraw();
+  }
+
   render() {
     const { shape, width, height } = this.state;
     const { shapes } = this.props;
-    let imgName = null;
-    if (this.props.match) {
-      imgName = this.props.match.params;
-    }
     let currentShape = null;
     if (shape !== null) {
       currentShape = (
@@ -240,7 +224,7 @@ class DrawingField extends React.Component {
           onMouseDown={this.handleStageMouseDown}
         >
           <Layer
-            ref={ref => {
+            ref={(ref) => {
               this.layer = ref;
             }}
           >
@@ -259,7 +243,7 @@ class DrawingField extends React.Component {
             ))}
             {currentShape}
             <Transformer
-              ref={node => {
+              ref={(node) => {
                 this.transformer = node;
               }}
             />
@@ -271,7 +255,13 @@ class DrawingField extends React.Component {
 }
 
 DrawingField.propTypes = {
-  shapes: PropTypes.array.isRequired,
+  shapes: PropTypes.arrayOf(
+    PropTypes.shape({
+      index: PropTypes.number.isRequired,
+      label: PropTypes.string.isRequired,
+      color: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
   currEntity: PropTypes.shape({
     index: PropTypes.number.isRequired,
     label: PropTypes.string.isRequired,

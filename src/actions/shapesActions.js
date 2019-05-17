@@ -5,6 +5,7 @@ import {
   MINUS_SCALE,
   DRAG_SHAPE,
   TRANSFORM_SHAPE,
+  CLEAR_SHAPES,
 } from './types';
 import store from '../store';
 
@@ -14,13 +15,13 @@ export const addShape = labeledShape => ({
 });
 
 const del = (currentImg, index) => {
-  let newShapes = [];
-  let shapes = store.getState().shapes.labeledShapes;
+  const newShapes = [];
+  const shapes = store.getState().shapes.labeledShapes;
   for (let i = 0; i < shapes.length; i++) {
     if (shapes[i].index === index) {
       continue;
     } else {
-      let newShape = {
+      const newShape = {
         index: newShapes.length,
         color: shapes[i].color,
         height: shapes[i].height,
@@ -36,41 +37,39 @@ const del = (currentImg, index) => {
   return newShapes;
 };
 
-const drag = item => {
-  let shapes = store.getState().shapes.labeledShapes;
-  let scale = store.getState().shapes.scale;
+const drag = (item) => {
+  const shapes = store.getState().shapes.labeledShapes;
+  const { scale } = store.getState().shapes;
   shapes[item.currentTarget.index].x = item.currentTarget.attrs.x / scale;
   shapes[item.currentTarget.index].y = item.currentTarget.attrs.y / scale;
   return shapes;
 };
 
-const transform = item => {
-  let shapes = store.getState().shapes.labeledShapes;
-  let scale = store.getState().shapes.scale;
+const transform = (item) => {
+  const shapes = store.getState().shapes.labeledShapes;
+  const { scale } = store.getState().shapes;
   shapes[item.target.index].x = item.target.attrs.x / scale;
   shapes[item.target.index].y = item.target.attrs.y / scale;
-  shapes[item.target.index].width =
-    (item.target.attrs.width * item.target.attrs.scaleX) / scale;
-  shapes[item.target.index].height =
-    (item.target.attrs.height * item.target.attrs.scaleY) / scale;
+  shapes[item.target.index].width = (item.target.attrs.width * item.target.attrs.scaleX) / scale;
+  shapes[item.target.index].height = (item.target.attrs.height * item.target.attrs.scaleY) / scale;
   return shapes;
 };
 
-export const delShape = (currentImg, index) => dispatch => {
+export const delShape = (currentImg, index) => (dispatch) => {
   dispatch({
     type: DEL_SHAPE,
     payload: del(currentImg, index),
   });
 };
 
-export const dragShape = item => dispatch => {
+export const dragShape = item => (dispatch) => {
   dispatch({
     type: DRAG_SHAPE,
     payload: drag(item),
   });
 };
 
-export const transformShape = item => dispatch => {
+export const transformShape = item => (dispatch) => {
   dispatch({
     type: TRANSFORM_SHAPE,
     payload: transform(item),
@@ -85,4 +84,8 @@ export const plusScale = () => ({
 export const minusScale = () => ({
   type: MINUS_SCALE,
   payload: store.getState().shapes.scale - 0.05,
+});
+
+export const clearShape = () => ({
+  type: CLEAR_SHAPES,
 });
