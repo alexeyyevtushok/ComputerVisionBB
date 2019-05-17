@@ -1,11 +1,20 @@
 import React, { Component } from 'react';
 import { render } from 'react-dom';
 import { Stage, Layer, Rect, Transformer } from 'react-konva';
+import { saveCurrentImageShapes } from '../../actions/imagesActions';
+import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 class TransformerComponent extends React.Component {
   componentDidMount() {
     this.checkNode();
     this.transformer.rotateEnabled(false);
+    this.transformer.on('transformend', () => {
+      if (this.props.match) {
+        const { imgName } = this.props.match.params;
+        this.props.saveCurrentImageShapes(imgName);
+      }
+    });
   }
   componentDidUpdate() {
     this.checkNode();
@@ -40,5 +49,7 @@ class TransformerComponent extends React.Component {
     );
   }
 }
-
-export default TransformerComponent;
+export default connect(
+  null,
+  { saveCurrentImageShapes },
+)(withRouter(TransformerComponent));
