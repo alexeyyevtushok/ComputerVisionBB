@@ -11,6 +11,7 @@ import {
   addShape,
   dragShape,
   transformShape,
+  chooseResize,
 } from '../../actions/shapesActions';
 import { saveCurrentImageShapes } from '../../actions/imagesActions';
 
@@ -22,7 +23,6 @@ class DrawingField extends React.Component {
       isDrawing: false,
       width: 0,
       height: 0,
-      selectedShapeName: '',
     };
   }
 
@@ -48,9 +48,9 @@ class DrawingField extends React.Component {
   checkNode() {
     // here we need to manually attach or detach Transformer node
     const stage = this.transformer.getStage();
-    const { selectedShapeName } = this.state;
+    const { resizeName } = this.props;
 
-    const selectedNode = stage.findOne(`.${selectedShapeName}`);
+    const selectedNode = stage.findOne(`.${resizeName}`);
     // do nothing if selected node is already attached
     if (selectedNode === this.transformer.node()) {
       return;
@@ -170,9 +170,7 @@ class DrawingField extends React.Component {
     if (this.props.currEntity.index === -1) {
       // clicked on stage - cler selection
       if (e.target === e.target.getStage()) {
-        this.setState({
-          selectedShapeName: '',
-        });
+        this.props.chooseResize('');
         return;
       }
       // clicked on transformer - do nothing
@@ -187,15 +185,10 @@ class DrawingField extends React.Component {
       const rect = this.props.shapes.find(r => r.name === name);
       if (rect) {
         e.cancelBubble = true;
-        this.setState({
-          selectedShapeName: name,
-        });
+        this.props.chooseResize(name);
       } else {
-        this.setState({
-          selectedShapeName: '',
-        });
+        this.props.chooseResize('');
       }
-      console.log(e);
       this.transformer.on('transformend', () => {
         this.props.transformShape(e);
         if (this.props.match) {
@@ -209,10 +202,6 @@ class DrawingField extends React.Component {
   render() {
     const { shape, width, height } = this.state;
     const { shapes } = this.props;
-    let imgName = null;
-    if (this.props.match) {
-      imgName = this.props.match.params;
-    }
     let currentShape = null;
     if (shape !== null) {
       currentShape = (
@@ -269,7 +258,13 @@ class DrawingField extends React.Component {
 }
 
 DrawingField.propTypes = {
-  shapes: PropTypes.array.isRequired,
+  shapes: PropTypes.arrayOf(
+    PropTypes.shape({
+      index: PropTypes.number.isRequired,
+      label: PropTypes.string.isRequired,
+      color: PropTypes.string.isRequired,
+    }),
+  ).isRequired,
   currEntity: PropTypes.shape({
     index: PropTypes.number.isRequired,
     label: PropTypes.string.isRequired,
@@ -281,6 +276,7 @@ const mapStateToProps = state => ({
   currEntity: state.entities.currEntity,
   scale: state.shapes.scale,
   shapes: state.shapes.labeledShapes,
+  resizeName: state.shapes.resizeName,
 });
 
 export default connect(
@@ -290,5 +286,6 @@ export default connect(
     saveCurrentImageShapes,
     dragShape,
     transformShape,
+    chooseResize,
   },
 )(withRouter(DrawingField));

@@ -1,6 +1,6 @@
 import axios from 'axios';
 import store from '../store';
-import { SET_IMAGES, CLEAR_SHAPES, SET_SHAPES } from './types';
+import { SET_IMAGES, SET_SHAPES } from './types';
 
 const setImages = images => ({
   type: SET_IMAGES,
@@ -35,10 +35,6 @@ export const saveCurrentImageShapes = image => (dispatch) => {
   };
   axios.post('/api/labeled', data);
 };
-
-export const clearShape = () => ({
-  type: CLEAR_SHAPES,
-});
 
 export const updateImages = dispatch => getImages().then((images) => {
   dispatch(setImages(images));

@@ -3,14 +3,14 @@ import './Slider.css';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Slide from '../Slide/Slide';
-import { deleteImage, clearShape } from '../../actions/imagesActions';
+import { deleteImage } from '../../actions/imagesActions';
+import { clearShape, chooseResize } from '../../actions/shapesActions';
 
 class Slider extends Component {
   constructor(props) {
     super(props);
     this.state = {
       left: 0,
-      clickedSlide: null,
     };
   }
 
@@ -25,6 +25,7 @@ class Slider extends Component {
   }
 
   handleClick = img => {
+    this.props.chooseResize('');
     this.props.clearShape();
     const newImg = img.slice(4);
     this.props.history.push(`/${newImg}`);
@@ -103,5 +104,6 @@ export default connect(
   {
     deleteImage,
     clearShape,
+    chooseResize,
   },
 )(withRouter(Slider));
