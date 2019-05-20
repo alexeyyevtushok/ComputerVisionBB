@@ -37,6 +37,7 @@
 .tools ul a {
   font-size: 20px;
   padding: 10px;
+  margin: 0 8px;
   color: #737373;
   text-decoration: none;
   border-radius: 50%;
@@ -65,4 +66,24 @@ a:hover {
 
 nav input {
   display: none;
+}
+
+@media (max-width: 1536px) {
+  .tools {
+    width: 50vw;
+  }
+}
+
+@media (max-width: 1383px) {
+  .tools {
+    width: 60vw;
+  }
+}
+
+@media (max-width: 1186px) {
+  .tools {
+    margin-left: 0;
+    /* transform: scale(0.8); */
+    width: 70vw;
+  }
 }

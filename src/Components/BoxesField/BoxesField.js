@@ -8,7 +8,7 @@ import { delShape, chooseResize } from '../../actions/shapesActions';
 import { saveCurrentImageShapes } from '../../actions/imagesActions';
 
 class BoxesField extends Component {
-  clickHandler = name => {
+  clickHandler = (e, name) => {
     this.props.chooseResize(name);
   };
 
@@ -35,7 +35,7 @@ class BoxesField extends Component {
               color={item.color}
               label={item.label}
               key={`${item.color}${item.x}${item.y}`}
-              onClick={() => this.clickHandler(item.name)}
+              onClick={e => this.clickHandler(item, item.name)}
               onClickToDel={event =>
                 this.clickToDelHandler(event, this.props.currentImg, item.index)
               }
