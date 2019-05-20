@@ -15,7 +15,6 @@ import {
 } from '../../actions/shapesActions';
 import { saveCurrentImageShapes } from '../../actions/imagesActions';
 
-
 class DrawingField extends React.Component {
   constructor(props) {
     super(props);
@@ -65,15 +64,16 @@ class DrawingField extends React.Component {
     }
     this.transformer.getLayer().batchDraw();
   }
-  componentDidUpdate() {
-    this.checkNode();
-  }
 
-  calculateHeight = () => document.getElementsByClassName('currentImg')[0].clientHeight * this.props.scale;
+  calculateHeight = () =>
+    document.getElementsByClassName('currentImg')[0].clientHeight *
+    this.props.scale;
 
-  calculateWidth = () => document.getElementsByClassName('currentImg')[0].clientWidth * this.props.scale;
+  calculateWidth = () =>
+    document.getElementsByClassName('currentImg')[0].clientWidth *
+    this.props.scale;
 
-  handleClick = (e) => {
+  handleClick = e => {
     // console.log(e.evt.layerX);
     // e.evt.layerX = {value:1000,writable: true}
     const { isDrawing, shape } = this.state;
@@ -124,7 +124,7 @@ class DrawingField extends React.Component {
     }
   };
 
-  handleMouseMove = (e) => {
+  handleMouseMove = e => {
     const { isDrawing, shape } = this.state;
     const { currEntity } = this.props;
 
@@ -151,7 +151,7 @@ class DrawingField extends React.Component {
     }
   };
 
-  handleInnerClick = (e) => {
+  handleInnerClick = e => {
     if (!this.state.isDrawing) {
       e.cancelBubble = true;
     }
@@ -173,7 +173,8 @@ class DrawingField extends React.Component {
         return;
       }
       // clicked on transformer - do nothing
-      const clickedOnTransformer = e.target.getParent().className === 'Transformer';
+      const clickedOnTransformer =
+        e.target.getParent().className === 'Transformer';
       if (clickedOnTransformer) {
         return;
       }
@@ -225,7 +226,7 @@ class DrawingField extends React.Component {
           onMouseDown={this.handleStageMouseDown}
         >
           <Layer
-            ref={(ref) => {
+            ref={ref => {
               this.layer = ref;
             }}
           >
@@ -244,7 +245,7 @@ class DrawingField extends React.Component {
             ))}
             {currentShape}
             <Transformer
-              ref={(node) => {
+              ref={node => {
                 this.transformer = node;
               }}
             />
