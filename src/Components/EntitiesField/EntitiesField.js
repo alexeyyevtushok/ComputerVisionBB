@@ -53,12 +53,16 @@ class EntitiesField extends React.Component {
     return false;
   };
 
+  isCorrectTemplate = value => {
+    return !/^[a-zA-Z]{3,15}$/.test(value);
+  };
+
   addEntity = e => {
     e.preventDefault();
     let colorValue = e.target.colorInput.value.toLowerCase();
     const labelValue = e.target.labelInput.value.toLowerCase();
     if (
-      !/^[a-zA-Z]{3,15}$/.test(labelValue) ||
+      this.isCorrectTemplate(labelValue) ||
       this.isDublicate(labelValue, 'label')
     ) {
       this.setState({ error: true });
@@ -114,7 +118,7 @@ class EntitiesField extends React.Component {
   modifyAcceptHandler = (event, index) => {
     event.preventDefault();
     const value = event.target.modifyInput.value.toLowerCase();
-    if (!/^[a-zA-Z]{3,15}$/.test(value) || this.isDublicate(value, 'label')) {
+    if (this.isCorrectTemplate(value) || this.isDublicate(value, 'label')) {
       this.setState({ modifyInputError: true });
     } else {
       this.props.modifyEntity(index, value);

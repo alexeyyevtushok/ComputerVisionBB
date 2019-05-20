@@ -10,7 +10,7 @@ import {
 } from './types';
 import store from '../store';
 
-export const addShape = labeledShape => ({
+const addShape = labeledShape => ({
   type: ADD_SHAPE,
   payload: labeledShape,
 });
@@ -46,54 +46,65 @@ const drag = item => {
   return shapes;
 };
 
-
 const transform = item => {
   const shapes = store.getState().shapes.labeledShapes;
   const { scale } = store.getState().shapes;
   shapes[item.target.index].x = item.target.attrs.x / scale;
   shapes[item.target.index].y = item.target.attrs.y / scale;
-  shapes[item.target.index].width = (item.target.attrs.width * item.target.attrs.scaleX) / scale;
-  shapes[item.target.index].height = (item.target.attrs.height * item.target.attrs.scaleY) / scale;
+  shapes[item.target.index].width =
+    (item.target.attrs.width * item.target.attrs.scaleX) / scale;
+  shapes[item.target.index].height =
+    (item.target.attrs.height * item.target.attrs.scaleY) / scale;
   return shapes;
 };
 
-export const delShape = (currentImg, index) => (dispatch) => {
+const delShape = (currentImg, index) => dispatch => {
   dispatch({
     type: DEL_SHAPE,
     payload: del(currentImg, index),
   });
 };
 
-export const dragShape = item => (dispatch) => {
+const dragShape = item => dispatch => {
   dispatch({
     type: DRAG_SHAPE,
     payload: drag(item),
   });
 };
 
-export const transformShape = item => (dispatch) => {
+const transformShape = item => dispatch => {
   dispatch({
     type: TRANSFORM_SHAPE,
     payload: transform(item),
   });
 };
 
-export const plusScale = () => ({
+const plusScale = () => ({
   type: PLUS_SCALE,
   payload: store.getState().shapes.scale + 0.05,
 });
 
-export const minusScale = () => ({
+const minusScale = () => ({
   type: MINUS_SCALE,
   payload: store.getState().shapes.scale - 0.05,
 });
 
-export const clearShape = () => ({
+const clearShape = () => ({
   type: CLEAR_SHAPES,
 });
 
-export const chooseResize = item => ({
+const chooseResize = item => ({
   type: CHOOSE_RESIZE,
   payload: item,
 });
 
+export {
+  addShape,
+  delShape,
+  dragShape,
+  transformShape,
+  plusScale,
+  minusScale,
+  clearShape,
+  chooseResize,
+};

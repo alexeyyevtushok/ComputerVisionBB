@@ -55,7 +55,7 @@ class Image extends React.Component {
     return (
       <div className="imgWrapper" onWheel={this.scaleHandler}>
         <div className="imgScale">
-          <img id="test" className="currentImg" src={imgUrl} alt="Add file" />
+          <img className="currentImg" src={imgUrl} alt="Add file" />
         </div>
         <DrawingField />
       </div>

@@ -9,19 +9,17 @@ class ColoredRect extends React.Component {
   }
 
   render() {
-    const myScale = store.getState().shapes.scale;
-    const {
-      x, y, width, height, color, dragHandle, indexMy,
-    } = this.props;
+    const currentScale = store.getState().shapes.scale;
+    const { x, y, width, height, color, dragHandle, indexMy } = this.props;
     return (
       <Rect
-        ref={(node) => {
+        ref={node => {
           this.rect = node;
         }}
-        x={x * myScale}
-        y={y * myScale}
-        width={width * myScale}
-        height={height * myScale}
+        x={x * currentScale}
+        y={y * currentScale}
+        width={width * currentScale}
+        height={height * currentScale}
         stroke={color}
         strokeWidth={4}
         onDragEnd={dragHandle}
