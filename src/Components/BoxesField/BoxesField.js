@@ -12,7 +12,8 @@ class BoxesField extends Component {
     this.props.chooseResize(name);
   };
 
-  clickToDelHandler = (current, index) => {
+  clickToDelHandler = (event, current, index) => {
+    event.stopPropagation();
     if (window.confirm('Do you want to delete this box?')) {
       this.props.delShape(current, index);
       this.props.chooseResize('');
@@ -35,8 +36,8 @@ class BoxesField extends Component {
               label={item.label}
               key={`${item.color}${item.x}${item.y}`}
               onClick={() => this.clickHandler(item.name)}
-              onClickToDel={() =>
-                this.clickToDelHandler(this.props.currentImg, item.index)
+              onClickToDel={event =>
+                this.clickToDelHandler(event, this.props.currentImg, item.index)
               }
             />
           ))}
