@@ -15,7 +15,7 @@ const initialState = {
   scale: 1,
 };
 
-export default function (state = initialState, action) {
+export default function(state = initialState, action) {
   switch (action.type) {
     case ADD_SHAPE: {
       return {
@@ -34,7 +34,6 @@ export default function (state = initialState, action) {
       return {
         ...state,
         labeledShapes: [],
-        scale: 1,
       };
     }
     case SET_SHAPES: {
