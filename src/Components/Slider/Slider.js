@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import './Slider.css';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { ContextMenu, MenuItem, ContextMenuTrigger } from 'react-contextmenu';
 import Slide from '../Slide/Slide';
 import { deleteImage, clearShape } from '../../actions/imagesActions';
 
@@ -25,16 +24,16 @@ class Slider extends Component {
     }
   }
 
-  handleClick = (img) => {
+  handleClick = img => {
     this.props.clearShape();
     const newImg = img.slice(4);
     this.props.history.push(`/${newImg}`);
   };
 
-  deleteSlide = (img) => {
+  deleteSlide = img => {
     if (window.confirm('Do you want to delete this picture?')) {
       const { params } = this.props.match;
-      this.props.deleteImage(img.slice(4)).then((res) => {
+      this.props.deleteImage(img.slice(4)).then(res => {
         console.log(res);
         if (params) {
           if (img.slice(4) === params.imgName) {
@@ -69,7 +68,10 @@ class Slider extends Component {
     const { images } = this.props;
     return (
       <div className="fullSlider">
-        <div className="arrows prev" onClick={() => this.leftArrow(styleChange)} />
+        <div
+          className="arrows prev"
+          onClick={() => this.leftArrow(styleChange)}
+        />
         <div className="slideList">
           <div className="slider" style={styleChange}>
             {/* list of slides */}
@@ -83,7 +85,10 @@ class Slider extends Component {
             ))}
           </div>
         </div>
-        <div className="arrows next" onClick={() => this.rightArrow(styleChange)} />
+        <div
+          className="arrows next"
+          onClick={() => this.rightArrow(styleChange)}
+        />
       </div>
     );
   }

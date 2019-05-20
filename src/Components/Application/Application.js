@@ -2,12 +2,14 @@ import React from 'react';
 import { BrowserRouter as Router, Route } from 'react-router-dom';
 import { Provider } from 'react-redux';
 import store from '../../store';
+
 import { updateEntities } from '../../actions/entitiesActions';
+import { updateImages } from '../../actions/imagesActions';
+
 import Header from '../Header/Header';
 import Middle from '../Middle/Middle';
 import Slider from '../Slider/Slider';
 import './Application.css';
-import { updateImages } from '../../actions/imagesActions';
 
 // initialization
 store.dispatch(updateImages);
@@ -19,7 +21,6 @@ const Application = () => (
       <Header />
       <Route path="/:imgName">
         <Middle />
-
         <Slider />
       </Route>
     </Router>

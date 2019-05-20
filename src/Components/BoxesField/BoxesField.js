@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import './BoxesField.css';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+
+import './BoxesField.css';
 import Box from '../Box/Box';
 import { delShape } from '../../actions/shapesActions';
 import { saveCurrentImageShapes } from '../../actions/imagesActions';
@@ -28,7 +29,9 @@ class BoxesField extends Component {
               color={item.color}
               label={item.label}
               key={`${item.color}${item.x}${item.y}`}
-              onClick={() => this.clickHandler(this.props.currentImg, item.index)}
+              onClick={() =>
+                this.clickHandler(this.props.currentImg, item.index)
+              }
             />
           ))}
         </div>

@@ -2,6 +2,10 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
+
+import ColoredRect from '../ColoredRect/ColoredRect';
+import './DrawingField.css';
+
 import { Layer, Stage, Transformer } from 'react-konva';
 import {
   addShape,
@@ -9,9 +13,6 @@ import {
   transformShape,
 } from '../../actions/shapesActions';
 import { saveCurrentImageShapes } from '../../actions/imagesActions';
-import ColoredRect from '../ColoredRect/ColoredRect';
-import './DrawingField.css';
-import TransformerComponent from '../ColoredRect/TransformerComponent';
 
 class DrawingField extends React.Component {
   constructor(props) {
@@ -35,6 +36,15 @@ class DrawingField extends React.Component {
     this.checkNode();
   }
 
+  componentWillReceiveProps() {
+    this.setState({
+      shape: null,
+      isDrawing: false,
+      width: this.calculateWidth(),
+      height: this.calculateHeight(),
+    });
+  }
+
   checkNode() {
     // here we need to manually attach or detach Transformer node
     const stage = this.transformer.getStage();
@@ -54,15 +64,6 @@ class DrawingField extends React.Component {
       this.transformer.detach();
     }
     this.transformer.getLayer().batchDraw();
-  }
-
-  componentWillReceiveProps() {
-    this.setState({
-      shape: null,
-      isDrawing: false,
-      width: this.calculateWidth(),
-      height: this.calculateHeight(),
-    });
   }
 
   calculateHeight = () =>
@@ -154,12 +155,10 @@ class DrawingField extends React.Component {
   handleInnerClick = e => {
     if (!this.state.isDrawing) {
       e.cancelBubble = true;
-      console.log('inner');
     }
   };
 
   dragHandler = e => {
-    console.log(e);
     this.props.dragShape(e);
     if (this.props.match) {
       const { imgName } = this.props.match.params;
@@ -168,7 +167,6 @@ class DrawingField extends React.Component {
   };
 
   handleStageMouseDown = e => {
-    console.log(this.props.currEntity);
     if (this.props.currEntity.index === -1) {
       // clicked on stage - cler selection
       if (e.target === e.target.getStage()) {
