@@ -2,11 +2,19 @@ import React from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import PropTypes from 'prop-types';
-import { Layer, Stage, Transformer } from 'react-konva';
-import { addShape, dragShape, transformShape } from '../../actions/shapesActions';
-import { saveCurrentImageShapes } from '../../actions/imagesActions';
+
 import ColoredRect from '../ColoredRect/ColoredRect';
 import './DrawingField.css';
+
+import { Layer, Stage, Transformer } from 'react-konva';
+import {
+  addShape,
+  dragShape,
+  transformShape,
+  chooseResize,
+} from '../../actions/shapesActions';
+import { saveCurrentImageShapes } from '../../actions/imagesActions';
+
 
 class DrawingField extends React.Component {
   constructor(props) {
@@ -16,7 +24,6 @@ class DrawingField extends React.Component {
       isDrawing: false,
       width: 0,
       height: 0,
-      selectedShapeName: '',
     };
   }
 
@@ -26,6 +33,9 @@ class DrawingField extends React.Component {
     this.transformer.keepRatio(false);
   }
 
+  componentDidUpdate() {
+    this.checkNode();
+  }
   componentWillReceiveProps() {
     this.setState({
       shape: null,
@@ -35,6 +45,26 @@ class DrawingField extends React.Component {
     });
   }
 
+  checkNode() {
+    // here we need to manually attach or detach Transformer node
+    const stage = this.transformer.getStage();
+    const { resizeName } = this.props;
+
+    const selectedNode = stage.findOne(`.${resizeName}`);
+    // do nothing if selected node is already attached
+    if (selectedNode === this.transformer.node()) {
+      return;
+    }
+
+    if (selectedNode) {
+      // attach to another node
+      this.transformer.attachTo(selectedNode);
+    } else {
+      // remove transformer
+      this.transformer.detach();
+    }
+    this.transformer.getLayer().batchDraw();
+  }
   componentDidUpdate() {
     this.checkNode();
   }
@@ -124,12 +154,10 @@ class DrawingField extends React.Component {
   handleInnerClick = (e) => {
     if (!this.state.isDrawing) {
       e.cancelBubble = true;
-      console.log('inner');
     }
   };
 
-  dragHandler = (e) => {
-    console.log(e);
+  dragHandler = e => {
     this.props.dragShape(e);
     if (this.props.match) {
       const { imgName } = this.props.match.params;
@@ -137,13 +165,11 @@ class DrawingField extends React.Component {
     }
   };
 
-  handleStageMouseDown = (e) => {
+  handleStageMouseDown = e => {
     if (this.props.currEntity.index === -1) {
       // clicked on stage - cler selection
       if (e.target === e.target.getStage()) {
-        this.setState({
-          selectedShapeName: '',
-        });
+        this.props.chooseResize('');
         return;
       }
       // clicked on transformer - do nothing
@@ -157,13 +183,9 @@ class DrawingField extends React.Component {
       const rect = this.props.shapes.find(r => r.name === name);
       if (rect) {
         e.cancelBubble = true;
-        this.setState({
-          selectedShapeName: name,
-        });
+        this.props.chooseResize(name);
       } else {
-        this.setState({
-          selectedShapeName: '',
-        });
+        this.props.chooseResize('');
       }
       this.transformer.on('transformend', () => {
         this.props.transformShape(e);
@@ -174,27 +196,6 @@ class DrawingField extends React.Component {
       });
     }
   };
-
-  checkNode() {
-    // here we need to manually attach or detach Transformer node
-    const stage = this.transformer.getStage();
-    const { selectedShapeName } = this.state;
-
-    const selectedNode = stage.findOne(`.${selectedShapeName}`);
-    // do nothing if selected node is already attached
-    if (selectedNode === this.transformer.node()) {
-      return;
-    }
-
-    if (selectedNode) {
-      // attach to another node
-      this.transformer.attachTo(selectedNode);
-    } else {
-      // remove transformer
-      this.transformer.detach();
-    }
-    this.transformer.getLayer().batchDraw();
-  }
 
   render() {
     const { shape, width, height } = this.state;
@@ -273,6 +274,7 @@ const mapStateToProps = state => ({
   currEntity: state.entities.currEntity,
   scale: state.shapes.scale,
   shapes: state.shapes.labeledShapes,
+  resizeName: state.shapes.resizeName,
 });
 
 export default connect(
@@ -282,5 +284,6 @@ export default connect(
     saveCurrentImageShapes,
     dragShape,
     transformShape,
+    chooseResize,
   },
 )(withRouter(DrawingField));

@@ -6,6 +6,7 @@ import {
   DRAG_SHAPE,
   TRANSFORM_SHAPE,
   CLEAR_SHAPES,
+  CHOOSE_RESIZE,
 } from './types';
 import store from '../store';
 
@@ -37,7 +38,7 @@ const del = (currentImg, index) => {
   return newShapes;
 };
 
-const drag = (item) => {
+const drag = item => {
   const shapes = store.getState().shapes.labeledShapes;
   const { scale } = store.getState().shapes;
   shapes[item.currentTarget.index].x = item.currentTarget.attrs.x / scale;
@@ -45,7 +46,8 @@ const drag = (item) => {
   return shapes;
 };
 
-const transform = (item) => {
+
+const transform = item => {
   const shapes = store.getState().shapes.labeledShapes;
   const { scale } = store.getState().shapes;
   shapes[item.target.index].x = item.target.attrs.x / scale;
@@ -89,3 +91,9 @@ export const minusScale = () => ({
 export const clearShape = () => ({
   type: CLEAR_SHAPES,
 });
+
+export const chooseResize = item => ({
+  type: CHOOSE_RESIZE,
+  payload: item,
+});
+

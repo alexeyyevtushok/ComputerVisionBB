@@ -7,6 +7,7 @@ import {
   MINUS_SCALE,
   DRAG_SHAPE,
   TRANSFORM_SHAPE,
+  CHOOSE_RESIZE,
 } from '../actions/types';
 
 const initialState = {
@@ -20,6 +21,7 @@ export default function (state = initialState, action) {
       return {
         ...state,
         labeledShapes: [...state.labeledShapes, action.payload],
+        resizeName: '',
       };
     }
     case DEL_SHAPE: {
@@ -63,6 +65,12 @@ export default function (state = initialState, action) {
       return {
         ...state,
         scale: action.payload,
+      };
+    }
+    case CHOOSE_RESIZE: {
+      return {
+        ...state,
+        resizeName: action.payload,
       };
     }
     default:
