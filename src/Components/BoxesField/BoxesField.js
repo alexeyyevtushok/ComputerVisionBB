@@ -10,7 +10,7 @@ import { saveCurrentImageShapes } from '../../actions/imagesActions';
 import { setEmptyCurrEntity } from '../../actions/entitiesActions';
 
 class BoxesField extends Component {
-  clickHandler = (e, name) => {
+  clickHandler = name => {
     this.props.chooseResize(name);
     this.props.setEmptyCurrEntity();
   };
@@ -38,7 +38,7 @@ class BoxesField extends Component {
               color={item.color}
               label={item.label}
               key={`${item.color}${item.x}${item.y}`}
-              onClick={e => this.clickHandler(item, item.name)}
+              onClick={() => this.clickHandler(item.name)}
               onClickToDel={event =>
                 this.clickToDelHandler(event, this.props.currentImg, item.index)
               }

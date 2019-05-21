@@ -17,7 +17,7 @@ class ColoredRect extends React.Component {
       height,
       color,
       dragHandle,
-      indexMy,
+      indexOfShape,
       onClick,
     } = this.props;
     return (
@@ -32,8 +32,7 @@ class ColoredRect extends React.Component {
         stroke={color}
         strokeWidth={4}
         onDragEnd={dragHandle}
-        name={`Figure${indexMy}`}
-        onChange={onClick}
+        name={`Figure${indexOfShape}`}
         draggable
       />
     );

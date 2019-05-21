@@ -192,20 +192,7 @@ class DrawingField extends React.Component {
       } else {
         this.props.chooseResize('');
       }
-      // this.transformer.on('transformend', () => {
-      //   this.props.transformShape(e);
-      //   if (this.props.match) {
-      //     const { imgName } = this.props.match.params;
-      //     this.props.saveCurrentImageShapes(imgName);
-      //   }
-      // });
     }
-  };
-
-  onMouseEnter = e => {
-    this.transformer.on('transformend', () => {
-      console.log(e);
-    });
   };
 
   render() {
@@ -247,9 +234,8 @@ class DrawingField extends React.Component {
                 width={obj.width}
                 height={obj.height}
                 color={obj.color}
-                onClick={this.onMouseEnter}
                 dragHandle={this.dragHandler}
-                indexMy={obj.index}
+                indexOfShape={obj.index}
               />
             ))}
             {currentShape}
