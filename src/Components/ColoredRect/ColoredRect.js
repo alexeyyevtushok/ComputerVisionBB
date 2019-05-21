@@ -33,6 +33,9 @@ class ColoredRect extends React.Component {
         strokeWidth={4}
         onDragEnd={dragHandle}
         name={`Figure${indexOfShape}`}
+        // onClick={() => {
+        //   console.log(this.rect.getZIndex());
+        // }}
         draggable
       />
     );

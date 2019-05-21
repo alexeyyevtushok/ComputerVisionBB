@@ -44,21 +44,32 @@ class DrawingField extends React.Component {
     });
   }
 
+  saveShapes = () => {
+    if (this.props.match) {
+      const { imgName } = this.props.match.params;
+      this.props.saveCurrentImageShapes(imgName);
+    }
+  };
+
   checkNode() {
     // here we need to manually attach or detach Transformer node
     const stage = this.transformer.getStage();
     const { resizeName } = this.props;
-
     const selectedNode = stage.findOne(`.${resizeName}`);
-
     if (selectedNode) {
-      this.transformer.on('transformend', () => {
-        this.props.transformShape(selectedNode);
-        if (this.props.match) {
-          const { imgName } = this.props.match.params;
-          this.props.saveCurrentImageShapes(imgName);
-        }
+      const oldIndex = selectedNode.getZIndex();
+      selectedNode.moveToTop();
+      selectedNode.on('dragend', () => {
+        selectedNode.setZIndex(oldIndex);
+        this.props.dragShape(selectedNode);
+        this.saveShapes();
       });
+      this.transformer.on('transformend', () => {
+        selectedNode.setZIndex(oldIndex);
+        this.props.transformShape(selectedNode);
+        this.saveShapes();
+      });
+      this.transformer.moveToTop();
     }
     // do nothing if selected node is already attached
     if (selectedNode === this.transformer.node()) {
@@ -84,8 +95,8 @@ class DrawingField extends React.Component {
     this.props.scale;
 
   handleClick = e => {
-    // console.log(e.evt.layerX);
-    // e.evt.layerX = {value:1000,writable: true}
+    console.log(this);
+
     const { isDrawing, shape } = this.state;
     const { currEntity } = this.props;
 
@@ -128,10 +139,7 @@ class DrawingField extends React.Component {
       name: `Figure${shapes.length}`,
     };
     this.props.addShape(labeledShape);
-    if (this.props.match) {
-      const { imgName } = this.props.match.params;
-      this.props.saveCurrentImageShapes(imgName);
-    }
+    this.saveShapes();
   };
 
   handleMouseMove = e => {
@@ -158,14 +166,6 @@ class DrawingField extends React.Component {
       this.setState({
         shape: newShape,
       });
-    }
-  };
-
-  dragHandler = e => {
-    this.props.dragShape(e);
-    if (this.props.match) {
-      const { imgName } = this.props.match.params;
-      this.props.saveCurrentImageShapes(imgName);
     }
   };
 
