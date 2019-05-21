@@ -23,6 +23,7 @@ class DrawingField extends React.Component {
       isDrawing: false,
       width: 0,
       height: 0,
+      zIndex: null,
     };
   }
 
@@ -44,7 +45,7 @@ class DrawingField extends React.Component {
     });
   }
 
-  checkNode() {
+  checkNode = () => {
     // here we need to manually attach or detach Transformer node
     const stage = this.transformer.getStage();
     const { resizeName } = this.props;
@@ -56,18 +57,26 @@ class DrawingField extends React.Component {
     }
 
     if (selectedNode) {
+      console.log(selectedNode.getZIndex());
       // attach to another node
       this.transformer.attachTo(selectedNode);
+      // this.setState({ zIndex: selectedNode.getZIndex() });
+      // selectedNode.moveToTop();
+      // this.transformer.moveToTop();
+
       selectedNode.on('transformend', () => {
+        // selectedNode.setZIndex(this.state.zIndex);
+        // this.setState({zIndex:null})
         this.props.transformShape(selectedNode);
         this.saveShapes();
       });
     } else {
       // remove transformer
+      // this.setState({ zIndex: null });
       this.transformer.detach();
     }
     this.transformer.getLayer().batchDraw();
-  }
+  };
 
   calculateHeight = () =>
     document.getElementsByClassName('currentImg')[0].clientHeight *
@@ -78,6 +87,8 @@ class DrawingField extends React.Component {
     this.props.scale;
 
   dragHandler = rect => {
+    // rect.setZIndex(this.state.zIndex);
+    // this.setState({zIndex:null})
     this.props.dragShape(rect);
     this.saveShapes();
   };
