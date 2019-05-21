@@ -167,6 +167,7 @@ class DrawingField extends React.Component {
 
   handleStageMouseDown = e => {
     if (this.props.currEntity.index === -1) {
+      console.log(e.target._lastPos);
       // clicked on stage - cler selection
       if (e.target === e.target.getStage()) {
         this.props.chooseResize('');
@@ -198,6 +199,10 @@ class DrawingField extends React.Component {
     }
   };
 
+  handleStagemouseUp = e => {
+    console.log(e);
+  };
+
   render() {
     const { shape, width, height } = this.state;
     const { shapes } = this.props;
@@ -211,7 +216,6 @@ class DrawingField extends React.Component {
           width={shape.width}
           height={shape.height}
           color={shape.color}
-          onClick={this.handleInnerClick}
         />
       );
     }
@@ -238,7 +242,7 @@ class DrawingField extends React.Component {
                 width={obj.width}
                 height={obj.height}
                 color={obj.color}
-                onClick={this.handleInnerClick}
+                onClick={e => console.log('a')}
                 dragHandle={this.dragHandler}
                 indexMy={obj.index}
               />
