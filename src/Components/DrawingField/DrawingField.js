@@ -50,6 +50,16 @@ class DrawingField extends React.Component {
     const { resizeName } = this.props;
 
     const selectedNode = stage.findOne(`.${resizeName}`);
+
+    if (selectedNode) {
+      this.transformer.on('transformend', () => {
+        this.props.transformShape(selectedNode);
+        if (this.props.match) {
+          const { imgName } = this.props.match.params;
+          this.props.saveCurrentImageShapes(imgName);
+        }
+      });
+    }
     // do nothing if selected node is already attached
     if (selectedNode === this.transformer.node()) {
       return;
@@ -151,12 +161,6 @@ class DrawingField extends React.Component {
     }
   };
 
-  handleInnerClick = e => {
-    if (!this.state.isDrawing) {
-      e.cancelBubble = true;
-    }
-  };
-
   dragHandler = e => {
     this.props.dragShape(e);
     if (this.props.match) {
@@ -167,7 +171,6 @@ class DrawingField extends React.Component {
 
   handleStageMouseDown = e => {
     if (this.props.currEntity.index === -1) {
-      console.log(e.target._lastPos);
       // clicked on stage - cler selection
       if (e.target === e.target.getStage()) {
         this.props.chooseResize('');
@@ -189,18 +192,20 @@ class DrawingField extends React.Component {
       } else {
         this.props.chooseResize('');
       }
-      this.transformer.on('transformend', () => {
-        this.props.transformShape(e);
-        if (this.props.match) {
-          const { imgName } = this.props.match.params;
-          this.props.saveCurrentImageShapes(imgName);
-        }
-      });
+      // this.transformer.on('transformend', () => {
+      //   this.props.transformShape(e);
+      //   if (this.props.match) {
+      //     const { imgName } = this.props.match.params;
+      //     this.props.saveCurrentImageShapes(imgName);
+      //   }
+      // });
     }
   };
 
-  handleStagemouseUp = e => {
-    console.log(e);
+  onMouseEnter = e => {
+    this.transformer.on('transformend', () => {
+      console.log(e);
+    });
   };
 
   render() {
@@ -242,7 +247,7 @@ class DrawingField extends React.Component {
                 width={obj.width}
                 height={obj.height}
                 color={obj.color}
-                onClick={e => console.log('a')}
+                onClick={this.onMouseEnter}
                 dragHandle={this.dragHandler}
                 indexMy={obj.index}
               />

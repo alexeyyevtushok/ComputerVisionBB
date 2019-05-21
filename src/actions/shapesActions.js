@@ -47,15 +47,12 @@ const drag = item => {
 };
 
 const transform = item => {
-  console.log(item);
   const shapes = store.getState().shapes.labeledShapes;
   const { scale } = store.getState().shapes;
-  shapes[item.target.index].x = item.target.attrs.x / scale;
-  shapes[item.target.index].y = item.target.attrs.y / scale;
-  shapes[item.target.index].width =
-    (item.target.attrs.width * item.target.attrs.scaleX) / scale;
-  shapes[item.target.index].height =
-    (item.target.attrs.height * item.target.attrs.scaleY) / scale;
+  shapes[item.index].x = item.attrs.x / scale;
+  shapes[item.index].y = item.attrs.y / scale;
+  shapes[item.index].width = (item.attrs.width * item.attrs.scaleX) / scale;
+  shapes[item.index].height = (item.attrs.height * item.attrs.scaleY) / scale;
   return shapes;
 };
 

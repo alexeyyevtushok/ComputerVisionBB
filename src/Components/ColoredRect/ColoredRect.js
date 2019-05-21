@@ -10,7 +10,16 @@ class ColoredRect extends React.Component {
 
   render() {
     const currentScale = store.getState().shapes.scale;
-    const { x, y, width, height, color, dragHandle, indexMy } = this.props;
+    const {
+      x,
+      y,
+      width,
+      height,
+      color,
+      dragHandle,
+      indexMy,
+      onClick,
+    } = this.props;
     return (
       <Rect
         ref={node => {
@@ -24,6 +33,7 @@ class ColoredRect extends React.Component {
         strokeWidth={4}
         onDragEnd={dragHandle}
         name={`Figure${indexMy}`}
+        onChange={onClick}
         draggable
       />
     );

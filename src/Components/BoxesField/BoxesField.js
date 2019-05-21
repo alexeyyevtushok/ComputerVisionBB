@@ -7,9 +7,12 @@ import Box from '../Box/Box';
 import { delShape, chooseResize } from '../../actions/shapesActions';
 import { saveCurrentImageShapes } from '../../actions/imagesActions';
 
+import { setEmptyCurrEntity } from '../../actions/entitiesActions';
+
 class BoxesField extends Component {
   clickHandler = (e, name) => {
     this.props.chooseResize(name);
+    this.props.setEmptyCurrEntity();
   };
 
   clickToDelHandler = (event, current, index) => {
@@ -58,5 +61,6 @@ export default connect(
     delShape,
     saveCurrentImageShapes,
     chooseResize,
+    setEmptyCurrEntity,
   },
 )(withRouter(BoxesField));

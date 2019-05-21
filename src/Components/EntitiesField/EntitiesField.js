@@ -10,6 +10,7 @@ import {
   setCurrEntity,
   setEmptyCurrEntity,
 } from '../../actions/entitiesActions';
+import { chooseResize } from '../../actions/shapesActions';
 import Entity from '../Entity/Entity';
 
 class EntitiesField extends React.Component {
@@ -130,6 +131,7 @@ class EntitiesField extends React.Component {
   };
 
   entityClick = index => {
+    this.props.chooseResize('');
     const { currEntity, entities } = this.props;
     if (index === currEntity.index) {
       this.props.setEmptyCurrEntity();
@@ -267,5 +269,6 @@ export default connect(
     modifyEntity,
     setCurrEntity,
     setEmptyCurrEntity,
+    chooseResize,
   },
 )(EntitiesField);
