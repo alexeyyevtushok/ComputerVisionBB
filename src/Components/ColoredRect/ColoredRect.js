@@ -17,6 +17,7 @@ class ColoredRect extends React.Component {
       height,
       color,
       dragHandle,
+      dragStartHandle,
       indexOfShape,
       onClick,
     } = this.props;
@@ -31,7 +32,7 @@ class ColoredRect extends React.Component {
         height={height * currentScale}
         stroke={color}
         strokeWidth={4}
-        onDragEnd={dragHandle}
+        onDragEnd={e => dragHandle(e, this.rect)}
         name={`Figure${indexOfShape}`}
         // onClick={() => {
         //   console.log(this.rect.getZIndex());

@@ -51,16 +51,6 @@ class DrawingField extends React.Component {
 
     const selectedNode = stage.findOne(`.${resizeName}`);
 
-    if (selectedNode) {
-      this.transformer.on('transformend', () => {
-        this.props.transformShape(selectedNode);
-        if (this.props.match) {
-          const { imgName } = this.props.match.params;
-          this.props.saveCurrentImageShapes(imgName);
-        }
-      });
-    }
-    // do nothing if selected node is already attached
     if (selectedNode === this.transformer.node()) {
       return;
     }
@@ -68,6 +58,14 @@ class DrawingField extends React.Component {
     if (selectedNode) {
       // attach to another node
       this.transformer.attachTo(selectedNode);
+      selectedNode.on('transformend', () => {
+        console.log(selectedNode);
+        this.props.transformShape(selectedNode);
+        if (this.props.match) {
+          const { imgName } = this.props.match.params;
+          this.props.saveCurrentImageShapes(imgName);
+        }
+      });
     } else {
       // remove transformer
       this.transformer.detach();
@@ -161,8 +159,8 @@ class DrawingField extends React.Component {
     }
   };
 
-  dragHandler = e => {
-    this.props.dragShape(e);
+  dragHandler = (e, rect) => {
+    this.props.dragShape(rect);
     if (this.props.match) {
       const { imgName } = this.props.match.params;
       this.props.saveCurrentImageShapes(imgName);
@@ -234,6 +232,7 @@ class DrawingField extends React.Component {
                 width={obj.width}
                 height={obj.height}
                 color={obj.color}
+                dragStartHandle={this.dragStartHandle}
                 dragHandle={this.dragHandler}
                 indexOfShape={obj.index}
               />
