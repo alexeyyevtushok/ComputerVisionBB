@@ -40,8 +40,8 @@ const del = (currentImg, index) => {
 
 const drag = item => {
   const shapes = store.getState().shapes.labeledShapes;
-  console.log(shapes);
-  console.log(item);
+  // console.log(shapes);
+  // console.log(item);
   const { scale } = store.getState().shapes;
   shapes[item.index].x = item.attrs.x / scale;
   shapes[item.index].y = item.attrs.y / scale;
@@ -50,6 +50,8 @@ const drag = item => {
 
 const transform = item => {
   const shapes = store.getState().shapes.labeledShapes;
+  console.log(shapes);
+  console.log(item);
   const { scale } = store.getState().shapes;
   shapes[item.index].x = item.attrs.x / scale;
   shapes[item.index].y = item.attrs.y / scale;
