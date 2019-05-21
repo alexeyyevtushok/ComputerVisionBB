@@ -83,8 +83,6 @@ class DrawingField extends React.Component {
   };
 
   handleClick = e => {
-    // console.log(e.evt.layerX);
-    // e.evt.layerX = {value:1000,writable: true}
     const { isDrawing, shape } = this.state;
     const { currEntity } = this.props;
 
