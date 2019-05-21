@@ -39,7 +39,6 @@ const del = (currentImg, index) => {
 };
 
 const drag = item => {
-  console.log(item.index);
   const shapes = store.getState().shapes.labeledShapes;
   const { scale } = store.getState().shapes;
   shapes[item.index].x = item.attrs.x / scale;
