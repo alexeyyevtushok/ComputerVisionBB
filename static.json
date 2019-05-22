@@ -1,0 +1,14 @@
+{
+    "root": "build/",
+    "routes": {
+        "/**": "index.html"
+    },
+    "proxies": {
+        "/api/": {
+            "origin": "https://boundingboxes-api.herokuapp.com/api"
+        },
+        "/img/": {
+            "origin": "https://boundingboxes-api.herokuapp.com/img"
+        }
+    }
+}
