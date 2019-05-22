@@ -27,7 +27,7 @@
     "eject": "react-scripts eject",
     "heroku-postbuild": "npm run build"
   },
-  "proxy": "http://localhost:5000",
+  "proxy": "https://boundingboxes-api.herokuapp.com",
   "eslintConfig": {
     "extends": "react-app"
   },
