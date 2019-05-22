@@ -1,7 +1,7 @@
 {
     "proxies": {
-        "/": {
-            "origin": "https://boundingboxes-api.herokuapp.com/"
+        "/api/": {
+            "origin": "https://boundingboxes-api.herokuapp.com/api/"
         }
     }
 }
