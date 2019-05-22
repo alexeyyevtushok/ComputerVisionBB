@@ -6,11 +6,9 @@
     "proxies": {
         "/api/": {
             "origin": "https://boundingboxes-api.herokuapp.com/api"
-        }
-    },
-    "proxy": {
-        "/api": {
-            "target": "http://localhost:8080/api"
+        },
+        "/img/": {
+            "origin": "https://boundingboxes-api.herokuapp.com/img"
         }
     }
 }
