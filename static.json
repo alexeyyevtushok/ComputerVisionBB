@@ -5,7 +5,12 @@
     },
     "proxies": {
         "/api/": {
-            "origin": "https://boundingboxes-api.herokuapp.com/api/"
+            "origin": "https://boundingboxes-api.herokuapp.com/api"
+        }
+    },
+    "proxy": {
+        "/api": {
+            "target": "http://localhost:8080/api"
         }
     }
 }

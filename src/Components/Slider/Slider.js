@@ -1,10 +1,10 @@
-import React, { Component } from 'react';
-import './Slider.css';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import Slide from '../Slide/Slide';
-import { deleteImage } from '../../actions/imagesActions';
-import { clearShape, chooseResize } from '../../actions/shapesActions';
+import React, { Component } from "react";
+import "./Slider.css";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import Slide from "../Slide/Slide";
+import { deleteImage } from "../../actions/imagesActions";
+import { clearShape, chooseResize } from "../../actions/shapesActions";
 
 class Slider extends Component {
   constructor(props) {
@@ -25,20 +25,20 @@ class Slider extends Component {
   }
 
   handleClick = img => {
-    this.props.chooseResize('');
+    this.props.chooseResize("");
     this.props.clearShape();
     const newImg = img.slice(4);
     this.props.history.push(`/${newImg}`);
   };
 
   deleteSlide = img => {
-    if (window.confirm('Do you want to delete this picture?')) {
+    if (window.confirm("Do you want to delete this picture?")) {
       const { params } = this.props.match;
       this.props.deleteImage(img.slice(4)).then(res => {
         console.log(res);
         if (params) {
           if (img.slice(4) === params.imgName) {
-            this.props.history.push('/');
+            this.props.history.push("/");
           }
         }
       });
@@ -105,5 +105,5 @@ export default connect(
     deleteImage,
     clearShape,
     chooseResize,
-  },
+  }
 )(withRouter(Slider));
