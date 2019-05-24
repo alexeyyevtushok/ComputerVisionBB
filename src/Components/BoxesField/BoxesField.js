@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
+import { confirmAlert } from 'react-confirm-alert'; // Import
+import 'react-confirm-alert/src/react-confirm-alert.css';
 
 import './BoxesField.css';
 import Box from '../Box/Box';
@@ -11,6 +13,11 @@ import { setEmptyCurrEntity } from '../../actions/entitiesActions';
 import store from '../../store';
 
 class BoxesField extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { open: false };
+  }
+
   componentDidMount() {
     document.onkeyup = e => {
       if (e.ctrlKey && e.which === 90) {
@@ -26,15 +33,31 @@ class BoxesField extends Component {
   };
 
   clickToDelHandler = (event, current, index) => {
-    event.stopPropagation();
-    if (window.confirm('Do you want to delete this box?')) {
-      this.props.delShape(current, index);
-      this.props.chooseResize('');
-      if (this.props.match) {
-        const { imgName } = this.props.match.params;
-        this.props.saveCurrentImageShapes(imgName);
-      }
+    this.props.delShape(current, index);
+    this.props.chooseResize('');
+    if (this.props.match) {
+      const { imgName } = this.props.match.params;
+      this.props.saveCurrentImageShapes(imgName);
     }
+  };
+
+  submit = (e, item) => {
+    e.stopPropagation();
+    confirmAlert({
+      title: 'Confirm to submit',
+      message: 'Are you sure to do this.',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () =>
+            this.clickToDelHandler(e, this.props.currentImg, item.index),
+        },
+        {
+          label: 'No',
+          onClick: () => {},
+        },
+      ],
+    });
   };
 
   render() {
@@ -49,9 +72,7 @@ class BoxesField extends Component {
               label={item.label}
               key={`${item.color}${item.x}${item.y}`}
               onClick={() => this.clickHandler(item.name)}
-              onClickToDel={event =>
-                this.clickToDelHandler(event, this.props.currentImg, item.index)
-              }
+              onClickToDel={e => this.submit(e, item)}
             />
           ))}
         </div>
