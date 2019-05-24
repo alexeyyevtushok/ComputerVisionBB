@@ -7,6 +7,7 @@
 .slideList {
   display: inline-flex;
   width: 75vw;
+  border: 1px solid #737373;
   overflow: hidden;
   transition: all ease 1s;
   position: relative;
@@ -18,7 +19,7 @@
   display: flex;
   height: 11vh;
   background: whitesmoke;
-  border: 1px solid #737373;
+
   position: relative;
   transition: all ease 1s;
 }

@@ -57,22 +57,21 @@ class DrawingField extends React.Component {
     }
 
     if (selectedNode) {
+      console.log(selectedNode);
       console.log(selectedNode.getZIndex());
       // attach to another node
       this.transformer.attachTo(selectedNode);
-      // this.setState({ zIndex: selectedNode.getZIndex() });
-      // selectedNode.moveToTop();
-      // this.transformer.moveToTop();
+      this.setState({ zIndex: selectedNode.getZIndex() });
+      selectedNode.moveToTop();
 
       selectedNode.on('transformend', () => {
-        // selectedNode.setZIndex(this.state.zIndex);
-        // this.setState({zIndex:null})
+        selectedNode.setZIndex(this.state.zIndex);
         this.props.transformShape(selectedNode);
         this.saveShapes();
       });
     } else {
       // remove transformer
-      // this.setState({ zIndex: null });
+      this.setState({ zIndex: null });
       this.transformer.detach();
     }
     this.transformer.getLayer().batchDraw();
@@ -87,8 +86,7 @@ class DrawingField extends React.Component {
     this.props.scale;
 
   dragHandler = rect => {
-    // rect.setZIndex(this.state.zIndex);
-    // this.setState({zIndex:null})
+    rect.setZIndex(this.state.zIndex);
     this.props.dragShape(rect);
     this.saveShapes();
   };
@@ -212,6 +210,8 @@ class DrawingField extends React.Component {
           width={shape.width}
           height={shape.height}
           color={shape.color}
+          widthStage={width}
+          heightStage={height}
         />
       );
     }
@@ -241,6 +241,8 @@ class DrawingField extends React.Component {
                 dragStartHandle={this.dragStartHandle}
                 dragHandle={this.dragHandler}
                 indexOfShape={obj.index}
+                widthStage={width}
+                heightStage={height}
               />
             ))}
             {currentShape}
