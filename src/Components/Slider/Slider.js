@@ -1,18 +1,61 @@
-import React, { Component } from 'react';
-import './Slider.css';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import Slide from '../Slide/Slide';
-import { deleteImage } from '../../actions/imagesActions';
-import { clearShape, chooseResize } from '../../actions/shapesActions';
+import React, { Component } from "react";
+import "./Slider.css";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import Slide from "../Slide/Slide";
+import { deleteImage } from "../../actions/imagesActions";
+import { clearShape, chooseResize } from "../../actions/shapesActions";
 
 class Slider extends Component {
   constructor(props) {
     super(props);
     this.state = {
       left: 0,
+      imgIndex: null,
     };
   }
+
+  componentDidMount() {
+    document.onkeyup = e => {
+      const { imgIndex } = this.state;
+      const { images } = this.props;
+      if (images.length > 0) {
+        //set current image index to state
+        if (imgIndex === null && this.props.match) {
+          const { imgName } = this.props.match.params;
+          const image = images.find(image => {
+            if (image.picture.slice(4) === imgName) {
+              return image;
+            }
+          });
+          this.setState({ imgIndex: image.index }, () => {
+            this.reactToKey(e, this.state.imgIndex, images);
+          });
+        } else {
+          this.reactToKey(e, imgIndex, images);
+        }
+      }
+    };
+  }
+
+  reactToKey = (e, imgIndex, images) => {
+    // left arrow
+    if (e.which === 37) {
+      if (imgIndex === 0) {
+        this.changeImage(images[images.length - 1]);
+      } else {
+        this.changeImage(images[imgIndex - 1]);
+      }
+    }
+    // right arrow
+    if (e.which === 39) {
+      if (images.length > imgIndex + 1) {
+        this.changeImage(images[imgIndex + 1]);
+      } else {
+        this.changeImage(images[0]);
+      }
+    }
+  };
 
   componentDidUpdate() {
     if (!this.props.match) {
@@ -24,21 +67,24 @@ class Slider extends Component {
     }
   }
 
-  handleClick = img => {
-    this.props.chooseResize('');
+  changeImage = img => {
+    this.props.chooseResize("");
     this.props.clearShape();
-    const newImg = img.slice(4);
+    const newImg = img.picture.slice(4);
     this.props.history.push(`/${newImg}`);
+    this.setState({
+      imgIndex: img.index,
+    });
   };
 
   deleteSlide = img => {
-    if (window.confirm('Do you want to delete this picture?')) {
+    if (window.confirm("Do you want to delete this picture?")) {
       const { params } = this.props.match;
       this.props.deleteImage(img.slice(4)).then(res => {
         console.log(res);
         if (params) {
           if (img.slice(4) === params.imgName) {
-            this.props.history.push('/');
+            this.props.history.push("/");
           }
         }
       });
@@ -80,7 +126,7 @@ class Slider extends Component {
               <Slide
                 key={property._id}
                 property={property}
-                onClick={() => this.handleClick(property.picture)}
+                onClick={() => this.changeImage(property)}
                 onDelete={() => this.deleteSlide(property.picture)}
               />
             ))}
@@ -105,5 +151,5 @@ export default connect(
     deleteImage,
     clearShape,
     chooseResize,
-  },
+  }
 )(withRouter(Slider));
