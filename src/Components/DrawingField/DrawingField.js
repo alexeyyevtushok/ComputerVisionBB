@@ -210,8 +210,6 @@ class DrawingField extends React.Component {
           width={shape.width}
           height={shape.height}
           color={shape.color}
-          widthStage={width}
-          heightStage={height}
         />
       );
     }
@@ -241,8 +239,12 @@ class DrawingField extends React.Component {
                 dragStartHandle={this.dragStartHandle}
                 dragHandle={this.dragHandler}
                 indexOfShape={obj.index}
-                widthStage={width}
-                heightStage={height}
+                widthStage={
+                  document.getElementsByClassName('currentImg')[0].clientWidth
+                }
+                heightStage={
+                  document.getElementsByClassName('currentImg')[0].clientHeight
+                }
               />
             ))}
             {currentShape}
