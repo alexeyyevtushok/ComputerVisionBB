@@ -1,16 +1,16 @@
-import React, { Component } from 'react';
-import { connect } from 'react-redux';
-import { withRouter } from 'react-router-dom';
-import { confirmAlert } from 'react-confirm-alert'; // Import
-import 'react-confirm-alert/src/react-confirm-alert.css';
+import React, { Component } from "react";
+import { connect } from "react-redux";
+import { withRouter } from "react-router-dom";
+import { confirmAlert } from "react-confirm-alert"; // Import
+import "react-confirm-alert/src/react-confirm-alert.css";
 
-import './BoxesField.css';
-import Box from '../Box/Box';
-import { delShape, chooseResize } from '../../actions/shapesActions';
-import { saveCurrentImageShapes } from '../../actions/imagesActions';
+import "./BoxesField.css";
+import Box from "../Box/Box";
+import { delShape, chooseResize } from "../../actions/shapesActions";
+import { saveCurrentImageShapes } from "../../actions/imagesActions";
 
-import { setEmptyCurrEntity } from '../../actions/entitiesActions';
-import store from '../../store';
+import { setEmptyCurrEntity } from "../../actions/entitiesActions";
+import store from "../../store";
 
 class BoxesField extends Component {
   constructor(props) {
@@ -34,7 +34,7 @@ class BoxesField extends Component {
 
   clickToDelHandler = (event, current, index) => {
     this.props.delShape(current, index);
-    this.props.chooseResize('');
+    this.props.chooseResize("");
     if (this.props.match) {
       const { imgName } = this.props.match.params;
       this.props.saveCurrentImageShapes(imgName);
@@ -44,19 +44,19 @@ class BoxesField extends Component {
   submit = (e, item) => {
     e.stopPropagation();
     confirmAlert({
-      title: 'Confirm to submit',
-      message: 'Are you sure to do this.',
+      title: "Confirm to submit",
+      message: "Are you sure to do this.",
       buttons: [
         {
-          label: 'Yes',
+          label: "Yes",
           onClick: () =>
-            this.clickToDelHandler(e, this.props.currentImg, item.index),
+            this.clickToDelHandler(e, this.props.currentImg, item.index)
         },
         {
-          label: 'No',
-          onClick: () => {},
-        },
-      ],
+          label: "No",
+          onClick: () => {}
+        }
+      ]
     });
   };
 
@@ -83,7 +83,7 @@ class BoxesField extends Component {
 
 const mapStateToProps = state => ({
   shapes: state.shapes.labeledShapes,
-  currentImg: state.images.currentImg,
+  currentImg: state.images.currentImg
 });
 
 export default connect(
@@ -92,6 +92,6 @@ export default connect(
     delShape,
     saveCurrentImageShapes,
     chooseResize,
-    setEmptyCurrEntity,
-  },
+    setEmptyCurrEntity
+  }
 )(withRouter(BoxesField));

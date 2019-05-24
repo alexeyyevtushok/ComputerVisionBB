@@ -5,6 +5,8 @@ import { withRouter } from "react-router-dom";
 import Slide from "../Slide/Slide";
 import { deleteImage } from "../../actions/imagesActions";
 import { clearShape, chooseResize } from "../../actions/shapesActions";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 class Slider extends Component {
   constructor(props) {
@@ -12,6 +14,7 @@ class Slider extends Component {
     this.state = {
       left: 0,
       imgIndex: null,
+      open: false
     };
   }
 
@@ -73,28 +76,26 @@ class Slider extends Component {
     const newImg = img.picture.slice(4);
     this.props.history.push(`/${newImg}`);
     this.setState({
-      imgIndex: img.index,
+      imgIndex: img.index
     });
   };
 
   deleteSlide = img => {
-    if (window.confirm("Do you want to delete this picture?")) {
-      const { params } = this.props.match;
-      this.props.deleteImage(img.slice(4)).then(res => {
-        console.log(res);
-        if (params) {
-          if (img.slice(4) === params.imgName) {
-            this.props.history.push("/");
-          }
+    const { params } = this.props.match;
+    this.props.deleteImage(img.slice(4)).then(res => {
+      console.log(res);
+      if (params) {
+        if (img.slice(4) === params.imgName) {
+          this.props.history.push("/");
         }
-      });
-    }
+      }
+    });
   };
 
   leftArrow = () => {
     if (this.state.left <= -11) {
       this.setState(prevState => ({
-        left: prevState.left + 11,
+        left: prevState.left + 11
       }));
     }
   };
@@ -103,14 +104,32 @@ class Slider extends Component {
     const outOfRange = -11 * (this.props.images.length - 14);
     if (this.state.left < outOfRange) this.setState({ left: 0 });
     this.setState(prevState => ({
-      left: prevState.left - 11,
+      left: prevState.left - 11
     }));
+  };
+
+  submit = (e, img) => {
+    e.stopPropagation();
+    confirmAlert({
+      title: "Confirm to submit",
+      message: "Are you sure to do this.",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => this.deleteSlide(img)
+        },
+        {
+          label: "No",
+          onClick: () => {}
+        }
+      ]
+    });
   };
 
   render() {
     // Move slider.
     const styleChange = {
-      left: `${this.state.left}vh`,
+      left: `${this.state.left}vh`
     };
     const { images } = this.props;
     return (
@@ -127,7 +146,7 @@ class Slider extends Component {
                 key={property._id}
                 property={property}
                 onClick={() => this.changeImage(property)}
-                onDelete={() => this.deleteSlide(property.picture)}
+                onDelete={e => this.submit(e, property.picture)}
               />
             ))}
           </div>
@@ -142,7 +161,7 @@ class Slider extends Component {
 }
 
 const mapStateToProps = state => ({
-  images: state.images.images,
+  images: state.images.images
 });
 
 export default connect(
@@ -150,6 +169,6 @@ export default connect(
   {
     deleteImage,
     clearShape,
-    chooseResize,
+    chooseResize
   }
 )(withRouter(Slider));

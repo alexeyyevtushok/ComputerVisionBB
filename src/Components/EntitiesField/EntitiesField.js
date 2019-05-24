@@ -1,17 +1,17 @@
-import React from 'react';
-import './EntitiesField.css';
-import PropTypes from 'prop-types';
-import { connect } from 'react-redux';
-import Konva from 'konva';
+import React from "react";
+import "./EntitiesField.css";
+import PropTypes from "prop-types";
+import { connect } from "react-redux";
+import Konva from "konva";
 import {
   addEntity,
   deleteEntity,
   modifyEntity,
   setCurrEntity,
-  setEmptyCurrEntity,
-} from '../../actions/entitiesActions';
-import { chooseResize } from '../../actions/shapesActions';
-import Entity from '../Entity/Entity';
+  setEmptyCurrEntity
+} from "../../actions/entitiesActions";
+import { chooseResize } from "../../actions/shapesActions";
+import Entity from "../Entity/Entity";
 
 class EntitiesField extends React.Component {
   constructor(props) {
@@ -19,11 +19,11 @@ class EntitiesField extends React.Component {
     this.state = {
       addInput: false,
       colorInput: this.generateRandomColor(),
-      labelInput: '',
-      modifyInput: '',
+      labelInput: "",
+      modifyInput: "",
       error: false,
       modifyInputError: false,
-      modifyInputIndex: -1,
+      modifyInputIndex: -1
     };
   }
 
@@ -34,14 +34,14 @@ class EntitiesField extends React.Component {
     this.setState(prevState => ({
       addInput: !prevState.addInput,
       colorInput: this.generateRandomColor(),
-      error: false,
+      error: false
     }));
   };
 
   // Input value.
   inputHandler = event => {
     this.setState({
-      [event.target.id]: event.target.value,
+      [event.target.id]: event.target.value
     });
   };
 
@@ -64,38 +64,36 @@ class EntitiesField extends React.Component {
     const labelValue = e.target.labelInput.value.toLowerCase();
     if (
       this.isCorrectTemplate(labelValue) ||
-      this.isDublicate(labelValue, 'label')
+      this.isDublicate(labelValue, "label")
     ) {
       this.setState({ error: true });
     } else {
-      if (this.isDublicate(colorValue, 'color')) {
+      if (this.isDublicate(colorValue, "color")) {
         colorValue = this.generateRandomColor();
       }
       const entity = {
         color: colorValue,
-        label: labelValue,
+        label: labelValue
       };
       this.props.addEntity(entity);
       this.setState({
         colorInput: this.generateRandomColor(),
-        labelInput: '',
-        error: false,
+        labelInput: "",
+        error: false
       });
     }
   };
 
   deleteHandler = (event, index) => {
     event.stopPropagation();
-    if (window.confirm('Do you want to delete this entity?')) {
-      const { currEntity } = this.props;
+    const { currEntity } = this.props;
 
-      if (index === currEntity.index) {
-        this.props.setEmptyCurrEntity();
-      }
-      event.stopPropagation();
-      this.props.deleteEntity(index);
-      this.setState({ modifyInputIndex: -1 });
+    if (index === currEntity.index) {
+      this.props.setEmptyCurrEntity();
     }
+    event.stopPropagation();
+    this.props.deleteEntity(index);
+    this.setState({ modifyInputIndex: -1 });
   };
 
   // Make edit field visible/unvisible.
@@ -105,12 +103,12 @@ class EntitiesField extends React.Component {
       this.setState({
         modifyInputIndex: -1,
         modifyInput: this.props.entities[index].label,
-        modifyInputError: false,
+        modifyInputError: false
       });
     } else {
       this.setState({
         modifyInputIndex: index,
-        modifyInput: this.props.entities[index].label,
+        modifyInput: this.props.entities[index].label
       });
     }
   };
@@ -119,19 +117,19 @@ class EntitiesField extends React.Component {
   modifyAcceptHandler = (event, index) => {
     event.preventDefault();
     const value = event.target.modifyInput.value.toLowerCase();
-    if (this.isCorrectTemplate(value) || this.isDublicate(value, 'label')) {
+    if (this.isCorrectTemplate(value) || this.isDublicate(value, "label")) {
       this.setState({ modifyInputError: true });
     } else {
       this.props.modifyEntity(index, value);
       this.setState({
         modifyInputIndex: -1,
-        modifyInputError: false,
+        modifyInputError: false
       });
     }
   };
 
   entityClick = index => {
-    this.props.chooseResize('');
+    this.props.chooseResize("");
     const { currEntity, entities } = this.props;
     if (index === currEntity.index) {
       this.props.setEmptyCurrEntity();
@@ -148,7 +146,7 @@ class EntitiesField extends React.Component {
       error,
       modifyInputIndex,
       modifyInput,
-      modifyInputError,
+      modifyInputError
     } = this.state;
     const { entities, currEntity } = this.props;
     const currentClick = `
@@ -170,15 +168,15 @@ class EntitiesField extends React.Component {
           title="Add entity"
           onClick={() => this.changeInput()}
           className={
-            addInput ? 'addBtn fas fa-user-slash' : 'addBtn fas fa-user-plus'
+            addInput ? "addBtn fas fa-user-slash" : "addBtn fas fa-user-plus"
           }
         >
-          <span>{addInput ? 'Close' : 'Add entity'}</span>
+          <span>{addInput ? "Close" : "Add entity"}</span>
         </div>
         <form
           style={
             addInput
-              ? { visibility: 'visible', opacity: '1', height: '57px' }
+              ? { visibility: "visible", opacity: "1", height: "57px" }
               : {}
           }
           className="entFieldForm"
@@ -188,17 +186,17 @@ class EntitiesField extends React.Component {
             className="errorField"
             style={
               error
-                ? { visibility: 'visible', opacity: '1', height: '20px' }
+                ? { visibility: "visible", opacity: "1", height: "20px" }
                 : {}
             }
           >
-            {'Incorrect input'}
+            {"Incorrect input"}
           </div>
           <div className="inputBox">
             <label htmlFor="label">
-              {'Label: '}
+              {"Label: "}
               <input
-                style={error ? { border: '1px solid maroon' } : {}}
+                style={error ? { border: "1px solid maroon" } : {}}
                 type="text"
                 id="labelInput"
                 value={labelInput}
@@ -208,7 +206,7 @@ class EntitiesField extends React.Component {
           </div>
           <div className="inputBox">
             <label htmlFor="color">
-              {'Color: '}
+              {"Color: "}
               <input
                 type="color"
                 id="colorInput"
@@ -245,7 +243,7 @@ class EntitiesField extends React.Component {
 const entityShape = {
   index: PropTypes.number.isRequired,
   label: PropTypes.string.isRequired,
-  color: PropTypes.string.isRequired,
+  color: PropTypes.string.isRequired
 };
 
 EntitiesField.propTypes = {
@@ -253,12 +251,12 @@ EntitiesField.propTypes = {
   currEntity: PropTypes.shape(entityShape).isRequired,
   addEntity: PropTypes.func.isRequired,
   deleteEntity: PropTypes.func.isRequired,
-  setCurrEntity: PropTypes.func.isRequired,
+  setCurrEntity: PropTypes.func.isRequired
 };
 
 const mapStateToProps = state => ({
   entities: state.entities.entities,
-  currEntity: state.entities.currEntity,
+  currEntity: state.entities.currEntity
 });
 
 export default connect(
@@ -269,6 +267,6 @@ export default connect(
     modifyEntity,
     setCurrEntity,
     setEmptyCurrEntity,
-    chooseResize,
-  },
+    chooseResize
+  }
 )(EntitiesField);
