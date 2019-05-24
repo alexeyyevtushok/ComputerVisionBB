@@ -23,6 +23,7 @@ class DrawingField extends React.Component {
       isDrawing: false,
       width: 0,
       height: 0,
+      zIndex: null,
     };
   }
 
@@ -44,47 +45,37 @@ class DrawingField extends React.Component {
     });
   }
 
-  saveShapes = () => {
-    if (this.props.match) {
-      const { imgName } = this.props.match.params;
-      this.props.saveCurrentImageShapes(imgName);
-    }
-  };
-
-  checkNode() {
+  checkNode = () => {
     // here we need to manually attach or detach Transformer node
     const stage = this.transformer.getStage();
     const { resizeName } = this.props;
     const selectedNode = stage.findOne(`.${resizeName}`);
-    if (selectedNode) {
-      const oldIndex = selectedNode.getZIndex();
-      selectedNode.moveToTop();
-      selectedNode.on('dragend', () => {
-        selectedNode.setZIndex(oldIndex);
-        this.props.dragShape(selectedNode);
-        this.saveShapes();
-      });
-      this.transformer.on('transformend', () => {
-        selectedNode.setZIndex(oldIndex);
-        this.props.transformShape(selectedNode);
-        this.saveShapes();
-      });
-      this.transformer.moveToTop();
-    }
-    // do nothing if selected node is already attached
+
+    // if clicked - > return
     if (selectedNode === this.transformer.node()) {
       return;
     }
 
     if (selectedNode) {
+      console.log(selectedNode);
+      console.log(selectedNode.getZIndex());
       // attach to another node
       this.transformer.attachTo(selectedNode);
+      this.setState({ zIndex: selectedNode.getZIndex() });
+      selectedNode.moveToTop();
+
+      selectedNode.on('transformend', () => {
+        selectedNode.setZIndex(this.state.zIndex);
+        this.props.transformShape(selectedNode);
+        this.saveShapes();
+      });
     } else {
       // remove transformer
+      this.setState({ zIndex: null });
       this.transformer.detach();
     }
     this.transformer.getLayer().batchDraw();
-  }
+  };
 
   calculateHeight = () =>
     document.getElementsByClassName('currentImg')[0].clientHeight *
@@ -94,9 +85,13 @@ class DrawingField extends React.Component {
     document.getElementsByClassName('currentImg')[0].clientWidth *
     this.props.scale;
 
-  handleClick = e => {
-    console.log(this);
+  dragHandler = rect => {
+    rect.setZIndex(this.state.zIndex);
+    this.props.dragShape(rect);
+    this.saveShapes();
+  };
 
+  handleClick = e => {
     const { isDrawing, shape } = this.state;
     const { currEntity } = this.props;
 
@@ -123,23 +118,6 @@ class DrawingField extends React.Component {
       isDrawing: true,
       shape: newShape,
     });
-  };
-
-  saveLabeledShape = () => {
-    const { shape } = this.state;
-    const { currEntity, shapes } = this.props;
-    const labeledShape = {
-      index: shapes.length,
-      label: currEntity.label,
-      color: currEntity.color,
-      x: shape.x,
-      y: shape.y,
-      width: shape.width,
-      height: shape.height,
-      name: `Figure${shapes.length}`,
-    };
-    this.props.addShape(labeledShape);
-    this.saveShapes();
   };
 
   handleMouseMove = e => {
@@ -195,6 +173,30 @@ class DrawingField extends React.Component {
     }
   };
 
+  saveLabeledShape = () => {
+    const { shape } = this.state;
+    const { currEntity, shapes } = this.props;
+    const labeledShape = {
+      index: shapes.length,
+      label: currEntity.label,
+      color: currEntity.color,
+      x: shape.x,
+      y: shape.y,
+      width: shape.width,
+      height: shape.height,
+      name: `Figure${shapes.length}`,
+    };
+    this.props.addShape(labeledShape);
+    this.saveShapes();
+  };
+
+  saveShapes = () => {
+    if (this.props.match) {
+      const { imgName } = this.props.match.params;
+      this.props.saveCurrentImageShapes(imgName);
+    }
+  };
+
   render() {
     const { shape, width, height } = this.state;
     const { shapes } = this.props;
@@ -208,6 +210,8 @@ class DrawingField extends React.Component {
           width={shape.width}
           height={shape.height}
           color={shape.color}
+          widthStage={width}
+          heightStage={height}
         />
       );
     }
@@ -234,8 +238,11 @@ class DrawingField extends React.Component {
                 width={obj.width}
                 height={obj.height}
                 color={obj.color}
+                dragStartHandle={this.dragStartHandle}
                 dragHandle={this.dragHandler}
                 indexOfShape={obj.index}
+                widthStage={width}
+                heightStage={height}
               />
             ))}
             {currentShape}

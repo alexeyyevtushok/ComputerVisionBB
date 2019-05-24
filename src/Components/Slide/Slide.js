@@ -8,13 +8,16 @@ const Slide = ({ property, onClick, onDelete }) => {
       <div className="imageDelete" onClick={onDelete}>
         <i className="fas fa-trash-alt" />
       </div>
-      <img
-        className="picture"
-        src={picture}
-        alt="slide"
-        onClick={onClick}
-        // onContextMenu={onContextMenu}
-      />
+      <div className="pictureWrap">
+        <span className="picutureWraped">
+          <img
+            className="picture"
+            src={picture}
+            alt="slide"
+            onClick={onClick}
+          />
+        </span>
+      </div>
     </div>
   );
 };

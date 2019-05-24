@@ -7,7 +7,6 @@ const Box = props => {
     <div className="boxesItem" onClick={onClick}>
       <div className="boxesColor" style={{ background: color }} />
       <p>{label}</p>
-
       <div className="boxesIcons" />
       <div className="boxesDelete">
         <i className="fas fa-trash-alt" onClick={onClickToDel} />

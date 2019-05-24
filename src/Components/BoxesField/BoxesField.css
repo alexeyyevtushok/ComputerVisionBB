@@ -3,9 +3,9 @@
   height: 75vh;
   margin-left: 10px;
   text-transform: uppercase;
+  overflow: auto;
 }
 
 .boxesList {
-  border: 1px solid #737373;
-  height: 70vh;
+  padding-bottom: 10px;
 }

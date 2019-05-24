@@ -210,7 +210,7 @@ class EntitiesField extends React.Component {
             <label htmlFor="color">
               {'Color: '}
               <input
-                type="text"
+                type="color"
                 id="colorInput"
                 value={colorInput}
                 onChange={this.inputHandler}
