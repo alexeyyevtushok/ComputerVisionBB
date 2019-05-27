@@ -24,6 +24,7 @@ class DrawingField extends React.Component {
       width: 0,
       height: 0,
       zIndex: null,
+      isDraggable: false,
     };
   }
 
@@ -57,21 +58,15 @@ class DrawingField extends React.Component {
     }
 
     if (selectedNode) {
-      console.log(selectedNode);
-      console.log(selectedNode.getZIndex());
       // attach to another node
       this.transformer.attachTo(selectedNode);
-      this.setState({ zIndex: selectedNode.getZIndex() });
-      selectedNode.moveToTop();
-
       selectedNode.on('transformend', () => {
-        selectedNode.setZIndex(this.state.zIndex);
         this.props.transformShape(selectedNode);
         this.saveShapes();
+        this.setState({ zIndex: null });
       });
     } else {
       // remove transformer
-      this.setState({ zIndex: null });
       this.transformer.detach();
     }
     this.transformer.getLayer().batchDraw();
@@ -86,7 +81,6 @@ class DrawingField extends React.Component {
     this.props.scale;
 
   dragHandler = rect => {
-    rect.setZIndex(this.state.zIndex);
     this.props.dragShape(rect);
     this.saveShapes();
   };
@@ -95,13 +89,19 @@ class DrawingField extends React.Component {
     const { isDrawing, shape } = this.state;
     const { currEntity } = this.props;
 
-    if (currEntity.index === -1) return;
+    if (currEntity.index === -1) {
+      this.setState({
+        isDraggable: true,
+      });
+      return;
+    }
 
     if (isDrawing) {
       this.saveLabeledShape(shape);
       this.setState({
         isDrawing: !isDrawing,
         shape: null,
+        isDraggable: false,
       });
       return;
     }
@@ -115,6 +115,7 @@ class DrawingField extends React.Component {
     };
 
     this.setState({
+      isDraggable: false,
       isDrawing: true,
       shape: newShape,
     });
@@ -239,6 +240,7 @@ class DrawingField extends React.Component {
                 dragStartHandle={this.dragStartHandle}
                 dragHandle={this.dragHandler}
                 indexOfShape={obj.index}
+                isDraggable={this.state.isDraggable}
                 widthStage={
                   document.getElementsByClassName('currentImg')[0].clientWidth
                 }

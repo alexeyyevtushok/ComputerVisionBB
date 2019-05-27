@@ -13,6 +13,7 @@ import {
 const initialState = {
   labeledShapes: [],
   scale: 1,
+  resizeName: '',
 };
 
 export default function(state = initialState, action) {

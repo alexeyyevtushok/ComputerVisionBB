@@ -8,14 +8,14 @@ class ColoredRect extends React.Component {
     const currentScale = store.getState().shapes.scale;
     this.rect.strokeScaleEnabled(false);
     this.rect.on('dragmove', () => {
-      var x = Math.max(
+      const x = Math.max(
         0,
         Math.min(
           (this.props.widthStage - this.props.width) * currentScale,
           this.rect.x(),
         ),
       );
-      var y = Math.max(
+      const y = Math.max(
         0,
         Math.min(
           (this.props.heightStage - this.props.height) * currentScale,
@@ -29,7 +29,16 @@ class ColoredRect extends React.Component {
 
   render() {
     const currentScale = store.getState().shapes.scale;
-    const { x, y, width, height, color, dragHandle, indexOfShape } = this.props;
+    const {
+      x,
+      y,
+      width,
+      height,
+      color,
+      dragHandle,
+      indexOfShape,
+      isDraggable,
+    } = this.props;
     return (
       <Rect
         ref={node => {
@@ -43,7 +52,7 @@ class ColoredRect extends React.Component {
         strokeWidth={4}
         onDragEnd={() => dragHandle(this.rect)}
         name={`Figure${indexOfShape}`}
-        draggable
+        draggable={isDraggable}
       />
     );
   }
