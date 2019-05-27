@@ -3,7 +3,10 @@ import './Slider.css';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import Slide from '../Slide/Slide';
-import { deleteImage } from '../../actions/imagesActions';
+import {
+  deleteImage,
+  saveCurrentImageShapes,
+} from '../../actions/imagesActions';
 import {
   clearShape,
   delShape,
@@ -28,6 +31,10 @@ class Slider extends Component {
       if (e.ctrlKey && e.which === 90) {
         const shapes = store.getState().shapes.labeledShapes;
         this.props.delShape(this.props.currentImg, shapes.length - 1);
+        if (this.props.match) {
+          const { imgName } = this.props.match.params;
+          this.props.saveCurrentImageShapes(imgName);
+        }
       } else {
         const { imgIndex } = this.state;
         const { images } = this.props;
@@ -181,5 +188,6 @@ export default connect(
     clearShape,
     chooseResize,
     delShape,
+    saveCurrentImageShapes,
   },
 )(withRouter(Slider));

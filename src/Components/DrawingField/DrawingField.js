@@ -97,21 +97,22 @@ class DrawingField extends React.Component {
     document.getElementsByClassName('currentImg')[0].clientWidth *
     this.props.scale;
 
-  handleClick = e => {
+  handleMouseUp = e => {
     const { isDrawing, shape } = this.state;
-    const { currEntity } = this.props;
-
-    if (currEntity.index === -1) {
-      return;
-    }
-
     if (isDrawing) {
       this.saveLabeledShape(shape);
       this.setState({
-        isDrawing: !isDrawing,
+        isDrawing: false,
         shape: null,
         isDraggable: false,
       });
+      return;
+    }
+  };
+
+  handleClick = e => {
+    const { currEntity } = this.props;
+    if (currEntity.index === -1) {
       return;
     }
 
@@ -203,7 +204,9 @@ class DrawingField extends React.Component {
           className="drawingField"
           width={width}
           height={height}
-          onClick={e => this.handleClick(e)}
+          // onClick={e => this.handleClick(e)}
+          onMouseDown={e => this.handleClick(e)}
+          onMouseUp={e => this.handleMouseUp(e)}
           onContentMouseMove={this.handleMouseMove}
         >
           <Layer
