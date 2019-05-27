@@ -1,7 +1,9 @@
 /*EntitiesField*/
 .entitiesField {
   width: 20vw;
+  height: 75vh;
   margin-left: 30px;
+  overflow: auto;
 }
 
 .entitiesField .item {

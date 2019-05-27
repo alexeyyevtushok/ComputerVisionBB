@@ -4,8 +4,27 @@ import PropTypes from 'prop-types';
 import store from '../../store';
 
 class ColoredRect extends React.Component {
-  componentDidMount() {
+  componentDidUpdate() {
+    const currentScale = store.getState().shapes.scale;
     this.rect.strokeScaleEnabled(false);
+    this.rect.on('dragmove', () => {
+      const x = Math.max(
+        0,
+        Math.min(
+          (this.props.widthStage - this.props.width) * currentScale,
+          this.rect.x(),
+        ),
+      );
+      const y = Math.max(
+        0,
+        Math.min(
+          (this.props.heightStage - this.props.height) * currentScale,
+          this.rect.y(),
+        ),
+      );
+      this.rect.x(x);
+      this.rect.y(y);
+    });
   }
 
   render() {
@@ -16,9 +35,8 @@ class ColoredRect extends React.Component {
       width,
       height,
       color,
-      dragHandle,
       indexOfShape,
-      onClick,
+      isDraggable,
     } = this.props;
     return (
       <Rect
@@ -31,12 +49,8 @@ class ColoredRect extends React.Component {
         height={height * currentScale}
         stroke={color}
         strokeWidth={4}
-        onDragEnd={dragHandle}
         name={`Figure${indexOfShape}`}
-        // onClick={() => {
-        //   console.log(this.rect.getZIndex());
-        // }}
-        draggable
+        draggable={isDraggable}
       />
     );
   }

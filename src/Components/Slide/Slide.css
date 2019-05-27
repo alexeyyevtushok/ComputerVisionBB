@@ -4,9 +4,22 @@
 }
 
 .picture {
-  height: 11vh;
-  width: 11vh;
+  max-height: 100%;
+  max-width: 100%;
   user-select: none;
+  vertical-align: middle;
+}
+
+.pictureWrap {
+  width: 11vh;
+  height: 11vh;
+  text-align: center;
+}
+
+.pictureWraped {
+  display: inline-block;
+  height: 100%;
+  vertical-align: middle;
 }
 
 .slide:hover {

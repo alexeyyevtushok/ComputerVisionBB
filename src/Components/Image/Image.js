@@ -6,6 +6,7 @@ import { plusScale, minusScale } from '../../actions/shapesActions';
 import './Image.css';
 import DrawingField from '../DrawingField/DrawingField';
 import store from '../../store';
+import { chooseResize } from '../../actions/shapesActions';
 
 class Image extends React.Component {
   componentDidMount() {
@@ -36,6 +37,7 @@ class Image extends React.Component {
   };
 
   scaleHandler = e => {
+    this.props.chooseResize('');
     const imgScale = document.getElementsByClassName('imgScale')[0];
     let delta = e.deltaY || e.detail || e.wheelDelta;
     if (delta < 0) {
@@ -69,5 +71,5 @@ const mapStateToProps = state => ({
 
 export default connect(
   mapStateToProps,
-  { getNewImageShapes, plusScale, minusScale },
+  { getNewImageShapes, plusScale, minusScale, chooseResize },
 )(withRouter(Image));
