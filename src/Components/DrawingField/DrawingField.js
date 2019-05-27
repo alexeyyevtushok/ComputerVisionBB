@@ -58,16 +58,33 @@ class DrawingField extends React.Component {
     }
 
     if (selectedNode) {
+      this.setState({ zIndex: selectedNode.getZIndex(), isDraggable: true });
+
+      selectedNode.moveToTop();
+      this.transformer.moveToTop();
+
       // attach to another node
       this.transformer.attachTo(selectedNode);
+
       selectedNode.on('transformend', () => {
+        selectedNode.setZIndex(this.state.zIndex);
         this.props.transformShape(selectedNode);
         this.saveShapes();
-        this.setState({ zIndex: null });
       });
+
+      selectedNode.on('dragend', () => {
+        selectedNode.setZIndex(this.state.zIndex);
+        this.props.dragShape(selectedNode);
+        this.saveShapes();
+      });
+
+      document.getElementsByClassName('boxesField')[0].onclick = () => {
+        selectedNode.setZIndex(this.state.zIndex);
+      };
     } else {
       // remove transformer
       this.transformer.detach();
+      this.setState({ isDraggable: false });
     }
     this.transformer.getLayer().batchDraw();
   };
@@ -80,19 +97,13 @@ class DrawingField extends React.Component {
     document.getElementsByClassName('currentImg')[0].clientWidth *
     this.props.scale;
 
-  dragHandler = rect => {
-    this.props.dragShape(rect);
-    this.saveShapes();
-  };
+  dragHandler = rect => {};
 
   handleClick = e => {
     const { isDrawing, shape } = this.state;
     const { currEntity } = this.props;
 
     if (currEntity.index === -1) {
-      this.setState({
-        isDraggable: true,
-      });
       return;
     }
 
@@ -148,32 +159,6 @@ class DrawingField extends React.Component {
     }
   };
 
-  handleStageMouseDown = e => {
-    if (this.props.currEntity.index === -1) {
-      // clicked on stage - cler selection
-      if (e.target === e.target.getStage()) {
-        this.props.chooseResize('');
-        return;
-      }
-      // clicked on transformer - do nothing
-      const clickedOnTransformer =
-        e.target.getParent().className === 'Transformer';
-      if (clickedOnTransformer) {
-        return;
-      }
-
-      // find clicked rect by its name
-      const name = e.target.name();
-      const rect = this.props.shapes.find(r => r.name === name);
-      if (rect) {
-        e.cancelBubble = true;
-        this.props.chooseResize(name);
-      } else {
-        this.props.chooseResize('');
-      }
-    }
-  };
-
   saveLabeledShape = () => {
     const { shape } = this.state;
     const { currEntity, shapes } = this.props;
@@ -222,7 +207,6 @@ class DrawingField extends React.Component {
           height={height}
           onClick={e => this.handleClick(e)}
           onContentMouseMove={this.handleMouseMove}
-          onMouseDown={this.handleStageMouseDown}
         >
           <Layer
             ref={ref => {
