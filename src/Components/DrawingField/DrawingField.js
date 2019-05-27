@@ -97,8 +97,6 @@ class DrawingField extends React.Component {
     document.getElementsByClassName('currentImg')[0].clientWidth *
     this.props.scale;
 
-  dragHandler = rect => {};
-
   handleClick = e => {
     const { isDrawing, shape } = this.state;
     const { currEntity } = this.props;
@@ -221,8 +219,6 @@ class DrawingField extends React.Component {
                 width={obj.width}
                 height={obj.height}
                 color={obj.color}
-                dragStartHandle={this.dragStartHandle}
-                dragHandle={this.dragHandler}
                 indexOfShape={obj.index}
                 isDraggable={this.state.isDraggable}
                 widthStage={

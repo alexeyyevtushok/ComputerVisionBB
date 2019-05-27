@@ -35,7 +35,6 @@ class ColoredRect extends React.Component {
       width,
       height,
       color,
-      dragHandle,
       indexOfShape,
       isDraggable,
     } = this.props;
@@ -50,7 +49,6 @@ class ColoredRect extends React.Component {
         height={height * currentScale}
         stroke={color}
         strokeWidth={4}
-        onDragEnd={() => dragHandle(this.rect)}
         name={`Figure${indexOfShape}`}
         draggable={isDraggable}
       />
