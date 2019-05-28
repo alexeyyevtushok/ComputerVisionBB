@@ -46,6 +46,7 @@ class Slider extends Component {
               if (image.picture.slice(4) === imgName) {
                 return image;
               }
+              return null;
             });
             this.setState({ imgIndex: image.index }, () => {
               this.reactToKey(e, this.state.imgIndex, images);
@@ -100,7 +101,6 @@ class Slider extends Component {
   deleteSlide = img => {
     const { params } = this.props.match;
     this.props.deleteImage(img.slice(4)).then(res => {
-      console.log(res);
       if (params) {
         if (img.slice(4) === params.imgName) {
           this.props.history.push('/');

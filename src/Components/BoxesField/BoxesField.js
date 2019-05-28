@@ -1,16 +1,17 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
-import { confirmAlert } from 'react-confirm-alert'; // Import
+
+import { confirmAlert } from 'react-confirm-alert';
 import 'react-confirm-alert/src/react-confirm-alert.css';
 
 import './BoxesField.css';
 import Box from '../Box/Box';
+import store from '../../store';
+
 import { delShape, chooseResize } from '../../actions/shapesActions';
 import { saveCurrentImageShapes } from '../../actions/imagesActions';
-
 import { setEmptyCurrEntity } from '../../actions/entitiesActions';
-import store from '../../store';
 
 class BoxesField extends Component {
   constructor(props) {
@@ -20,7 +21,6 @@ class BoxesField extends Component {
 
   componentDidMount() {
     document.onkeyup = e => {
-      console.log(e);
       if (e.ctrlKey && e.which === 90) {
         const shapes = store.getState().shapes.labeledShapes;
         this.props.delShape(this.props.currentImg, shapes.length - 1);
