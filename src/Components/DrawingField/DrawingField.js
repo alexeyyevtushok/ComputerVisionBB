@@ -70,15 +70,20 @@ class DrawingField extends React.Component {
         selectedNode.setZIndex(this.state.zIndex);
         this.props.transformShape(selectedNode);
         this.saveShapes();
+        console.log('transend');
       });
 
       selectedNode.on('dragend', () => {
         selectedNode.setZIndex(this.state.zIndex);
         this.props.dragShape(selectedNode);
         this.saveShapes();
+        console.log('dragend');
       });
 
       document.getElementsByClassName('boxesField')[0].onclick = () => {
+        selectedNode.setZIndex(this.state.zIndex);
+      };
+      document.getElementsByClassName('entitiesField')[0].onclick = () => {
         selectedNode.setZIndex(this.state.zIndex);
       };
     } else {
@@ -100,7 +105,10 @@ class DrawingField extends React.Component {
   handleMouseUp = e => {
     const { isDrawing, shape } = this.state;
     if (isDrawing) {
-      this.saveLabeledShape(shape);
+      console.log(shape);
+      if (Math.abs(shape.width) > 10 && Math.abs(shape.height) > 10) {
+        this.saveLabeledShape(shape);
+      }
       this.setState({
         isDrawing: false,
         shape: null,
@@ -204,7 +212,6 @@ class DrawingField extends React.Component {
           className="drawingField"
           width={width}
           height={height}
-          // onClick={e => this.handleClick(e)}
           onMouseDown={e => this.handleClick(e)}
           onMouseUp={e => this.handleMouseUp(e)}
           onContentMouseMove={this.handleMouseMove}
