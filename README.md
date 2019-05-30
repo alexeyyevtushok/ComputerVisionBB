@@ -9,7 +9,7 @@ Tool for computer vision. It allows user to make bounding boxes for image recogn
 ### `Entity navbar`
 ![en](https://github.com/alexeyyevtushok/img/blob/master/entity%20field.PNG)<br>
 •To add new entity,click on 'add entity' button.</br>
-•To delete or edit entity, hover on it and click on 'edit' or 'delete' button.
+•To delete or edit entity, hover on it and click on 'edit' or 'delete' button.<br>
 ![edbb](https://github.com/alexeyyevtushok/img/blob/master/Capture6.PNG)<br>
 •For closing 'add entity' input click on 'close' button'.<br>
 •To choose color and label input your data in corresponded field.<br>
