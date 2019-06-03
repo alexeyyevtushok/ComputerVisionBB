@@ -10,7 +10,7 @@ import {
   CHOOSE_RESIZE,
 } from '../actions/types';
 
-const initialState = {
+export const initialState = {
   labeledShapes: [],
   scale: 1,
   resizeName: '',
