@@ -78,6 +78,7 @@ export {
   saveCurrentImageShapes,
   updateImages,
   addImages,
+  getImages,
   addGDriveImages,
   deleteImage,
   resetAll,

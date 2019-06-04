@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
-import reducer, { initialState } from '../reducers/imagesReducer';
-import * as types from '../actions/types';
+import reducer, { initialState } from '../../reducers/imagesReducer';
+import * as types from '../../actions/types';
 
 test('set images', () => {
   const action = {

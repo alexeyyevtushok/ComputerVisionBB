@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
-import reducer, { initialState } from '../reducers/shapesReducer';
-import * as types from '../actions/types';
+import reducer, { initialState } from '../../reducers/shapesReducer';
+import * as types from '../../actions/types';
 
 describe('change scale of shape', () => {
   it('plus scale', () => {

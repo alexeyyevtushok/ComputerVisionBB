@@ -18,10 +18,10 @@ store.dispatch(updateEntities);
 const Application = () => (
   <Provider store={store}>
     <Router>
-      <Header />
+      <Header data-test="header" />
       <Route path="/:imgName">
-        <Middle />
-        <Slider />
+        <Middle data-test="middle" />
+        <Slider data-test="slider" />
       </Route>
     </Router>
   </Provider>

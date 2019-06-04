@@ -1,6 +1,6 @@
 /* eslint-disable no-undef */
-import reducer, { initialState } from '../reducers/entitiesReducer';
-import * as types from '../actions/types';
+import reducer, { initialState } from '../../reducers/entitiesReducer';
+import * as types from '../../actions/types';
 
 describe('entities reducer', () => {
   it('set entities', () => {
