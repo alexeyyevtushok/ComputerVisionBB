@@ -1,5 +1,5 @@
 ![prod](https://travis-ci.org/alexeyyevtushok/ComputerVisionBB.svg?branch=prod)
-[![Coverage Status](https://coveralls.io/repos/github/alexeyyevtushok/ComputerVisionBB/badge.svg?branch=master)](https://coveralls.io/github/alexeyyevtushok/ComputerVisionBB?branch=master)
+(https://coveralls.io/github/alexeyyevtushok/ComputerVisionBB?branch=master)
 ## Bounding boxes tool
 
 Tool for computer vision. It allows user to make bounding boxes for image recognition and generate corresponding coordinates of each box for AI learning.
