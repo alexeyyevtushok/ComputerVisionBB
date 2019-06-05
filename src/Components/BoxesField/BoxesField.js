@@ -64,7 +64,7 @@ class BoxesField extends Component {
   render() {
     const { shapes } = this.props;
     return (
-      <div className="boxesField">
+      <div className="boxesField" data-test="boxesField">
         <p>Bounding boxes</p>
         <div className="boxesList">
           {shapes.map(item => (

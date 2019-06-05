@@ -1,6 +1,6 @@
 import { SET_IMAGES } from '../actions/types';
 
-const initialState = {
+export const initialState = {
   images: [],
 };
 

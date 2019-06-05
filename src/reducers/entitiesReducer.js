@@ -1,6 +1,6 @@
 import { SET_ENTITIES, ADD_ENTITY, SET_CURRENT_ENTITY } from '../actions/types';
 
-const initialState = {
+export const initialState = {
   entities: [],
   currEntity: {
     index: -1,
@@ -9,7 +9,7 @@ const initialState = {
   },
 };
 
-export default function (state = initialState, action) {
+export default function reducer(state = initialState, action) {
   switch (action.type) {
     case SET_CURRENT_ENTITY: {
       return {

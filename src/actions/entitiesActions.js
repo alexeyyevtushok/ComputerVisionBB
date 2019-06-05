@@ -65,6 +65,7 @@ const modifyEntity = (index, data) => dispatch => {
 
 export {
   modifyEntity,
+  getEntities,
   deleteEntity,
   addEntity,
   updateEntities,
