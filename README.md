@@ -25,3 +25,25 @@ Tool for computer vision. It allows user to make bounding boxes for image recogn
 ![del](https://github.com/alexeyyevtushok/img/blob/master/Capture4.PNG)<br>
 •For enabling transforming and dragable mode click on BB from list.<br>
 ![enbl](https://github.com/alexeyyevtushok/img/blob/master/Capture5.PNG)<br>
+### `Slider`
+![slider](https://github.com/alexeyyevtushok/img/blob/master/Capture7.PNG)<br>
+•To change image,click on corresponded slide.<br>
+•To delete img click on 'delete' button.<br>
+![slider](https://github.com/alexeyyevtushok/img/blob/master/Capture8.PNG)<br>
+•For navigation use '<' and '>' slider buttons.<br>
+### `DrawingField`
+![DF](https://github.com/alexeyyevtushok/img/blob/master/Capture9.PNG)<br>
+•MouseDown to start paining.<br>
+•MouseUp to stop painting.<br>
+•Use right 'Bounding boxes navbar' to transform or resize.<br>
+•Use left 'Entities navbar' to add,change or delete entities.<br>
+•Use 'Slider' to change image.<br>
+### `Top navbar`
+![nb](https://github.com/alexeyyevtushok/img/blob/master/Capture10.PNG)<br>
+•**Upload from GDrive** - use Google drive for files uploading.<br>
+•**Upload from disc** - upload files from computer storage.<br>
+•**Generate** - generation PASCAlvoc file.<br>
+•**Reset** - delete all entities,img and boxes.<br>
+### `Hotkeys`
+•**CTRL + Z** - delete last box.<br>
+•**Left and right arrow keys** - change current img.<br>
