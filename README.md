@@ -1,3 +1,4 @@
+![prod](https://travis-ci.org/alexeyyevtushok/ComputerVisionBB.svg?branch=prod)
 ## Bounding boxes tool
 
 Tool for computer vision. It allows user to make bounding boxes for image recognition and generate corresponding coordinates of each box for AI learning.
