@@ -19,7 +19,7 @@ const Application = () => (
   <Provider store={store}>
     <Router>
       <Header data-test="header" />
-      <Route path="/:imgName">
+      <Route path="/:imgName?">
         <Middle data-test="middle" />
         <Slider data-test="slider" />
       </Route>
