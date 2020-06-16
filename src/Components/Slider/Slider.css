@@ -1,0 +1,55 @@
+/*Main block*/
+.fullSlider {
+  margin-top: 5px;
+  text-align: center;
+}
+
+.slideList {
+  display: inline-flex;
+  width: 75vw;
+  border: 1px solid #737373;
+  overflow: hidden;
+  transition: all ease 1s;
+  position: relative;
+  margin-left: 40px;
+}
+
+/*Slider*/
+.slider {
+  display: flex;
+  height: 11vh;
+  background: whitesmoke;
+
+  position: relative;
+  transition: all ease 1s;
+}
+
+/*Arrows*/
+.arrows {
+  position: absolute;
+  width: 40px;
+  height: 40px;
+  border-color: #000;
+}
+
+.prev {
+  display: inline-block;
+  border-bottom: 4px solid;
+  border-left: 4px solid;
+  transform: rotate(45deg);
+  margin-top: 3vh;
+}
+
+.next {
+  display: inline-block;
+  border-bottom: 4px solid;
+  border-left: 4px solid;
+  transform: rotate(-135deg);
+  margin-top: 3vh;
+}
+
+.prev:hover,
+.next:hover {
+  border-bottom: 6px solid;
+  border-left: 6px solid;
+}

@@ -1,0 +1,9 @@
+/*Main block*/
+.midleMain {
+  display: flex;
+  height: 50%;
+}
+
+.midleMain p {
+  text-transform: uppercase;
+}
