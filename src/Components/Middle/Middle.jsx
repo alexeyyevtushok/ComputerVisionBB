@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import Image from '../Image/Image';
 import './Middle.css';
-import EntitiesField from '../EntitiesField/EntitiesField';
+import EntitiesField from '../EntitiesField/EntitiesField.jsx';
 import BoxesField from '../BoxesField/BoxesField';
 
 class Middle extends Component {
